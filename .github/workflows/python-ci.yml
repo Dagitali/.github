@@ -6,7 +6,7 @@ on:
       python-versions:
         description: JSON array of Python versions to test.
         type: string
-        default: '["3.12", "3.13"]'
+        default: '["3.13", "3.14"]'
       runs-on:
         description: GitHub-hosted runner label.
         type: string
@@ -16,9 +16,9 @@ on:
         type: string
         default: .
       cache-dependency-path:
-        description: Dependency file used to invalidate the pip cache.
+        description: Dependency path relative to checkout; empty uses working-directory/pyproject.toml.
         type: string
-        default: pyproject.toml
+        default: ''
       install-command:
         description: Command that installs the project and CI dependencies.
         type: string
@@ -58,19 +58,25 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-          cache-dependency-path: ${{ inputs.cache-dependency-path }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install project
         env:
           COMMAND: ${{ inputs.install-command }}
         run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Verify dependency compatibility
+        run: python -m pip check
 
       - name: Check formatting
         if: inputs.format-command != ''
