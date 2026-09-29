@@ -1,0 +1,14 @@
+name: Swift CI
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+    branches: [$default-branch]
+
+permissions:
+  contents: read
+
+jobs:
+  swift-ci:
+    uses: Dagitali/.github/.github/workflows/swift-ci.yml@v1

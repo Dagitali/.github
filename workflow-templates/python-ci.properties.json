@@ -1,0 +1,7 @@
+{
+  "name": "Dagitali Python CI",
+  "description": "Run Dagitali's shared formatting, linting, type-checking, and test workflow.",
+  "iconName": "octicon beaker",
+  "categories": ["Python"],
+  "filePatterns": ["^pyproject\\.toml$", "^setup\\.py$", "^setup\\.cfg$"]
+}
