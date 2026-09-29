@@ -1,3 +1,4 @@
+# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before use.
 name: Python CI
 
 on:
@@ -11,4 +12,6 @@ permissions:
 
 jobs:
   python-ci:
-    uses: Dagitali/.github/.github/workflows/python-ci.yml@v1
+    uses: Dagitali/.github/.github/workflows/python-ci.yml@REPLACE_WITH_RELEASE_SHA
+    with:
+      python-versions: '["3.13", "3.14"]'
