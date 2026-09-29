@@ -1,3 +1,4 @@
+# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before use.
 name: Swift CI
 
 on:
@@ -11,4 +12,4 @@ permissions:
 
 jobs:
   swift-ci:
-    uses: Dagitali/.github/.github/workflows/swift-ci.yml@v1
+    uses: Dagitali/.github/.github/workflows/swift-ci.yml@REPLACE_WITH_RELEASE_SHA
