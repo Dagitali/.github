@@ -20,7 +20,8 @@
 #   practical.
 #
 # Maintainer Notes
-# - Install validation tools using docs/contributing.md; make check is the shared gate.
+# - Install validation tools using docs/CONTRIBUTING.md; make check is the
+# shared gate.
 # - Keep branch and commit-message hooks aligned with repository policy;
 #   hosted PR routing is configurable rather than implicitly GitFlow.
 # - Prefer targeted hook exclusions over broad disables when generated or
