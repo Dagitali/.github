@@ -1,0 +1,14 @@
+name: Python CI
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+    branches: [$default-branch]
+
+permissions:
+  contents: read
+
+jobs:
+  python-ci:
+    uses: Dagitali/.github/.github/workflows/python-ci.yml@v1

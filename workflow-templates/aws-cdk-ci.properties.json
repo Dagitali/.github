@@ -1,0 +1,7 @@
+{
+  "name": "Dagitali AWS CDK CI",
+  "description": "Install, check, test, and synthesize a Dagitali AWS CDK project.",
+  "iconName": "octicon cloud",
+  "categories": ["Deployment", "Python", "JavaScript"],
+  "filePatterns": ["^cdk\\.json$"]
+}

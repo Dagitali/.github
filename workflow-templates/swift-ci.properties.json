@@ -1,0 +1,7 @@
+{
+  "name": "Dagitali Swift CI",
+  "description": "Build and test a Swift package on macOS using Dagitali's shared workflow.",
+  "iconName": "octicon beaker",
+  "categories": ["Swift"],
+  "filePatterns": ["^Package\\.swift$"]
+}

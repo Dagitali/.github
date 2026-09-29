@@ -1,0 +1,56 @@
+name: Reusable Swift CI
+
+on:
+  workflow_call:
+    inputs:
+      runners:
+        description: JSON array of macOS runner labels.
+        type: string
+        default: '["macos-15"]'
+      working-directory:
+        description: Directory containing Package.swift.
+        type: string
+        default: .
+      build-command:
+        description: Swift build command; empty skips it.
+        type: string
+        default: swift build --build-tests
+      test-command:
+        description: Swift test command; empty skips it.
+        type: string
+        default: swift test --parallel
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Swift on ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: ${{ fromJSON(inputs.runners) }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Build
+        if: inputs.build-command != ''
+        env:
+          COMMAND: ${{ inputs.build-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Test
+        if: inputs.test-command != ''
+        env:
+          COMMAND: ${{ inputs.test-command }}
+        run: bash -euo pipefail -c "$COMMAND"
