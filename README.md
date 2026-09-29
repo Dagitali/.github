@@ -10,8 +10,8 @@
 -->
 # Dagitali GitHub Defaults
 
-This repository contains shared GitHub community-health files and issue forms for repositories owned
-by Dagitali.
+This repository contains shared GitHub configuration, issue templates, GitHub Actions actions and
+workflows, and community-health files for repositories owned by Dagitali.
 
 GitHub uses these defaults when an individual repository does not provide its own version of the
 same file. Repository-specific files take precedence.
