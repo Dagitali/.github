@@ -20,10 +20,7 @@
 #   practical.
 #
 # Maintainer Notes
-# - Keep hook revisions compatible with the Python versions supported by
-#   `pyproject.toml`.
-# - Local system hooks delegate interpreter selection to Make; install
-#   development tools before using them, as documented in CONTRIBUTING.md.
+# - Install validation tools using docs/contributing.md; make check is the shared gate.
 # - Keep branch and commit-message hooks aligned with repository policy;
 #   hosted PR routing is configurable rather than implicitly GitFlow.
 # - Prefer targeted hook exclusions over broad disables when generated or
@@ -86,7 +83,7 @@ repos:
       # - id: check-docstring-first
       # - id: check-executables-have-shebangs
       #   exclude_types: [batch]
-      # - id: check-json
+      - id: check-json
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       # - id: check-symlinks
