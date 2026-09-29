@@ -1,0 +1,7 @@
+{
+  "name": "Dagitali Python release",
+  "description": "Build and installation-test distributions, then publish from a protected consumer-owned job.",
+  "iconName": "octicon package",
+  "categories": ["Python"],
+  "filePatterns": ["^pyproject\\.toml$"]
+}
