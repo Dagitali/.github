@@ -1,0 +1,33 @@
+name: Documentation improvement
+description: Report missing, unclear, or incorrect documentation
+title: "[Docs]: "
+labels:
+  - documentation
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Documentation location
+      description: Link to the page or identify the file and section.
+      placeholder: https://github.com/Dagitali/...
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What needs improvement?
+      description: Explain what is missing, unclear, outdated, or incorrect.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change
+      description: Describe the wording, example, or structure that would help.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
