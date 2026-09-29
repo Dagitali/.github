@@ -23,6 +23,10 @@ on:
         description: Directory containing cdk.json.
         type: string
         default: .
+      cache-dependency-path:
+        description: Python dependency path relative to checkout; empty uses working-directory/pyproject.toml.
+        type: string
+        default: ''
       install-command:
         description: Custom dependency install command; empty uses a language-specific default.
         type: string
@@ -57,31 +61,36 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.working-directory }}
     steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
       - name: Validate language
         if: inputs.language != 'python' && inputs.language != 'node'
+        working-directory: .
         env:
           LANGUAGE: ${{ inputs.language }}
         run: |
           echo "Unsupported language: ${LANGUAGE}. Use python or node." >&2
           exit 2
 
-      - name: Check out repository
-        uses: actions/checkout@v6
-
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: ${{ inputs.node-version }}
-          cache: ${{ inputs.language == 'node' && 'npm' || '' }}
+          package-manager-cache: false
+          cache: ${{ inputs.language == 'node' && hashFiles(format('{0}/package-lock.json', inputs.working-directory)) != '' && 'npm' || '' }}
           cache-dependency-path: ${{ inputs.language == 'node' && format('{0}/package-lock.json', inputs.working-directory) || '' }}
 
       - name: Set up Python
         if: inputs.language == 'python'
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ inputs.python-version }}
           cache: pip
-          cache-dependency-path: ${{ format('{0}/pyproject.toml', inputs.working-directory) }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install AWS CDK CLI
         env:
