@@ -1,0 +1,31 @@
+# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before use.
+name: Python release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    uses: Dagitali/.github/.github/workflows/python-package.yml@REPLACE_WITH_RELEASE_SHA
+
+  publish:
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Configure required reviewers and allowed release tags on this environment.
+    # Register THIS caller workflow filename and environment with PyPI.
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - name: Download tested distributions
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: python-dist
+          path: dist
+      - name: Publish using trusted identity
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
