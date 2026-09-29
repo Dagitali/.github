@@ -10,11 +10,13 @@
 -->
 # Dagitali GitHub Defaults
 
-This repository contains shared GitHub configuration, issue templates, GitHub Actions actions and
-workflows, and community-health files for repositories owned by Dagitali.
+This repository contains shared GitHub configuration for Dagitali repositories, including
+community-health defaults, issue and pull-request templates, reusable GitHub Actions workflows,
+composite actions, and organization workflow templates.
 
-GitHub uses these defaults when an individual repository does not provide its own version of the
-same file. Repository-specific files take precedence.
+GitHub automatically uses the supported community-health files and issue and pull-request templates
+when a repository does not provide its own version. Reusable workflows and composite actions must
+be referenced explicitly, while workflow templates must be selected when creating a workflow.
 
 - [Included Defaults](#included-defaults)
 - [Shared Automation](#shared-automation)
