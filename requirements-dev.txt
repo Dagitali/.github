@@ -1,0 +1,2 @@
+# Repository validation only; this repository is not a Python distribution.
+PyYAML==6.0.2
