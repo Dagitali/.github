@@ -11,6 +11,10 @@ on:
         description: Directory containing pyproject.toml.
         type: string
         default: .
+      smoke-command:
+        description: Optional command run outside the source tree in each clean installed environment.
+        type: string
+        default: ''
       artifact-name:
         description: Name of the uploaded distribution artifact.
         type: string
@@ -30,10 +34,13 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ inputs.python-version }}
           cache: pip
@@ -48,8 +55,23 @@ jobs:
       - name: Validate distribution metadata
         run: python -m twine check dist/*
 
+      - name: Test wheel and source distribution installations
+        env:
+          SMOKE_COMMAND: ${{ inputs.smoke-command }}
+        run: |
+          for distribution in dist/*.whl dist/*.tar.gz; do
+            test -f "$distribution"
+            install_env="$(mktemp -d)"
+            python -m venv "$install_env/venv"
+            "$install_env/venv/bin/python" -m pip install "$PWD/$distribution"
+            "$install_env/venv/bin/python" -m pip check
+            if [[ -n "$SMOKE_COMMAND" ]]; then
+              (cd "$install_env" && PATH="$install_env/venv/bin:$PATH" bash -euo pipefail -c "$SMOKE_COMMAND")
+            fi
+          done
+
       - name: Upload distribution
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ format('{0}/dist/', inputs.working-directory) }}
