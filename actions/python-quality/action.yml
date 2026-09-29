@@ -1,0 +1,59 @@
+name: Python quality checks
+description: Run configurable formatting, linting, type-checking, and test commands.
+
+inputs:
+  working-directory:
+    description: Directory containing the Python project.
+    required: false
+    default: .
+  format-command:
+    description: Formatting check; empty skips it.
+    required: false
+    default: ruff format --check .
+  lint-command:
+    description: Lint command; empty skips it.
+    required: false
+    default: ruff check .
+  typecheck-command:
+    description: Type-check command; empty skips it.
+    required: false
+    default: mypy .
+  test-command:
+    description: Test command; empty skips it.
+    required: false
+    default: pytest
+
+runs:
+  using: composite
+  steps:
+    - name: Check formatting
+      if: inputs.format-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.format-command }}
+      run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Lint
+      if: inputs.lint-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.lint-command }}
+      run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Type-check
+      if: inputs.typecheck-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.typecheck-command }}
+      run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Test
+      if: inputs.test-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.test-command }}
+      run: bash -euo pipefail -c "$COMMAND"
