@@ -1,0 +1,44 @@
+name: Reusable Python Publish
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: Distribution artifact produced by the package workflow.
+        type: string
+        default: python-dist
+      environment:
+        description: Protected GitHub environment configured for trusted publishing.
+        type: string
+        default: pypi
+      repository-url:
+        description: Alternative package index URL; empty publishes to PyPI.
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish Python distribution
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Download distribution
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: dist
+
+      - name: Publish to PyPI with trusted publishing
+        if: inputs.repository-url == ''
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Publish to an alternative index with trusted publishing
+        if: inputs.repository-url != ''
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: ${{ inputs.repository-url }}

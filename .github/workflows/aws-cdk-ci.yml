@@ -1,0 +1,131 @@
+name: Reusable AWS CDK CI
+
+on:
+  workflow_call:
+    inputs:
+      language:
+        description: CDK application language; python or node.
+        type: string
+        default: python
+      node-version:
+        description: Node.js version for the CDK CLI and Node projects.
+        type: string
+        default: '22'
+      python-version:
+        description: Python version for Python CDK projects.
+        type: string
+        default: '3.13'
+      cdk-version:
+        description: AWS CDK CLI major or exact version.
+        type: string
+        default: '2'
+      working-directory:
+        description: Directory containing cdk.json.
+        type: string
+        default: .
+      install-command:
+        description: Custom dependency install command; empty uses a language-specific default.
+        type: string
+        default: ''
+      format-command:
+        description: Formatting check; empty skips it.
+        type: string
+        default: ''
+      lint-command:
+        description: Lint command; empty skips it.
+        type: string
+        default: ''
+      test-command:
+        description: Test command; empty skips it.
+        type: string
+        default: ''
+      synth-command:
+        description: CDK synthesis command.
+        type: string
+        default: cdk synth --quiet
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: CDK quality and synth
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Validate language
+        if: inputs.language != 'python' && inputs.language != 'node'
+        env:
+          LANGUAGE: ${{ inputs.language }}
+        run: |
+          echo "Unsupported language: ${LANGUAGE}. Use python or node." >&2
+          exit 2
+
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.language == 'node' && 'npm' || '' }}
+          cache-dependency-path: ${{ inputs.language == 'node' && format('{0}/package-lock.json', inputs.working-directory) || '' }}
+
+      - name: Set up Python
+        if: inputs.language == 'python'
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+          cache-dependency-path: ${{ format('{0}/pyproject.toml', inputs.working-directory) }}
+
+      - name: Install AWS CDK CLI
+        env:
+          CDK_VERSION: ${{ inputs.cdk-version }}
+        run: npm install --global "aws-cdk@${CDK_VERSION}"
+
+      - name: Install dependencies with custom command
+        if: inputs.install-command != ''
+        env:
+          COMMAND: ${{ inputs.install-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Install Python project
+        if: inputs.install-command == '' && inputs.language == 'python'
+        run: python -m pip install -e '.[dev]'
+
+      - name: Install Node.js project
+        if: inputs.install-command == '' && inputs.language == 'node'
+        run: |
+          if [[ -f package-lock.json ]]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Check formatting
+        if: inputs.format-command != ''
+        env:
+          COMMAND: ${{ inputs.format-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Lint
+        if: inputs.lint-command != ''
+        env:
+          COMMAND: ${{ inputs.lint-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Test
+        if: inputs.test-command != ''
+        env:
+          COMMAND: ${{ inputs.test-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Synthesize CloudFormation
+        env:
+          COMMAND: ${{ inputs.synth-command }}
+        run: bash -euo pipefail -c "$COMMAND"

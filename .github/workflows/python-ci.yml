@@ -1,0 +1,97 @@
+name: Reusable Python CI
+
+on:
+  workflow_call:
+    inputs:
+      python-versions:
+        description: JSON array of Python versions to test.
+        type: string
+        default: '["3.12", "3.13"]'
+      runs-on:
+        description: GitHub-hosted runner label.
+        type: string
+        default: ubuntu-latest
+      working-directory:
+        description: Directory containing the Python project.
+        type: string
+        default: .
+      cache-dependency-path:
+        description: Dependency file used to invalidate the pip cache.
+        type: string
+        default: pyproject.toml
+      install-command:
+        description: Command that installs the project and CI dependencies.
+        type: string
+        default: python -m pip install -e '.[dev]'
+      format-command:
+        description: Formatting check; set to an empty string to skip.
+        type: string
+        default: ruff format --check .
+      lint-command:
+        description: Lint command; set to an empty string to skip.
+        type: string
+        default: ruff check .
+      typecheck-command:
+        description: Type-check command; set to an empty string to skip.
+        type: string
+        default: mypy .
+      test-command:
+        description: Test command; set to an empty string to skip.
+        type: string
+        default: pytest
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ${{ inputs.runs-on }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJSON(inputs.python-versions) }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+      - name: Install project
+        env:
+          COMMAND: ${{ inputs.install-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Check formatting
+        if: inputs.format-command != ''
+        env:
+          COMMAND: ${{ inputs.format-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Lint
+        if: inputs.lint-command != ''
+        env:
+          COMMAND: ${{ inputs.lint-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Type-check
+        if: inputs.typecheck-command != ''
+        env:
+          COMMAND: ${{ inputs.typecheck-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Test
+        if: inputs.test-command != ''
+        env:
+          COMMAND: ${{ inputs.test-command }}
+        run: bash -euo pipefail -c "$COMMAND"
