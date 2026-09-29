@@ -1,0 +1,16 @@
+name: AWS CDK CI
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+    branches: [$default-branch]
+
+permissions:
+  contents: read
+
+jobs:
+  cdk-ci:
+    uses: Dagitali/.github/.github/workflows/aws-cdk-ci.yml@v1
+    with:
+      language: python
