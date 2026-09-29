@@ -11,9 +11,9 @@ inputs:
     required: false
     default: .
   cache-dependency-path:
-    description: Dependency file used to invalidate the pip cache.
+    description: Dependency path relative to checkout; empty uses working-directory/pyproject.toml.
     required: false
-    default: pyproject.toml
+    default: ''
   install-command:
     description: Command that installs the project and development dependencies.
     required: false
@@ -23,11 +23,11 @@ runs:
   using: composite
   steps:
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: ${{ inputs.python-version }}
         cache: pip
-        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+        cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
     - name: Install project
       shell: bash
@@ -35,3 +35,8 @@ runs:
       env:
         COMMAND: ${{ inputs.install-command }}
       run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Verify dependency compatibility
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: python -m pip check
