@@ -1,3 +1,4 @@
+# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before use.
 name: AWS CDK CI
 
 on:
@@ -11,6 +12,9 @@ permissions:
 
 jobs:
   cdk-ci:
-    uses: Dagitali/.github/.github/workflows/aws-cdk-ci.yml@v1
+    uses: Dagitali/.github/.github/workflows/aws-cdk-ci.yml@REPLACE_WITH_RELEASE_SHA
     with:
       language: python
+      format-command: ruff format --check .
+      lint-command: ruff check .
+      test-command: pytest
