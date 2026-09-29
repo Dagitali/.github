@@ -1,0 +1,37 @@
+name: Set up Python project
+description: Install Python, enable pip caching, and install a project with one command.
+
+inputs:
+  python-version:
+    description: Python version to install.
+    required: false
+    default: '3.13'
+  working-directory:
+    description: Directory containing the Python project.
+    required: false
+    default: .
+  cache-dependency-path:
+    description: Dependency file used to invalidate the pip cache.
+    required: false
+    default: pyproject.toml
+  install-command:
+    description: Command that installs the project and development dependencies.
+    required: false
+    default: python -m pip install -e '.[dev]'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: Install project
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.install-command }}
+      run: bash -euo pipefail -c "$COMMAND"

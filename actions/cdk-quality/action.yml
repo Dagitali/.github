@@ -1,0 +1,58 @@
+name: AWS CDK quality checks
+description: Run configurable quality checks and synthesize an AWS CDK application.
+
+inputs:
+  working-directory:
+    description: Directory containing cdk.json.
+    required: false
+    default: .
+  format-command:
+    description: Formatting check; empty skips it.
+    required: false
+    default: ''
+  lint-command:
+    description: Lint command; empty skips it.
+    required: false
+    default: ''
+  test-command:
+    description: Test command; empty skips it.
+    required: false
+    default: ''
+  synth-command:
+    description: CDK synthesis command.
+    required: false
+    default: cdk synth --quiet
+
+runs:
+  using: composite
+  steps:
+    - name: Check formatting
+      if: inputs.format-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.format-command }}
+      run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Lint
+      if: inputs.lint-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.lint-command }}
+      run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Test
+      if: inputs.test-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.test-command }}
+      run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Synthesize CloudFormation
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        COMMAND: ${{ inputs.synth-command }}
+      run: bash -euo pipefail -c "$COMMAND"
