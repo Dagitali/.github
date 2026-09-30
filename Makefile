@@ -1,0 +1,158 @@
+# Makefile
+# .github
+#
+# Copyright © 2026 Dagitali LLC. All rights reserved.
+#
+# Responsibilities
+# - Provide stable contributor and CI commands, aligned with Popo's conventions.
+# - Keep interpreters, paths, tools, and installation arguments overridable.
+#
+# Maintainer Notes
+# - Honor explicit overrides and active environments, then the managed environment.
+# - Setup is explicit; checks never install dependencies or replace environments.
+# - This repository is an automation library, not a Python distribution.
+# - Keep unittest, actionlint, and template validation as purposeful differences.
+# - No target publishes, deploys, or deletes output.
+#
+# Common Flows
+# $ make help
+# $ make dev PY=python3.13
+# $ make show-venv
+# $ make check
+# $ make docs-markdown
+
+# SECTION: VARIABLES
+
+### Make ###
+
+.DEFAULT_GOAL := check
+HELP_TARGET_WIDTH ?= 22
+
+### Project ###
+
+PROJECT_TOOLS_MODULE ?= popo
+TESTS_DIR ?= tests
+CONTRACT_CHECKER ?= scripts/check_automation_contracts.py
+WORKFLOW_PATHS ?= .github/workflows/*.yml workflow-templates/*.yml
+AUTOMATION_DIRS ?= .github actions
+
+### Python ###
+
+# PY bootstraps the managed environment; PYTHON remains the check interpreter.
+PY ?= python3
+MINIMUM_PYTHON_VERSION ?= 3.13
+MAXIMUM_PYTHON_VERSION ?= 3.15
+VENV_DIR ?= .venv
+ifeq ($(OS),Windows_NT)
+VENV_BIN := $(VENV_DIR)/Scripts
+VENV_PYTHON := $(VENV_BIN)/python.exe
+else
+VENV_BIN := $(VENV_DIR)/bin
+VENV_PYTHON := $(VENV_BIN)/python
+endif
+
+ifneq ($(strip $(VIRTUAL_ENV)),)
+PYTHON ?= python3
+else ifneq ($(shell test -x "$(VENV_PYTHON)" && echo yes),)
+PYTHON ?= "$(VENV_PYTHON)"
+else
+PYTHON ?= python3
+endif
+PRE_COMMIT ?= $(PYTHON) -m pre_commit
+ACTIONLINT ?= actionlint
+UNITTEST ?= $(PYTHON) -m unittest
+HOOK_INSTALL_ARGS ?=
+
+### Installation ###
+
+PIP_INSTALL_FLAGS ?= --disable-pip-version-check
+DEV_REQUIREMENTS ?= requirements-dev.txt
+DEV_INSTALL_ARGS ?= -r "$(DEV_REQUIREMENTS)"
+
+### Testing ###
+
+TEST_PATTERN ?= test_*.py
+TEST_ARGS ?= -v
+
+# !SECTION
+
+# SECTION: PHONY TARGETS
+
+##@ Utilities
+
+.PHONY: help hooks check-python-runtime venv dev setup show-venv
+help: ## Show this help
+	@awk 'BEGIN {FS=":.*##"; printf "Usage: make <TARGET>\n"} \
+	/^[a-zA-Z0-9_-]+:.*##/ {printf "  %-*s %s\n", $(HELP_TARGET_WIDTH), $$1, $$2} \
+	/^##@/ {printf "\n%s\n", substr($$0, 5)}' $(MAKEFILE_LIST)
+
+hooks: ## Install pre-commit hooks in the active environment
+	$(PRE_COMMIT) install $(HOOK_INSTALL_ARGS)
+
+check-python-runtime: ## Require a supported bootstrap Python version
+	@$(PY) -c 'import sys; minimum=tuple(map(int, "$(MINIMUM_PYTHON_VERSION)".split("."))); maximum=tuple(map(int, "$(MAXIMUM_PYTHON_VERSION)".split("."))); raise SystemExit(0 if minimum <= sys.version_info[:2] < maximum else "Python >=$(MINIMUM_PYTHON_VERSION),<$(MAXIMUM_PYTHON_VERSION) is required")'
+
+venv: check-python-runtime ## Create or reuse a matching environment without replacing it
+	@test -n "$(strip $(VENV_DIR))" && test "$(abspath $(VENV_DIR))" != "$(CURDIR)" && test "$(abspath $(VENV_DIR))" != / || \
+		(echo "VENV_DIR must name a dedicated environment directory" >&2; exit 2)
+	@if [ -e "$(VENV_DIR)" ] || [ -L "$(VENV_DIR)" ]; then \
+		if [ -L "$(VENV_DIR)" ] || [ ! -f "$(VENV_DIR)/pyvenv.cfg" ] || [ ! -x "$(VENV_PYTHON)" ]; then \
+			echo "Existing VENV_DIR is not a usable virtual environment; choose another directory" >&2; exit 2; \
+		fi; \
+		current="$$("$(VENV_PYTHON)" -c 'import sys; assert sys.prefix != sys.base_prefix; print("%s.%s" % sys.version_info[:2])')" || exit 2; \
+		requested="$$($(PY) -c 'import sys; print("%s.%s" % sys.version_info[:2])')" || exit 2; \
+		if [ "$$current" != "$$requested" ]; then \
+			echo "Existing environment uses Python $$current; requested $$requested. Choose a matching PY or another VENV_DIR; nothing was replaced." >&2; exit 2; \
+		fi; \
+		echo "Using existing environment: $(VENV_DIR)"; \
+	else \
+		$(PY) -m venv "$(VENV_DIR)"; \
+	fi
+
+dev: venv ## Install development dependencies in the managed environment
+	"$(VENV_PYTHON)" -m pip install $(PIP_INSTALL_FLAGS) $(DEV_INSTALL_ARGS)
+
+setup: dev ## Install the development environment (compatibility alias)
+
+show-venv: ## Print managed-environment and interpreter locations
+	@printf '%s\n' 'VENV_DIR = $(VENV_DIR)' 'VENV_BIN = $(VENV_BIN)' \
+		'PY = $(PY)' 'VENV_PYTHON = $(VENV_PYTHON)' 'PYTHON = $(PYTHON)'
+
+##@ Quality
+
+.PHONY: check check-pre-push self-check lint workflow-lint automation-contracts github-actions-pins
+check: lint test self-check ## Run the default local quality gate
+
+check-pre-push: check ## Run the local pre-push checks
+
+self-check: github-actions-pins docs-markdown ## Run applicable repository-policy checks
+
+lint: workflow-lint automation-contracts ## Validate workflows and automation contracts
+
+workflow-lint: ## Check workflow and starter-template syntax with actionlint
+	$(ACTIONLINT) $(WORKFLOW_PATHS)
+
+automation-contracts: ## Check local automation interfaces and template metadata
+	$(PYTHON) "$(CONTRACT_CHECKER)"
+
+github-actions-pins: ## Verify remote GitHub Actions use immutable commits
+	@set -e; for directory in $(AUTOMATION_DIRS); do \
+		$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-github-actions-pins --automation-directory "$$directory"; \
+	done
+	$(PYTHON) "$(CONTRACT_CHECKER)" --template-pins --tools-module $(PROJECT_TOOLS_MODULE)
+
+##@ Testing
+
+.PHONY: test
+test: ## Run the default regression suite
+	$(UNITTEST) discover -s "$(TESTS_DIR)" -p '$(TEST_PATTERN)' $(TEST_ARGS)
+
+##@ Documentation
+
+.PHONY: docs-markdown docs-check
+docs-markdown: ## Verify local Markdown links and heading anchors
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-docs --root .
+
+docs-check: docs-markdown ## Check Markdown documentation (compatibility alias)
+
+# !SECTION
