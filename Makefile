@@ -32,9 +32,8 @@ HELP_TARGET_WIDTH ?= 22
 
 PROJECT_TOOLS_MODULE ?= popo
 TESTS_DIR ?= tests
-CONTRACT_CHECKER ?= scripts/check_automation_contracts.py
+AUTOMATION_ROOT ?= .
 WORKFLOW_PATHS ?= .github/workflows/*.yml workflow-templates/*.yml
-AUTOMATION_DIRS ?= .github actions
 
 ### Python ###
 
@@ -133,13 +132,10 @@ workflow-lint: ## Check workflow and starter-template syntax with actionlint
 	$(ACTIONLINT) $(WORKFLOW_PATHS)
 
 automation-contracts: ## Check local automation interfaces and template metadata
-	$(PYTHON) "$(CONTRACT_CHECKER)"
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)"
 
 github-actions-pins: ## Verify remote GitHub Actions use immutable commits
-	@set -e; for directory in $(AUTOMATION_DIRS); do \
-		$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-github-actions-pins --automation-directory "$$directory"; \
-	done
-	$(PYTHON) "$(CONTRACT_CHECKER)" --template-pins --tools-module $(PROJECT_TOOLS_MODULE)
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)" --pins-only
 
 ##@ Testing
 
