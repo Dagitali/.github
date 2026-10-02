@@ -1,0 +1,8 @@
+# Consumer policy only: this repository is not a Python distribution.
+[tool.popo.automation]
+workflow-globs = [".github/workflows/*.yml"]
+action-globs = ["actions/*/action.yml"]
+template-globs = ["workflow-templates/*.yml"]
+yaml-globs = [".github/ISSUE_TEMPLATE/*.yml"]
+local-repositories = ["Dagitali/.github"]
+template-placeholder-refs = ["REPLACE_WITH_RELEASE_SHA"]
