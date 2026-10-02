@@ -1,3 +1,3 @@
 # Repository validation only; this repository is not a Python distribution.
-PyYAML==6.0.2
-popo @ git+https://github.com/Dagitali/popo.git@ce7df55eaa1ce69efa52871ff3a9c17f1523f88c  # Pinned v0.2.4
+PyYAML==6.0.3
+popo @ git+https://github.com/Dagitali/popo.git@2a9d3bbf5d321f8c4e53ee29746d258159c05064  # Pinned v0.3.7
