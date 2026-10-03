@@ -4,10 +4,11 @@
 #
 # Responsibilities
 # - Run caller-configured Python installation and quality checks.
+# - Reject unsupported cache selectors before runtime setup.
 #
 # Maintainer Notes
 # - Preserve setup/quality parity with composite actions and propagate
-# failures.
+#   failures.
 
 name: Reusable Python CI
 
@@ -90,6 +91,19 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Validate Python cache
+        working-directory: .
+        env:
+          PYTHON_CACHE: ${{ inputs.cache }}
+        run: |
+          case "$PYTHON_CACHE" in
+            ''|pip|pipenv|poetry) ;;
+            *)
+              echo 'Python cache must be pip, pipenv, poetry, or empty.' >&2
+              exit 2
+              ;;
+          esac
 
       - name: Set up Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6

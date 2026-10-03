@@ -4,6 +4,7 @@
 #
 # Responsibilities
 # - Set up Python and optionally run a trusted installation command.
+# - Reject unsupported cache selectors before runtime setup.
 #
 # Maintainer Notes
 # - Check out first; preserve setup parity and empty-command behavior.
@@ -36,6 +37,19 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate Python cache
+      shell: bash
+      env:
+        PYTHON_CACHE: ${{ inputs.cache }}
+      run: |
+        case "$PYTHON_CACHE" in
+          ''|pip|pipenv|poetry) ;;
+          *)
+            echo 'Python cache must be pip, pipenv, poetry, or empty.' >&2
+            exit 2
+            ;;
+        esac
+
     - name: Set up Python
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
