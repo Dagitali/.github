@@ -65,19 +65,39 @@ def test_gate_does_not_install_or_repeat_pins(
     assert '-m venv' not in result.stdout
 
 
+@pytest.mark.parametrize(
+    'target,options,command',
+    [
+        ('github-actions-pins', ['AUTOMATION_ROOT=custom-root'], 'check-automation-contracts'),
+        ('docs-markdown', ['REPOSITORY_ROOT=custom-root'], 'check-docs'),
+        ('release-changelog', ['REPOSITORY_ROOT=custom-root', 'RELEASE_VERSION=1.2.3'], 'check-release-changelog'),
+    ],
+)
 def test_generic_command_overrides(
     run_make,
+    target,
+    options,
+    command,
 ):
     result = run_make(
         '-n',
-        'github-actions-pins',
+        target,
         'PROJECT_TOOLS_MODULE=custom_tools',
-        'AUTOMATION_ROOT=custom-root',
+        *options,
     )
     assert result.returncode == 0, result.stderr
     assert '-m custom_tools' in result.stdout
-    assert '--pins-only' in result.stdout
+    assert command in result.stdout
+    if target == 'github-actions-pins':
+        assert '--pins-only' in result.stdout
     assert '--root "custom-root"' in result.stdout
+
+
+def test_release_changelog_requires_version(run_make):
+    result = run_make('release-changelog', 'PYTHON=nonexistent-release-python', 'RELEASE_VERSION=')
+    assert result.returncode != 0
+    assert 'RELEASE_VERSION is required' in result.stderr
+    assert 'nonexistent-release-python' not in result.stdout
 
 
 @pytest.mark.parametrize(
