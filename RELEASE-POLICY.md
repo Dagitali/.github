@@ -12,6 +12,10 @@ containing these changes is published.
 
 ## Release Checklist
 
+Validate a prepared dated release section with `make release-changelog RELEASE_VERSION=x.y.z`. This
+invokes Popo's public checker using the selected interpreter and optional `REPOSITORY_ROOT`; it does
+not create release records, tags, or publications, or substitute for hosted evidence.
+
 1. Review the changelog and migration notes, including removed publishing workflows.
 2. Run the local quality gate and require hosted fixture CI to pass on the intended commit.
 3. Test representative consumer callers with a SHA reference before broad rollout.
