@@ -83,6 +83,9 @@ def automation_copy_fixture(
 ):
     """Copy real policy and automation; mutations never touch the checkout."""
     shutil.copy2(repo_root / 'pyproject.toml', tmp_path / 'pyproject.toml')
+    shutil.copy2(repo_root / '.pre-commit-config.yaml', tmp_path / '.pre-commit-config.yaml')
+    (tmp_path / '.github').mkdir()
+    shutil.copy2(repo_root / '.github/dependabot.yml', tmp_path / '.github/dependabot.yml')
     for location in (
         '.github/workflows',
         '.github/ISSUE_TEMPLATE',
@@ -109,7 +112,7 @@ def automation_copy_fixture(
             (
                 'python-ci',
                 'setup-python-project',
-                ('run', 'env', 'uses'),
+                ('run', 'if', 'env', 'uses'),
                 ('working-directory', 'install-command', 'cache-dependency-path'),
             ),
             id='python-setup',
