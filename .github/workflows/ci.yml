@@ -50,6 +50,7 @@ jobs:
     with:
       language: node
       working-directory: tests/fixtures/${{ matrix.fixture }}
+      prepare-command: ${{ matrix.fixture == 'node-cdk-locked' && 'cp tests/fixtures/node-cdk/{app.js,app.test.js,package.json,cdk.json} tests/fixtures/node-cdk-locked/' || '' }}
       test-command: npm test
 
   swift:
