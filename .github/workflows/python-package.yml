@@ -32,11 +32,12 @@ on:
         type: string
         default: '7.0.0'
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build:
+    permissions:
+      contents: read
     name: Build and validate distribution
     runs-on: ubuntu-latest
     timeout-minutes: 15
