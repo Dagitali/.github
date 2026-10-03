@@ -73,6 +73,35 @@ def package_steps_fixture(
 
 
 @pytest.mark.parametrize(
+    'state',
+    ['absent', 'empty', 'stale', 'hidden', 'symlink', 'file'],
+)
+def test_distribution_directory_boundary(package_steps, tmp_path, state):
+    dist = tmp_path / 'dist'
+    if state in ('empty', 'stale', 'hidden'):
+        dist.mkdir()
+        if state != 'empty':
+            (dist / ('.stale' if state == 'hidden' else 'old.whl')).write_text('preserve')
+    elif state == 'symlink':
+        target = tmp_path / 'existing'
+        target.mkdir()
+        dist.symlink_to(target, target_is_directory=True)
+    elif state == 'file':
+        dist.write_text('preserve')
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', package_steps['Require clean distribution directory']['run']],
+        cwd=tmp_path, capture_output=True, text=True, check=False, timeout=30,
+    )
+    assert (result.returncode == 0) == (state in ('absent', 'empty'))
+    if state in ('stale', 'hidden'):
+        assert next(dist.iterdir()).read_text() == 'preserve'
+    elif state == 'file':
+        assert dist.read_text() == 'preserve'
+    elif state == 'symlink':
+        assert dist.is_symlink()
+
+
+@pytest.mark.parametrize(
     'files',
     [(), ('fixture.whl',), ('fixture.tar.gz',)],
     ids=['no-distributions', 'wheel-only', 'sdist-only'],
