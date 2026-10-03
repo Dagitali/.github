@@ -20,7 +20,7 @@ on:
         type: string
         default: ''
       install-command:
-        description: Command that installs the project and CI dependencies.
+        description: Trusted installation command; empty skips installation and its compatibility check.
         type: string
         default: python -m pip install -e '.[dev]'
       format-command:
@@ -47,12 +47,17 @@ on:
         description: Diagnostic artifact prefix; runner and Python version are appended.
         type: string
         default: python-diagnostics
+      diagnostics-retention-days:
+        description: Diagnostic retention in days, subject to repository limits.
+        type: number
+        default: 7
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   quality:
+    permissions:
+      contents: read
     name: Python ${{ matrix.python-version }}
     runs-on: ${{ inputs.runs-on }}
     timeout-minutes: 30
@@ -79,12 +84,19 @@ jobs:
           cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install project
+        if: inputs.install-command != ''
         env:
           COMMAND: ${{ inputs.install-command }}
         run: bash -euo pipefail -c "$COMMAND"
 
       - name: Verify dependency compatibility
+        if: inputs.install-command != ''
         run: python -m pip check
+
+      - name: Report Python environment
+        run: |
+          python --version
+          python -m pip --version
 
       - name: Check formatting
         if: inputs.format-command != ''
@@ -117,4 +129,4 @@ jobs:
           name: ${{ inputs.diagnostics-name }}-${{ inputs.runs-on }}-${{ matrix.python-version }}
           path: ${{ inputs.diagnostics-path }}
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: ${{ inputs.diagnostics-retention-days }}
