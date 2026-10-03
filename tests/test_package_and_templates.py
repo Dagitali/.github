@@ -3,6 +3,7 @@
 #
 # Responsibilities
 # - Behavior at the package artifact boundary and generated caller integration.
+# - Preserve caller-owned CI cancellation and non-cancelling releases.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -201,10 +202,16 @@ def test_generated_callers_lint(
     repo_root: Path,
     tmp_path: Path,
 ) -> None:
-    """Lint rendered temporary starters without claiming remote commit existence."""
+    """
+    Render starters and check syntax plus caller-owned cancellation boundaries.
+
+    CI groups distinguish workflows and refs; publishing must not cancel an
+    active release. Temporary SHA replacement checks syntax, not remote commit
+    existence or hosted scheduling. Source templates remain unchanged.
+    """
     templates = sorted((repo_root / "workflow-templates").glob("*.yml"))
     assert templates, "No starter workflows found"
-    generated = []
+    generated: list[str] = []
     for source in templates:
         target = tmp_path / source.name
         target.write_text(
@@ -212,6 +219,18 @@ def test_generated_callers_lint(
             .replace("REPLACE_WITH_RELEASE_SHA", "a" * 40)
             .replace("$default-branch", "main")
         )
+        caller: dict[str, Any] = yaml.load(target.read_text(), Loader=yaml.BaseLoader)
+        if "pull_request" in caller["on"]:
+            assert "merge_group" in caller["on"], source.name
+            assert caller["concurrency"] == {
+                "group": "consumer-ci-${{ github.workflow }}-${{ github.ref }}",
+                "cancel-in-progress": "true",
+            }, source.name
+        if "publish" in caller["jobs"]:
+            assert (
+                caller.get("concurrency", {}).get("cancel-in-progress", "false")
+                == "false"
+            ), source.name
         generated.append(str(target))
     result = subprocess.run(
         [*shlex.split(os.environ.get("ACTIONLINT", "actionlint")), *generated],
