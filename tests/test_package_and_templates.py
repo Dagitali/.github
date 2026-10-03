@@ -141,6 +141,7 @@ def test_package_artifact_output_contract(
     assert upload['id'] == 'upload'
     assert 'if' not in upload
     assert upload['with']['if-no-files-found'] == 'error'
+    assert upload['with']['archive'] == 'true'
     steps = job['steps']
     assert steps.index(upload) > steps.index(
         package_steps['Test wheel and source distribution installations']
