@@ -3,6 +3,7 @@
 #
 # Responsibilities
 # - Repository-specific parity, shell, and publication contracts.
+# - Verify constrained inputs fail before setup or caller preparation.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -80,6 +81,77 @@ def test_publishing_stays_in_consumer_job(repo_root: Path) -> None:
     assert "id-token" not in release_template["permissions"]
     assert release_template["jobs"]["publish"]["permissions"] == {"id-token": "write"}
     assert release_template["jobs"]["publish"]["needs"] == "package"
+
+
+@pytest.mark.parametrize(
+    "cache,status",
+    [
+        pytest.param("", 0, id="disabled"),
+        ("pip", 0),
+        ("pipenv", 0),
+        ("poetry", 0),
+        pytest.param("uv", 2, id="unsupported"),
+        pytest.param(" pip", 2, id="leading-space"),
+        pytest.param("PIP", 2, id="wrong-case"),
+        pytest.param("pip; touch injected", 2, id="shell-text"),
+    ],
+)
+def test_python_cache_validation_behavior(
+    cache_validation_steps: dict[str, list[dict[str, Any]]],
+    tmp_path: Path,
+    cache: str,
+    status: int,
+) -> None:
+    """Execute the shared guard once per input without installing cache tools.
+
+    Invalid values must fail before the next stage and cannot execute shell text.
+    This verifies validation only, not hosted cache restoration or saving.
+    """
+    steps = cache_validation_steps["actions/setup-python-project/action.yml"]
+    guard = next(step for step in steps if step.get("name") == "Validate Python cache")
+    result = subprocess.run(
+        ["bash", "-euo", "pipefail", "-c", guard["run"] + "\ntouch next-step"],
+        cwd=tmp_path,
+        env=dict(os.environ, PYTHON_CACHE=cache),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert result.returncode == status, result.stdout + result.stderr
+    assert (tmp_path / "next-step").exists() == (status == 0)
+    assert not (tmp_path / "injected").exists()
+    if status:
+        assert "Python cache must be" in result.stderr
+
+
+def test_python_cache_validation_parity(
+    cache_validation_steps: dict[str, list[dict[str, Any]]],
+) -> None:
+    """Keep cache guards equivalent and ahead of runtime setup across interfaces.
+
+    CDK validates language first and Python cache before caller preparation.
+    Node CDK callers deliberately do not validate the unused Python selector.
+    """
+    scripts: set[str] = set()
+    for path, steps in cache_validation_steps.items():
+        names = [step.get("name") for step in steps]
+        index = names.index("Validate Python cache")
+        step = steps[index]
+        scripts.add(step["run"])
+        cdk = path.endswith("aws-cdk-ci.yml")
+        selector = "python-cache" if cdk else "cache"
+        assert step["env"] == {"PYTHON_CACHE": f"${{{{ inputs.{selector} }}}}"}
+        assert step.get("if") == ("inputs.language == 'python'" if cdk else None)
+        assert index < names.index("Set up Python"), path
+        if path.startswith(".github/"):
+            assert step["working-directory"] == ".", path
+        if cdk:
+            assert names.index("Validate language") < index
+            assert (
+                index < names.index("Prepare project") < names.index("Set up Node.js")
+            )
+    assert len(scripts) == 1, "Cache guards must share the same shell behavior"
 
 
 def test_reusable_workflow_does_not_publish(workflow_path: Path) -> None:
