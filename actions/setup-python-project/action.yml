@@ -1,5 +1,5 @@
 name: Set up Python project
-description: Install Python, enable pip caching, and install a project with one command.
+description: Set up cached Python and optionally install dependencies with a caller-owned command.
 
 inputs:
   python-version:
@@ -15,7 +15,7 @@ inputs:
     required: false
     default: ''
   install-command:
-    description: Command that installs the project and development dependencies.
+    description: Trusted installation command; empty sets up Python without installing dependencies.
     required: false
     default: python -m pip install -e '.[dev]'
 
@@ -30,6 +30,7 @@ runs:
         cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
     - name: Install project
+      if: inputs.install-command != ''
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       env:
@@ -37,6 +38,14 @@ runs:
       run: bash -euo pipefail -c "$COMMAND"
 
     - name: Verify dependency compatibility
+      if: inputs.install-command != ''
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: python -m pip check
+
+    - name: Report Python environment
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        python --version
+        python -m pip --version
