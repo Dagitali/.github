@@ -2,12 +2,19 @@
 # Dagitali shared automation library
 #
 # Responsibilities
-# - Configure Popo consumer policy and pytest discovery.
+# - Configure Popo consumer policy, pytest, Ruff, and strict Python typing.
 #
 # Maintainer Notes
 # - This root is an automation library, not an installable Python package.
+# - Fixture projects own their runtime dependencies and type-check settings.
 
 # Consumer policy and test configuration; this is not a Python distribution.
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+files = ["tests"]
+exclude = ["^tests/fixtures/"]
 
 [tool.popo.automation]
 workflow-globs = [".github/workflows/*.yml"]
@@ -23,3 +30,10 @@ testpaths = ["tests"]
 norecursedirs = ["fixtures", ".git", ".venv"]
 addopts = "--import-mode=importlib --strict-config --strict-markers -ra"
 empty_parameter_set_mark = "fail_at_collect"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP", "W"]
