@@ -49,6 +49,7 @@ jobs:
     uses: ./.github/workflows/aws-cdk-ci.yml
     with:
       language: node
+      cdk-version: '2.1144.0'
       working-directory: tests/fixtures/${{ matrix.fixture }}
       prepare-command: ${{ matrix.fixture == 'node-cdk-locked' && 'cp tests/fixtures/node-cdk/{app.js,app.test.js,package.json,cdk.json} tests/fixtures/node-cdk-locked/' || '' }}
       test-command: npm test
@@ -79,7 +80,8 @@ jobs:
         working-directory: tests/fixtures/node-cdk
         run: |
           npm install
-          npm install --global aws-cdk@2
+          npm install --global aws-cdk@2.1144.0
+          cdk --version
       - uses: ./actions/cdk-quality
         with:
           working-directory: tests/fixtures/node-cdk
