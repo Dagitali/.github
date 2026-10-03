@@ -34,7 +34,7 @@ import pytest
 def test_repository_template_pin_policy(
     automation_copy: Path, reference: str, status: int
 ) -> None:
-    """Check self-placeholder acceptance and mutable third-party rejection through Popo CLI."""
+    """Check self-placeholder acceptance and mutable third-party rejection via Popo."""
     template = automation_copy / "workflow-templates/popo-probe.yml"
     template.write_text("jobs:\n  probe:\n    uses: " + reference + "\n")
     result = subprocess.run(

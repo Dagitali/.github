@@ -14,7 +14,11 @@ from aws_cdk.aws_sqs import Queue, QueueEncryption
 
 
 def create_stack() -> Stack:
-    """Return an environment-agnostic SQS stack for offline tests and synthesis; never deploy it."""
+    """
+    Return an environment-agnostic SQS stack for offline tests and synthesis.
+
+    No context lookups or credentials are needed. Never deploy this fixture.
+    """
     app = App()
     stack = Stack(app, "PythonFixture")
     Queue(

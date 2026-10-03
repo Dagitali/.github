@@ -43,11 +43,15 @@ MAKE_ENVIRONMENT = (
 # SECTION: FUNCTIONS
 
 
-def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
-    """Collect real declaration-backed cases with readable IDs and no duplicate scripts.
+def pytest_generate_tests(
+    metafunc: pytest.Metafunc,
+) -> None:
+    """
+    Collect real declaration-backed cases with readable IDs and no duplicate
+    scripts.
 
-    Empty required collections raise UsageError so discovery cannot silently remove coverage.
-    No workflow execution or network access occurs during collection.
+    Empty required collections raise UsageError rather than silently removing
+    coverage. No workflow execution or network access occurs during collection.
     """
     if "shell_implementation" in metafunc.fixturenames:
         implementations: dict[tuple[str, str], list[str]] = {}
@@ -173,7 +177,7 @@ def parity_case_fixture(
     scope="session",
 )
 def repo_root_fixture() -> Path:
-    """Return the resolved automation-library checkout; consumers must treat it as read-only."""
+    """Return the resolved checkout, which consumers must treat as read-only."""
     return ROOT
 
 
@@ -193,7 +197,7 @@ def run_make(
         monkeypatch.delenv(name, raising=False)
 
     def run(*args: str, active: bool = False) -> subprocess.CompletedProcess[str]:
-        """Execute a trusted command in the isolated test directory, returning captured output."""
+        """Run trusted Make arguments in isolation and return captured output."""
         env = dict(os.environ)
         if active:
             env["VIRTUAL_ENV"] = str(tmp_path / "active")

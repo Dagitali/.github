@@ -39,7 +39,7 @@ def test_cdk_dependency_check_failure(
     tool: str,
     status: int,
 ) -> None:
-    """Execute dependency-check shells with controlled tool exits and verify fail-fast behavior."""
+    """Verify dependency-check shells fail fast using controlled tool exits."""
     workflow = yaml.load(
         (repo_root / ".github/workflows/aws-cdk-ci.yml").read_text(),
         Loader=yaml.BaseLoader,
@@ -72,7 +72,7 @@ def test_cdk_dependency_check_failure(
 
 
 def test_publishing_stays_in_consumer_job(repo_root: Path) -> None:
-    """Limit publishing identity to the consumer job downstream of validated packaging."""
+    """Limit publishing identity to the consumer job after validated packaging."""
     release_template = yaml.load(
         (repo_root / "workflow-templates/python-release.yml").read_text(),
         Loader=yaml.BaseLoader,
@@ -111,7 +111,7 @@ def test_shell_behavior(
     status: int,
     output: str | None,
 ) -> None:
-    """Exercise command quoting and failure propagation without emulating the GitHub scheduler."""
+    """Exercise quoting and failure propagation without emulating GitHub scheduling."""
     shell, script = shell_implementation
     assert shell == "bash", "Add execution coverage for this shell"
     result = subprocess.run(
@@ -134,7 +134,7 @@ def test_workflow_action_parity(
         dict[str, Any], dict[str, Any], tuple[str, ...], tuple[str, ...] | None
     ],
 ) -> None:
-    """Compare shared inputs and steps, allowing only the documented Python version selector difference."""
+    """Compare inputs and steps, retaining the Python version selector exception."""
     workflow, action, keys, input_names = parity_case
     inputs = workflow["on"]["workflow_call"]["inputs"]
     steps = workflow["jobs"]["quality"]["steps"]
