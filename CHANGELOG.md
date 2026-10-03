@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+- Mirror sibling Ruff single-quote and preferred nested-string formatting settings. Align the
+  standalone Python fixtures with root Ruff 0.16.10 and self-contained formatting/lint policy;
+  reformat Python sources while preserving existing work and string values.
+- Expose Python package artifact ID, authenticated URL, and archive digest as additive workflow
+  outputs, following sibling evidence conventions without changing uploads or publishing identity.
+  Share a typed package declaration fixture and test output wiring and success-only upload.
 - Add sibling-aligned, explicit `fix`, `fmt`, and `format` commands with overridable tools/paths.
   Keep safe fixes and formatting outside the read-only quality gate, hooks, and CI; extend typed
   Make command/alias coverage and document source-editing boundaries.

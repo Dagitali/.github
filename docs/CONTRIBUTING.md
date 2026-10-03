@@ -61,10 +61,15 @@ alongside workflow and contract validation; `typecheck` runs strict mypy over ro
 helpers.
 
 `make format-check`, `make python-lint`, and `make typecheck` run without modifying source files.
-Ruff follows the siblings' Python 3.13 target and lint rule families, retaining existing quote
-formatting. Mypy excludes `tests/fixtures/`: those independent projects own their dependency
-environments and hosted checks. Ruff still checks their Python source, respecting nested settings.
-The pinned YAML stubs allow strict checking without suppressing missing imports.
+Ruff follows the siblings' Python 3.13 target, lint rule families, and single-quote formatting.
+`quote-style = "single"` and `nested-string-quote-style = "preferred"` mirror Popo and
+aws-cdk-static-site; dagitali.com likewise selects single quotes. The standalone Python fixtures pin
+the same Ruff version as root validation and carry matching settings so copying them outside the
+checkout preserves formatting policy. Ruff may retain double quotes when needed to avoid escaping;
+docstrings retain standard triple-double quotes. Mypy excludes `tests/fixtures/`: those independent
+projects own their dependency environments and hosted checks. Ruff still checks their Python source,
+respecting nested settings. The pinned YAML stubs allow strict checking without suppressing missing
+imports.
 
 For deliberate source changes, use `make fix` for Ruff's safe lint fixes and `make fmt` (or `make
 format`) for formatting. These sibling-aligned convenience targets honor `RUFF`,

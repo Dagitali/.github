@@ -1,5 +1,10 @@
 # Testing
 
+Package contract tests trace artifact metadata from the upload step through job and reusable
+workflow outputs, retaining success-only upload after installation checks. Package declarations are
+loaded once by a typed session fixture and treated as read-only by step and output tests. Only
+hosted evidence can establish artifact existence, URL access, or digest integrity.
+
 Make command tests cover explicit `fix`/`fmt` tool/path overrides and the `format` alias using dry
 runs, so regression checks do not reformat the checkout. The default-gate assertion rejects fix
 flags and requires only the non-mutating formatting invocation. Source editing remains opt-in.

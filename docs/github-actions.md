@@ -140,6 +140,17 @@ succeeds, under `artifact-name` (default `python-dist`), retained for `artifact-
 overriding the builder name also requires changing the download name. The release template matches
 the default. Do not use `always()` to publish or upload after a failed validation job.
 
+The package workflow exposes `artifact-id`, `artifact-url`, and `artifact-digest` through
+`needs.package.outputs` when the caller job is named `package`. These forward the existing [pinned
+upload action's
+metadata](https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml),
+following the sibling artifact-evidence convention. The URL requires GitHub authentication and
+expires with the artifact; it is not a public release URL. The digest identifies the uploaded
+artifact archive, not each wheel/sdist, and is not a signature or provenance attestation. Keep
+publishing jobs dependent on successful packaging; outputs do not authorize publication or make a
+failed job safe to consume. A matrix reusable-workflow call does not aggregate outputs for all legs:
+use distinct artifacts and inspect each leg rather than treating one output as a manifest.
+
 `build-version` and `twine-version` pin direct validation tools and allow overrides. They are not a
 complete dependency lock: backend requirements and transitive dependencies remain project-owned. The
 builder logs Python and tool versions. Library fixture CI pins the CDK CLI exactly; consumer
