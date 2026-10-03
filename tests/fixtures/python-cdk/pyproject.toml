@@ -1,10 +1,12 @@
 # tests/fixtures/python-cdk/pyproject.toml
 # Dagitali shared automation library
 #
-# Responsibilities: Declare an independently installable runtime fixture.
+# Responsibilities
+# - Declare an independently installable runtime fixture.
 #
-# Maintainer Notes: Keep fixture dependencies separate from root validation
-# policy; never publish.
+# Maintainer Notes
+# - Keep fixture dependencies separate from root validation policy; never
+# publish.
 
 [build-system]
 requires = ["setuptools>=75"]

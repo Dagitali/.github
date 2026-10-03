@@ -1,10 +1,11 @@
 # tests/test_popo_integration.py
 # Dagitali shared automation library
 #
-# Responsibilities: Check consumer policy against the installed public Popo CLI.
+# Responsibilities
+# - Check consumer policy against the installed public Popo CLI.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Check consumer policy against the installed public Popo CLI."""
 

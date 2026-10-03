@@ -1,5 +1,13 @@
 # Contributing to the Automation Library
 
+File-header comment lines must not exceed 79 characters, including comment markers and indentation.
+Use responsibility/maintainer headings with wrapped bullets, following the sibling projects. Do not
+split language directives or URLs. YAML headers may use the compact `# $schema: URL` form recognized
+by the [YAML language server's modeline
+parser](https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts).
+Keep Python annotations and helper documentation precise; comment-only alignment must not change
+commands, dependency pins, public defaults, or fixture behavior.
+
 Use concise file headers for handwritten automation and fixture code: identify the file's
 responsibility and meaningful maintainer constraints. Add YAML editor schema hints where applicable.
 Do not add comments to JSON or generated lockfiles; preserve required language directives such as

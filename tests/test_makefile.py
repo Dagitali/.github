@@ -1,11 +1,12 @@
 # tests/test_makefile.py
 # Dagitali shared automation library
 #
-# Responsibilities: Exercise the real Makefile; mock only the test runner's
-# subprocess boundary.
+# Responsibilities
+# - Exercise the real Makefile; mock only the test runner's subprocess
+#   boundary.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Exercise the real Makefile; mock only the test runner's subprocess boundary."""
 

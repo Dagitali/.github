@@ -1,11 +1,11 @@
 // swift-tools-version: 5.9
 // Package.swift — standalone Swift Package Manager CI fixture.
 //
-// Responsibilities: Declare the minimal library and XCTest targets used by
-// hosted CI.
+// Responsibilities
+// - Declare the minimal library and XCTest targets used by hosted CI.
 //
-// Maintainer Notes: Keep the tools-version directive first; no signing or app
-// targets.
+// Maintainer Notes
+// - Keep the tools-version directive first; no signing or app targets.
 import PackageDescription
 
 let package = Package(

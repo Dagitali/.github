@@ -1,12 +1,13 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# $schema: https://json.schemastore.org/github-workflow.json
 # .github/workflows/python-ci.yml
 # Dagitali shared automation library
 #
-# Responsibilities: Run caller-configured Python installation and quality
-# checks.
+# Responsibilities
+# - Run caller-configured Python installation and quality checks.
 #
-# Maintainer Notes: Preserve setup/quality parity with composite
-# actions and propagate failures.
+# Maintainer Notes
+# - Preserve setup/quality parity with composite actions and propagate
+# failures.
 
 name: Reusable Python CI
 

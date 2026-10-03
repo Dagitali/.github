@@ -4,12 +4,15 @@
 # Copyright © 2026 Dagitali LLC. All rights reserved.
 #
 # Responsibilities
-# - Provide stable contributor and CI commands, aligned with Popo's conventions.
+# - Provide stable contributor and CI commands, aligned with Popo's
+#   conventions.
 # - Keep interpreters, paths, tools, and installation arguments overridable.
 #
 # Maintainer Notes
-# - Honor explicit overrides and active environments, then the managed environment.
-# - Setup is explicit; checks never install dependencies or replace environments.
+# - Honor explicit overrides and active environments, then the managed
+#   environment.
+# - Setup is explicit; checks never install dependencies or replace
+#   environments.
 # - This repository is an automation library, not a Python distribution.
 # - Keep actionlint and template validation as purposeful differences.
 # - No target publishes, deploys, or deletes output.

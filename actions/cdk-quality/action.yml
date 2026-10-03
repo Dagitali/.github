@@ -1,12 +1,12 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+# $schema: https://json.schemastore.org/github-action.json
 # actions/cdk-quality/action.yml
 # Dagitali shared automation library
 #
-# Responsibilities: Run quality checks and offline CDK synthesis in the caller
-# environment.
+# Responsibilities
+# - Run quality checks and offline CDK synthesis in the caller environment.
 #
-# Maintainer Notes: The caller installs runtimes and dependencies;
-# preserve workflow parity.
+# Maintainer Notes
+# - The caller installs runtimes and dependencies; preserve workflow parity.
 
 name: AWS CDK quality checks
 description: Run configurable quality checks and synthesize an AWS CDK application.

@@ -1,11 +1,11 @@
 # tests/test_package_and_templates.py
 # Dagitali shared automation library
 #
-# Responsibilities: Behavior at the package artifact boundary and generated
-# caller integration.
+# Responsibilities
+# - Behavior at the package artifact boundary and generated caller integration.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Behavior at the package artifact boundary and generated caller integration."""
 

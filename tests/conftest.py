@@ -1,11 +1,11 @@
 # tests/conftest.py
 # Dagitali shared automation library
 #
-# Responsibilities: Shared fixtures and data-driven collection for the
-# automation library.
+# Responsibilities
+# - Shared fixtures and data-driven collection for the automation library.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Shared fixtures and data-driven collection for the automation library."""
 

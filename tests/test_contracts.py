@@ -1,11 +1,11 @@
 # tests/test_contracts.py
 # Dagitali shared automation library
 #
-# Responsibilities: Repository-specific parity, shell, and publication
-# contracts.
+# Responsibilities
+# - Repository-specific parity, shell, and publication contracts.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Repository-specific parity, shell, and publication contracts."""
 

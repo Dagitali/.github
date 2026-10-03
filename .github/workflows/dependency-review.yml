@@ -1,12 +1,13 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# $schema: https://json.schemastore.org/github-workflow.json
 # .github/workflows/dependency-review.yml
 # Dagitali shared automation library
 #
-# Responsibilities: Review dependency changes with caller-configured severity
-# and license policy.
+# Responsibilities
+# - Review dependency changes with caller-configured severity and license
+# policy.
 #
-# Maintainer Notes: PR-only review is not a resolved-
-# dependency audit or a merge-queue gate.
+# Maintainer Notes
+# - PR-only review is not a resolved-dependency audit or a merge-queue gate.
 
 name: Reusable Dependency Review
 

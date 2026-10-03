@@ -1,10 +1,12 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+# $schema: https://json.schemastore.org/github-action.json
 # actions/python-quality/action.yml
 # Dagitali shared automation library
 #
-# Responsibilities: Run trusted caller-defined Python quality commands.
-# Maintainer Notes: Keep defaults and command steps aligned with the reusable
-# Python workflow.
+# Responsibilities
+# - Run trusted caller-defined Python quality commands.
+#
+# Maintainer Notes
+# - Keep defaults and command steps aligned with the reusable Python workflow.
 
 name: Python quality checks
 description: Run configurable formatting, linting, type-checking, and test commands.

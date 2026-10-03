@@ -1,10 +1,11 @@
 # tests/fixtures/python-cdk/app.py
 # Dagitali shared automation library
 #
-# Responsibilities: Credential-free synthesis fixture, never deployed.
+# Responsibilities
+# - Credential-free synthesis fixture, never deployed.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Credential-free synthesis fixture, never deployed."""
 

@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- Align file headers with sibling responsibility/maintainer bullet conventions and enforce a
+  79-character header-comment limit, including compact equivalent YAML schema directives. Preserve
+  existing Python documentation/types and all executable automation contracts.
 - Document automation and fixture responsibilities with file headers and schema hints; expand Python
   helper/test docstrings and annotate paths, pytest fixtures, callbacks, YAML data, and subprocess
   results. Preserve executable behavior, public interfaces, and comment-free JSON/locks.

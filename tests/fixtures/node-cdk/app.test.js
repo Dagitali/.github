@@ -1,10 +1,10 @@
 // app.test.js — Node CDK fixture assertions.
 //
-// Responsibilities: Exercise CDK imports and deterministic offline template
-// output.
+// Responsibilities
+// - Exercise CDK imports and deterministic offline template output.
 //
-// Maintainer Notes: Keep canonical sources shared by locked and unlocked
-// fixture jobs.
+// Maintainer Notes
+// - Keep canonical sources shared by locked and unlocked fixture jobs.
 const { test } = require('node:test');
 const { Template } = require('aws-cdk-lib/assertions');
 const { stack } = require('./app');

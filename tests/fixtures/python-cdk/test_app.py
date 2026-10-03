@@ -1,11 +1,11 @@
 # tests/fixtures/python-cdk/test_app.py
 # Dagitali shared automation library
 #
-# Responsibilities: Exercise Python CDK imports and deterministic offline
-# template generation.
+# Responsibilities
+# - Exercise Python CDK imports and deterministic offline template generation.
 #
-# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
-# policy logic.
+# Maintainer Notes
+# - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
 
 """Exercise Python CDK imports and deterministic offline template generation."""
 

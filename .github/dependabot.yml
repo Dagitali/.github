@@ -1,10 +1,11 @@
 # .github/dependabot.yml
 # Dagitali shared automation library
 #
-# Responsibilities: Propose reviewable dependency and hook updates.
+# Responsibilities
+# - Propose reviewable dependency and hook updates.
 #
-# Maintainer Notes: Follow the default branch; retain immutable Actions pins
-# after updates.
+# Maintainer Notes
+# - Follow the default branch; retain immutable Actions pins after updates.
 
 # Follow the repository default branch and Dependabot's automatic labels.
 # UTC avoids maintainer-specific schedules; keep ecosystem updates staggered.
