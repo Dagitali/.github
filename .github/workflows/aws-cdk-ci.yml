@@ -27,6 +27,10 @@ on:
         description: Python dependency path relative to checkout; empty uses working-directory/pyproject.toml.
         type: string
         default: ''
+      python-cache:
+        description: Python setup cache manager; pip, pipenv, poetry, or empty to disable caching.
+        type: string
+        default: pip
       install-command:
         description: Custom dependency install command; empty uses a language-specific default.
         type: string
@@ -113,7 +117,7 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ inputs.python-version }}
-          cache: pip
+          cache: ${{ inputs.python-cache }}
           cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install AWS CDK CLI
@@ -122,6 +126,7 @@ jobs:
         run: |
           npm install --global "aws-cdk@${CDK_VERSION}"
           node --version
+          npm --version
           cdk --version
 
       - name: Install dependencies with custom command
@@ -142,6 +147,20 @@ jobs:
           else
             npm install
           fi
+
+      - name: Verify Python dependency compatibility
+        if: inputs.install-command == '' && inputs.language == 'python'
+        run: python -m pip check
+
+      - name: Verify Node.js dependency compatibility
+        if: inputs.install-command == '' && inputs.language == 'node'
+        run: npm ls --depth=0
+
+      - name: Report Python environment
+        if: inputs.language == 'python'
+        run: |
+          python --version
+          python -m pip --version
 
       - name: Check formatting
         if: inputs.format-command != ''
