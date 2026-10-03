@@ -222,6 +222,11 @@ See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POL
 
 ## Cancellation and Support Boundaries
 
+Library validation matrices use `fail-fast: false`, matching sibling validation conventions, to
+collect independent results even when one runtime or installation path fails. This is not
+`continue-on-error`: failures remain failures. Caller-level concurrency cancellation is separate and
+may still stop an obsolete run; disabling matrix fail-fast does not override it.
+
 Python, CDK, and Swift workflows accept optional `diagnostics-path` values relative to the checkout
 root. Callers must generate those reports/logs through their commands (for example `pytest
 --junitxml=test-results.xml` or `cdk synth --quiet > synth.log 2>&1`). Uploads run after success or
