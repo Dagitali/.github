@@ -121,6 +121,7 @@ jobs:
         with:
           working-directory: tests/fixtures/python
           install-command: ''
+          cache: ''
       - name: Verify setup-only mode
         run: python -c 'import importlib.util; assert importlib.util.find_spec("dagitali_fixture") is None'
       - uses: ./actions/setup-python-project
