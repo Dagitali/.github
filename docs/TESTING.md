@@ -1,5 +1,9 @@
 # Testing
 
+Make command tests cover explicit `fix`/`fmt` tool/path overrides and the `format` alias using dry
+runs, so regression checks do not reformat the checkout. The default-gate assertion rejects fix
+flags and requires only the non-mutating formatting invocation. Source editing remains opt-in.
+
 Manual candidate validation runs the library's `make check` on Python 3.13 and 3.14, separately from
 its consumer fixtures. A declaration-parity test keeps checkout, installation, tool pins,
 permissions, timeout, and gate commands aligned with regular CI, allowing only runtime selection to

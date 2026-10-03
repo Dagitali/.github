@@ -66,6 +66,13 @@ formatting. Mypy excludes `tests/fixtures/`: those independent projects own thei
 environments and hosted checks. Ruff still checks their Python source, respecting nested settings.
 The pinned YAML stubs allow strict checking without suppressing missing imports.
 
+For deliberate source changes, use `make fix` for Ruff's safe lint fixes and `make fmt` (or `make
+format`) for formatting. These sibling-aligned convenience targets honor `RUFF`,
+`PYTHON_LINT_PATHS`, and `PYTHON_FORMAT_PATHS`; they never install tools. Defaults select `tests`,
+including Python fixtures and their nested configuration. To narrow an edit, for example, run `make
+fmt PYTHON_FORMAT_PATHS=tests/test_makefile.py`. Review the diff and run `make check` afterward. No
+unsafe fixes are requested. Neither source-editing target is part of checks, hooks, or CI.
+
 Override `PROJECT_TOOLS_MODULE`, `ACTIONLINT`, `PYTEST`, `RUFF`, `MYPY`, `AUTOMATION_ROOT`,
 `WORKFLOW_PATHS`, `TESTS_DIR`, `TEST_PATTERN`, or `TEST_ARGS` when needed. A replacement tools
 module must provide the same CLI commands as Popo. `PYTHON_FORMAT_PATHS` defaults to `tests`;
