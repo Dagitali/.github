@@ -4,103 +4,81 @@
 
 ## Unreleased
 
-- Align locked/unlocked Node CDK validation with sibling non-fail-fast matrix policy so failures
-  retain independent evidence. Extend existing typed workflow-boundary coverage without weakening
-  failure reporting or changing caller concurrency. Rewrap current header comments to 79 characters
-  while preserving their content and URL references.
-- Mirror sibling Ruff single-quote and preferred nested-string formatting settings. Align the
-  standalone Python fixtures with root Ruff 0.16.10 and self-contained formatting/lint policy;
-  reformat Python sources while preserving existing work and string values.
-- Expose Python package artifact ID, authenticated URL, and archive digest as additive workflow
-  outputs, following sibling evidence conventions without changing uploads or publishing identity.
-  Share a typed package declaration fixture and test output wiring and success-only upload.
-- Add sibling-aligned, explicit `fix`, `fmt`, and `format` commands with overridable tools/paths.
-  Keep safe fixes and formatting outside the read-only quality gate, hooks, and CI; extend typed
-  Make command/alias coverage and document source-editing boundaries.
-- Expand manual candidate checks to validate the automation library itself on Python 3.13/3.14,
-  alongside consumer fixtures. Retain the ordinary PR gate and check names, with typed declaration
-  parity coverage for setup, validation-tool pins, permissions, and commands. Rewrap current
-  ignore/profile headers to 79 characters, preserving provenance and rendered content.
-- Add a sibling-aligned release-notes template scoped to automation interfaces, consumer migration,
-  hosted evidence, artifact contracts, and rollback, without enabling publication or inventing a
-  release archive. Clarify typed YAML/parity fixture contracts without changing test behavior.
-- Wrap restored ignore/profile header comments to 79 characters while retaining their generator and
-  Markdown URLs and hidden starter guidance. Ignore patterns and rendered profile text remain
-  unchanged.
-- Align Python/CDK/Swift CI starters with sibling workflow/ref-scoped cancellation, retaining caller
-  ownership and separate publishing policy. Extend rendered-starter coverage and document migration
-  and hosted-evidence limits without changing reusable workflow interfaces.
-- Keep ignore-file header comments within 79 characters while preserving generator provenance in
-  contributor documentation; ignore patterns are unchanged. Replace hidden README scaffolding with
-  meaningful file headers and wrap PR guidance without changing rendered community defaults.
-- Align shared setup with sibling fail-fast input validation: reject unsupported Python cache
-  selectors before setup, and validate CDK language/cache before caller preparation. Preserve valid
-  defaults, cache disabling, and Node CDK behavior; add typed parity and real-shell regression
-  tests.
-- Make Python lint, non-mutating format checks, and strict typing reproducible parts of the local
-  and hosted gate, using pinned Ruff/mypy/YAML stubs and sibling-aligned rules. Preserve independent
-  fixture environments, configurable tools/paths, and automation-library-specific validation. Refine
-  typed helper docstrings and wrap remaining starter-header comments to 79 characters.
-- Align file headers with sibling responsibility/maintainer bullet conventions and enforce a
-  79-character header-comment limit, including compact equivalent YAML schema directives. Preserve
-  existing Python documentation/types and all executable automation contracts.
-- Document automation and fixture responsibilities with file headers and schema hints; expand Python
-  helper/test docstrings and annotate paths, pytest fixtures, callbacks, YAML data, and subprocess
-  results. Preserve executable behavior, public interfaces, and comment-free JSON/locks.
-- Align local policy entry points with sibling projects: connect the installed pre-push hook to the
-  existing Make gate, expose an overridable repository root, and add an explicit Popo-backed
-  `release-changelog` target without changing the default feature-branch checks or publishing
-  policy.
-- Generalize Python caching with an optional cache-manager/disable input, including package metadata
-  path overrides and CDK Python cache control, preserving existing pip defaults and Node cache
-  logic.
-- Align default CDK installation checks and environment reporting with sibling project setup
-  actions; retain custom installer ownership of environment validation and strengthen setup
-  parity/failure tests.
-- Align shared automation conventions with Dagitali siblings: deny workflow-level token permissions
-  by default and grant read access per job, report Python environments, reuse Python setup in
-  library CI, and support setup-only callers through an empty installation command without changing
-  defaults.
-- Generalize diagnostic retention across Python/CDK/Swift and add optional Swift evidence uploads.
-  Stagger dependency maintenance in UTC, cover both Python fixtures and pre-commit, and include
-  maintenance YAML in Popo validation. Retain library-specific gates and consumer-owned publication.
-- Exercise a pinned, offline Python CDK fixture in regular and candidate CI. Reject stale package
-  output without deleting it. Add opt-in Python/CDK failure diagnostics, merge-group triggers, PR
-  dependency review, and branch-protection/release-evidence guidance.
-- Require wheel and source artifacts before upload; isolate installed-package smoke environments,
-  pin overridable build/Twine tools, expose artifact retention, and pin fixture CDK tooling.
-- Check generated callers with actionlint and exercise package failure/isolation boundaries. Add
-  manual, non-publishing release-candidate validation and document artifact contracts, cancellation,
-  support limits, and compatibility review.
-- Simplify Make gate assertions and environment-isolation mocks, inline the single-use release
-  template fixture, and reduce the Python fixture to one smoke test. Store Node fixture sources once
-  and assemble the locked variant through the optional CDK `prepare-command` before cache detection,
-  retaining both default npm installation paths and removing source-equality tests.
-- Migrate Python tests to pytest 9.1.1 with shared and parameterized fixtures, independently
-  reported cases, data-driven collection hooks, and focused subprocess mocks. Switch Make's test
-  runner to pytest, preserve runner/path overrides, and update the standalone Python fixture.
-- Share workflow/action parity comparisons and execute shell behavior checks once per distinct
-  shell/script pair without removing coverage. Avoid repeating pin validation in `make check`,
-  preserving standalone `self-check` and `github-actions-pins` targets.
-- Remove redundant pin-checker and broken-link tests covered by Popo. Reduce template integration
-  coverage to the real consumer configuration's acceptance/rejection boundary, retaining all
-  repository-specific contract, Makefile, and runtime fixture tests.
-- Upgrade the immutable Popo dependency pin from v0.2.4 to v0.3.7, enabling automation-contract
-  validation from the published source without a sibling checkout.
-- Align Make conventions with Popo: default check gate, annotated help, safe explicit environment
-  setup, interpreter selection, overridable tools/paths, and shared target names with compatibility
-  aliases.
+### Breaking Changes
 
-- Move generic automation contracts and template placeholder handling to Popo's public CLI; supply
-  policy through `pyproject.toml` and retain library-specific regression tests. Remove
-  `scripts/check_automation_contracts.py`; local and CI setup use the published Popo pin.
+- Remove reusable `python-publish.yml`; migrate to the consumer-owned Python release template for
+  PyPI trusted publishing. Shared validation workflows do not receive publishing identity.
 
-- Add repository CI, contract validation, regression tests, and hosted language/action fixtures.
-- Pin external actions and add dependency maintenance.
-- Align default Python CI with 3.13/3.14 and enable Python CDK starter quality checks.
-- Fix CDK cache behavior for unlocked Node projects and configurable Python metadata paths.
-- Fetch Git history for package versioning and test clean wheel/sdist installations.
-- Replace nonexistent v1 starter references with explicit release-SHA placeholders.
-- Add contributor, testing, release, and migration guidance.
-- Breaking: remove reusable python-publish.yml; use the consumer-owned Python release template for
-  PyPI trusted publishing.
+### Shared Automation
+
+- Deny workflow-level token permissions by default and grant read access per job; retain immutable
+  external action pins and consumer-owned publication.
+- Default Python CI to 3.13/3.14, reuse Python setup in library CI, report environments, and support
+  setup-only callers with an empty installation command while preserving default installation.
+- Generalize Python setup/CI/package caching and CDK `python-cache` with cache-manager or disable
+  selection and checkout-relative metadata-path overrides. Reject unsupported selectors before
+  setup; validate CDK language/cache before caller preparation, preserving Node cache behavior.
+- Fix unlocked Node CDK caching, enable Python CDK starter quality checks, and add default
+  dependency compatibility checks and environment reporting. Custom installers retain responsibility
+  for their own environment validation.
+- Add opt-in Python/CDK/Swift diagnostics with configurable retention. Keep cancellation behavior,
+  artifact naming, and report-generation responsibilities explicit.
+- Fetch Git history for package versioning; require fresh wheel and source artifacts, validate
+  metadata, and test installations and smoke commands in isolated environments. Reject stale,
+  hidden, symlinked, or invalid output without deletion; pin overridable build/Twine tools and
+  expose distribution retention.
+- Expose validated package artifact ID, authenticated URL, and archive digest as additive workflow
+  outputs, preserving success-only uploads, existing artifact names, and publishing boundaries.
+- Replace nonexistent `v1` starter references with release-SHA placeholders, check rendered callers
+  with actionlint, and add `merge_group` triggers. Give Python/CDK/Swift CI starters caller-owned
+  workflow/ref cancellation while keeping release publication separate.
+
+### Validation and Tests
+
+- Add repository CI, contract regression tests, and hosted language/composite-action fixtures,
+  including a pinned, credential-free Python CDK fixture for offline synthesis in regular and
+  candidate runs. Pin fixture CDK tooling and retain independent fixture environments.
+- Add manual, non-publishing candidate validation: broaden consumer runtime/runner coverage and run
+  the library gate on Python 3.13/3.14. Check parity with regular CI without expanding ordinary PR
+  jobs or changing their required-check names. Disable matrix fail-fast, including locked/unlocked
+  Node CDK validation, so independent evidence survives a failing leg without weakening failures.
+- Store Node fixture sources once and assemble the locked variant through `prepare-command` before
+  cache detection, retaining both npm installation paths and removing source-equality tests.
+- Migrate repository and standalone fixture tests to pytest 9.1.1 with shared/parameterized
+  fixtures, data-driven collection hooks, and focused subprocess mocks; preserve Make runner/path
+  overrides.
+- Share workflow/action parity and execute shell checks once per distinct implementation. Cover
+  input rejection, dependency-check failures, package boundaries, smoke isolation, output wiring,
+  and rendered starters. Simplify gate assertions/mocks, inline the single-use release template
+  fixture, reduce Python fixture coverage to one smoke test, and share typed package declarations.
+- Move generic automation/placeholder policy to Popo's public CLI, configured by `pyproject.toml`;
+  remove `scripts/check_automation_contracts.py` and redundant pin/broken-link tests. Retain the
+  consumer acceptance/rejection boundary and repository-specific tests. Upgrade the immutable Popo
+  pin from v0.2.4 to published v0.3.7 so validation needs no sibling checkout.
+
+### Contributor Tooling
+
+- Align Make with Popo: default quality gate, annotated help, safe explicit environment setup,
+  interpreter precedence, overridable tools/paths and repository root, and compatibility aliases.
+  Connect installed pre-push hooks to the gate and add explicit Popo-backed `release-changelog`
+  validation without requiring a release version for ordinary feature-branch checks.
+- Add pinned Ruff/mypy/YAML-stub lint, non-mutating format, and strict typing checks to local/hosted
+  validation. Avoid duplicate pin checks in the gate while retaining standalone `self-check` and
+  `github-actions-pins` targets.
+- Mirror sibling single-quote/preferred nested-string Ruff formatting. Pin standalone Python
+  fixtures to root Ruff 0.16.10 with self-contained policy and reformat sources without changing
+  string values. Add explicit, overridable `fix`, `fmt`, and `format` commands outside
+  checks/hooks/CI.
+
+### Documentation and Maintenance
+
+- Add contributor, testing, migration, branch-protection, artifact/cancellation, support,
+  compatibility, and release-evidence guidance. Provide a release-notes template for consumer
+  interfaces, hosted evidence, artifact contracts, and rollback without enabling publication or
+  inventing an archive.
+- Document automation/fixture responsibilities with sibling-style headers and compact YAML schema
+  hints; expand Python helper/test docstrings and type annotations. Wrap header comments to 79
+  characters, preserve generator/Markdown URLs and hidden guidance, and keep rendered community
+  defaults, ignore patterns, executable contracts, and JSON/generated locks unchanged.
+- Add PR dependency review and stagger dependency maintenance in UTC, covering external actions,
+  both Python fixtures, and pre-commit. Include maintenance YAML in Popo validation.
