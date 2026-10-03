@@ -112,8 +112,8 @@ def automation_copy_fixture(
             (
                 'python-ci',
                 'setup-python-project',
-                ('run', 'if', 'env', 'uses'),
-                ('working-directory', 'install-command', 'cache-dependency-path'),
+                ('run', 'if', 'env', 'uses', 'with'),
+                ('working-directory', 'install-command', 'cache-dependency-path', 'cache'),
             ),
             id='python-setup',
         ),
