@@ -56,6 +56,13 @@ caching](https://github.com/actions/setup-python/tree/v6#caching-packages-depend
 
 The YAML declarations are authoritative for all inputs and defaults.
 
+Following the sibling setup actions' fail-fast input checks, Python setup, CI, and package jobs
+reject cache values other than `pip`, `pipenv`, `poetry`, or an empty string before runtime setup.
+Values are case-sensitive and are not trimmed. CDK validates `language` before the optional
+`prepare-command`, and validates `python-cache` before preparation when `language: python`. Node CDK
+ignores the unused Python cache selector. Valid defaults and installation commands are unchanged;
+these checks do not install alternative package managers or validate remote caches.
+
 | Workflow | Scope | Consumer requirements |
 | --- | --- | --- |
 | `python-ci.yml` | Python formatting, lint, typing, tests | Installable project, compatible Python matrix, configured tools |
