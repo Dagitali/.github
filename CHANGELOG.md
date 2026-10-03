@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+- Align Python/CDK/Swift CI starters with sibling workflow/ref-scoped cancellation, retaining caller
+  ownership and separate publishing policy. Extend rendered-starter coverage and document migration
+  and hosted-evidence limits without changing reusable workflow interfaces.
+- Keep ignore-file header comments within 79 characters while preserving generator provenance in
+  contributor documentation; ignore patterns are unchanged. Replace hidden README scaffolding with
+  meaningful file headers and wrap PR guidance without changing rendered community defaults.
 - Align shared setup with sibling fail-fast input validation: reject unsupported Python cache
   selectors before setup, and validate CDK language/cache before caller preparation. Preserve valid
   defaults, cache disabling, and Node CDK behavior; add typed parity and real-shell regression
