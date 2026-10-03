@@ -4,7 +4,7 @@
 workflow-globs = [".github/workflows/*.yml"]
 action-globs = ["actions/*/action.yml"]
 template-globs = ["workflow-templates/*.yml"]
-yaml-globs = [".github/ISSUE_TEMPLATE/*.yml"]
+yaml-globs = [".github/ISSUE_TEMPLATE/*.yml", ".github/dependabot.yml", ".pre-commit-config.yaml"]
 local-repositories = ["Dagitali/.github"]
 template-placeholder-refs = ["REPLACE_WITH_RELEASE_SHA"]
 
