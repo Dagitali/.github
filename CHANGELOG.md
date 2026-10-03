@@ -4,6 +4,13 @@
 
 ## Unreleased
 
+- Align shared automation conventions with Dagitali siblings: deny workflow-level token permissions
+  by default and grant read access per job, report Python environments, reuse Python setup in
+  library CI, and support setup-only callers through an empty installation command without changing
+  defaults.
+- Generalize diagnostic retention across Python/CDK/Swift and add optional Swift evidence uploads.
+  Stagger dependency maintenance in UTC, cover both Python fixtures and pre-commit, and include
+  maintenance YAML in Popo validation. Retain library-specific gates and consumer-owned publication.
 - Exercise a pinned, offline Python CDK fixture in regular and candidate CI. Reject stale package
   output without deleting it. Add opt-in Python/CDK failure diagnostics, merge-group triggers, PR
   dependency review, and branch-protection/release-evidence guidance.
