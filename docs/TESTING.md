@@ -11,10 +11,13 @@ caching explicitly. CDK dependency-check tests execute the real workflow shell w
 Python/npm shims, covering successful checks and propagation of failures before a subsequent stage.
 These tests do not replace actual dependency resolution or hosted cache evidence.
 
-`make check` runs actionlint over workflows and starter templates, automation contract validation,
-Popo CLI checks, and pytest regression tests. It does not execute remote jobs. The gate checks pins
-once through full automation-contract validation; standalone `make self-check` and `make
-github-actions-pins` retain their pin-only validation.
+`make check` runs Ruff lint/format checks, strict mypy on root test helpers, actionlint over
+workflows and starter templates, automation contract validation, Popo CLI checks, and pytest
+regression tests. Python validation tools and YAML stubs are pinned in `requirements-dev.txt`; CI
+installs the same requirements before running this gate. Fixture Python code is linted but excluded
+from root mypy discovery because each fixture owns its runtime environment. The gate does not
+execute remote jobs. It checks pins once through full automation-contract validation; standalone
+`make self-check` and `make github-actions-pins` retain their pin-only validation.
 
 `make automation-contracts` invokes Popo's public `check-automation-contracts --root .` command.
 Root `pyproject.toml` supplies discovery globs, local repository aliases, and template placeholders.
