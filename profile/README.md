@@ -1,5 +1,15 @@
 <!--
 
+profile/README.md
+Dagitali organization profile
+
+Responsibilities
+- Present the organization and its public projects on GitHub.
+
+Maintainer Notes
+- Keep the public profile distinct from automation-library instructions.
+- Never include credentials or confidential operational information.
+
 **Here are some ideas to get you started:**
 
 🙋‍♀️ A short introduction - what is your organization all about?
