@@ -34,7 +34,7 @@ jobs:
       matrix:
         python-version: ['3.13', '3.14']
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
       - uses: ./actions/setup-python-project
@@ -64,25 +64,80 @@ jobs:
   package:
     permissions:
       contents: read
+    uses: ./.github/workflows/python-package.yml
+    with:
+      python-version: '3.13'
+      working-directory: tests/fixtures/python
+      artifact-name: candidate-python-dist-3.13
+      smoke-command: python -c 'import dagitali_fixture; assert dagitali_fixture.add(2, 3) == 5'
+
+  package-python314:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/python-package.yml
+    with:
+      python-version: '3.14'
+      working-directory: tests/fixtures/python
+      artifact-name: candidate-python-dist-3.14
+      smoke-command: python -c 'import dagitali_fixture; assert dagitali_fixture.add(2, 3) == 5'
+
+  package-consumer:
+    needs: [package, package-python314]
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         python: ['3.13', '3.14']
-    uses: ./.github/workflows/python-package.yml
-    with:
-      python-version: ${{ matrix.python }}
-      working-directory: tests/fixtures/python
-      artifact-name: candidate-python-dist-${{ matrix.python }}
-      smoke-command: python -c 'import dagitali_fixture; assert dagitali_fixture.add(2, 3) == 5'
+    steps:
+      - name: Validate returned artifact metadata
+        env:
+          ARTIFACT_ID: ${{ matrix.python == '3.13' && needs.package.outputs.artifact-id || needs.package-python314.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ matrix.python == '3.13' && needs.package.outputs.artifact-url || needs.package-python314.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ matrix.python == '3.13' && needs.package.outputs.artifact-digest || needs.package-python314.outputs.artifact-digest }}
+        run: |
+          [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
+          [[ "$ARTIFACT_URL" == "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts/$ARTIFACT_ID" ]]
+          [[ "$ARTIFACT_DIGEST" =~ ^[a-f0-9]{64}$ ]]
+      - name: Download distribution by returned ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          artifact-ids: ${{ matrix.python == '3.13' && needs.package.outputs.artifact-id || needs.package-python314.outputs.artifact-id }}
+          path: downloaded
+          skip-decompress: true
+          digest-mismatch: error
+      - name: Verify downloaded distributions
+        env:
+          ARTIFACT_DIGEST: ${{ matrix.python == '3.13' && needs.package.outputs.artifact-digest || needs.package-python314.outputs.artifact-digest }}
+        run: |
+          shopt -s nullglob
+          archives=(downloaded/*)
+          (( ${#archives[@]} == 1 ))
+          actual_digest=$(sha256sum "${archives[0]}")
+          [[ "${actual_digest%% *}" == "$ARTIFACT_DIGEST" ]]
+          unzip -q "${archives[0]}" -d distributions
+          wheels=(distributions/*.whl)
+          sdists=(distributions/*.tar.gz)
+          (( ${#wheels[@]} == 1 && ${#sdists[@]} == 1 ))
+          [[ $(find distributions -type f | wc -l) -eq 2 ]]
+          unzip -t "${wheels[0]}"
+          tar -tzf "${sdists[0]}" > /dev/null
 
   cdk:
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture: [node-cdk, node-cdk-locked]
     uses: ./.github/workflows/aws-cdk-ci.yml
     with:
       language: node
       cdk-version: '2.1144.0'
-      working-directory: tests/fixtures/node-cdk
+      working-directory: tests/fixtures/${{ matrix.fixture }}
+      prepare-command: ${{ matrix.fixture == 'node-cdk-locked' && 'cp tests/fixtures/node-cdk/{app.js,app.test.js,package.json,cdk.json} tests/fixtures/node-cdk-locked/' || '' }}
       test-command: npm test
 
   swift:
@@ -114,3 +169,53 @@ jobs:
       diagnostics-path: |
         tests/fixtures/python-cdk/test-results.xml
         tests/fixtures/python-cdk/synth.log
+
+  dependency-audit:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/python-dependency-audit.yml
+    with:
+      working-directory: tests/fixtures/python-cdk
+      project-distribution: dagitali-python-cdk-fixture
+
+  dependency-inventory:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/python-sbom.yml
+    with:
+      working-directory: tests/fixtures/python-cdk
+
+  summary:
+    if: ${{ always() }}
+    needs: [validate, python, package, package-python314, package-consumer, cdk, swift, python-cdk, dependency-audit, dependency-inventory]
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Report candidate evidence
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+          CANDIDATE_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          results = json.loads(os.environ['RESULTS'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as report:
+              report.write(f"## Candidate `{os.environ['CANDIDATE_SHA']}`\n\n")
+              report.write('Library/package: Python 3.13/3.14; Python CI: Ubuntu 24.04/macOS 15; '
+                           'CDK: locked/unlocked Node and Python; Swift: macOS 15/latest.\n\n')
+              report.write('| Job | Outcome |\n| --- | --- |\n')
+              for name, job in results.items():
+                  report.write(f"| {name} | {job['result']} |\n")
+              for name in ('package', 'package-python314'):
+                  outputs = results[name].get('outputs', {})
+                  url = outputs.get('artifact-url', '')
+                  report.write(f"\n{name}: {url or 'No artifact evidence available'}\n")
+              report.write('\nMatrix outcomes are aggregate; inspect job legs for individual '
+                           'results. Skipped/cancelled checks are missing evidence, not passes.\n')
+          if any(job['result'] != 'success' for job in results.values()):
+              raise SystemExit('Candidate validation is incomplete or failed')
+          PY
