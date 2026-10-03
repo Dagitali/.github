@@ -39,6 +39,13 @@ def pytest_generate_tests(metafunc):
             for step in data['runs']['steps']:
                 key = (step['shell'], step['run'])
                 implementations.setdefault(key, []).append(f'{action}:{step["name"]}')
+        for path in sorted((ROOT / '.github/workflows').glob('*.yml')):
+            data = read_yaml(path)
+            for job in data['jobs'].values():
+                for step in job.get('steps', []):
+                    if step.get('env', {}).get('COMMAND'):
+                        key = ('bash', step['run'])
+                        implementations.setdefault(key, []).append(f'{path.stem}:{step["name"]}')
         if not implementations:
             raise pytest.UsageError('No quality-action shell implementations found')
         metafunc.parametrize(
