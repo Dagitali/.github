@@ -44,6 +44,16 @@ titles, issue bodies, or other untrusted event text.
 
 ## Workflow Contracts
 
+Python setup/CI/package callers can select `cache` (`pip` by default) or set `cache: ''` to disable
+caching, including setup-only projects without package metadata. The CDK workflow exposes the same
+control as `python-cache`, leaving its lockfile-dependent Node caching unchanged. Package CI also
+accepts checkout-relative `cache-dependency-path` overrides, including multiline dependency files;
+the existing `working-directory/pyproject.toml` default is unchanged. Cache selection does not
+install a package manager or change installation commands. `pipenv` and `poetry` are upstream cache
+options, not additional hosted-tested toolchains; supply their tooling before invoking setup, and
+select appropriate lockfile paths yourself. See [setup-python
+caching](https://github.com/actions/setup-python/tree/v6#caching-packages-dependencies).
+
 The YAML declarations are authoritative for all inputs and defaults.
 
 | Workflow | Scope | Consumer requirements |
@@ -80,6 +90,12 @@ complete CI replacement for Waytally, which needs an Xcode project, schemes, sim
 and result bundles. Keep its Xcode automation until a separately tested Xcode workflow is adopted.
 
 ## Existing Dagitali Projects
+
+After a default CDK installation, Python runs `python -m pip check` and Node runs `npm ls --depth=0`
+before quality checks/synthesis. These are compatibility checks, not vulnerability audits. Custom
+CDK installation commands own their environment-specific validation (for example, checking a project
+virtual environment rather than the runner interpreter). CDK logs npm and, for Python projects,
+Python/pip versions alongside Node/CDK versions.
 
 These are migration examples based on the inspected local projects, not claims that the repositories
 have been migrated or that hosted integration has passed.
