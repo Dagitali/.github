@@ -6,6 +6,7 @@ on:
     branches: [$default-branch]
   pull_request:
     branches: [$default-branch]
+  merge_group:
 
 permissions:
   contents: read
