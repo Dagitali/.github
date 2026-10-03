@@ -1,0 +1,49 @@
+name: Release candidate validation
+
+# Select the candidate branch/ref in GitHub's manual-run UI. Never publishes.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: candidate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, macos-15]
+    uses: ./.github/workflows/python-ci.yml
+    with:
+      runs-on: ${{ matrix.runner }}
+      working-directory: tests/fixtures/python
+
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    uses: ./.github/workflows/python-package.yml
+    with:
+      python-version: ${{ matrix.python }}
+      working-directory: tests/fixtures/python
+      artifact-name: candidate-python-dist-${{ matrix.python }}
+      smoke-command: python -c 'import dagitali_fixture; assert dagitali_fixture.add(2, 3) == 5'
+
+  cdk:
+    uses: ./.github/workflows/aws-cdk-ci.yml
+    with:
+      language: node
+      cdk-version: '2.1144.0'
+      working-directory: tests/fixtures/node-cdk
+      test-command: npm test
+
+  swift:
+    uses: ./.github/workflows/swift-ci.yml
+    with:
+      runners: '["macos-15", "macos-latest"]'
+      working-directory: tests/fixtures/swift
