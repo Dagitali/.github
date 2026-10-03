@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+- Add a sibling-aligned release-notes template scoped to automation interfaces, consumer migration,
+  hosted evidence, artifact contracts, and rollback, without enabling publication or inventing a
+  release archive. Clarify typed YAML/parity fixture contracts without changing test behavior.
+- Wrap restored ignore/profile header comments to 79 characters while retaining their generator and
+  Markdown URLs and hidden starter guidance. Ignore patterns and rendered profile text remain
+  unchanged.
 - Align Python/CDK/Swift CI starters with sibling workflow/ref-scoped cancellation, retaining caller
   ownership and separate publishing policy. Extend rendered-starter coverage and document migration
   and hosted-evidence limits without changing reusable workflow interfaces.
