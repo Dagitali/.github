@@ -1,5 +1,11 @@
 # Testing
 
+Python setup parity compares cache defaults and setup options, excluding only the deliberately
+different single-version versus matrix-version selector. Hosted setup-only fixture coverage disables
+caching explicitly. CDK dependency-check tests execute the real workflow shell with controlled
+Python/npm shims, covering successful checks and propagation of failures before a subsequent stage.
+These tests do not replace actual dependency resolution or hosted cache evidence.
+
 `make check` runs actionlint over workflows and starter templates, automation contract validation,
 Popo CLI checks, and pytest regression tests. It does not execute remote jobs. The gate checks pins
 once through full automation-contract validation; standalone `make self-check` and `make
