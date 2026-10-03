@@ -100,7 +100,23 @@ consumer repository, actual workflow filename, and environment with PyPI.
 
 Only the publishing job has `id-token: write`. Build and installation tests have no publishing
 identity. An optional `smoke-command` runs separately in clean wheel and sdist virtual environments,
-outside the source tree, for example `python -c 'import your_package'`.
+outside the source tree, for example `python -c 'import your_package'`. Inherited `PYTHONPATH` and
+`PYTHONHOME` are removed for installation and smoke checks. The smoke shell selects the new
+environment through `PATH`, `VIRTUAL_ENV`, and `PYTHON`; use `python` or `"$PYTHON"`, not an
+absolute system interpreter. Commands remain trusted caller code.
+
+Both wheel and `.tar.gz` source distributions are required before metadata validation. Each is
+installed separately and checked with `pip check`. Only those files are uploaded after validation
+succeeds, under `artifact-name` (default `python-dist`), retained for `artifact-retention-days`
+(default 7, subject to repository limits). Matrix callers must use distinct names, such as
+`python-dist-${{ matrix.python }}`. Download that exact name into `dist/` in the publishing job;
+overriding the builder name also requires changing the download name. The release template matches
+the default. Do not use `always()` to publish or upload after a failed validation job.
+
+`build-version` and `twine-version` pin direct validation tools and allow overrides. They are not a
+complete dependency lock: backend requirements and transitive dependencies remain project-owned. The
+builder logs Python and tool versions. Library fixture CI pins the CDK CLI exactly; consumer
+`cdk-version` still intentionally defaults to major `2`.
 
 The old reusable `python-publish.yml` has been removed from this unreleased revision. PyPI trusted
 publishing from reusable workflows is explicitly unsupported; move publishing into the caller before
@@ -142,3 +158,35 @@ See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POL
 [testing](TESTING.md).
 
 [PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
+
+## Cancellation and Support Boundaries
+
+Consumers own concurrency. For PR CI, use a caller group such as `consumer-ci-${{ github.workflow
+}}-${{ github.ref }}` with `cancel-in-progress: true`. For releases, use a separate
+`consumer-release-...` group with `cancel-in-progress: false` and protected environments. Reusable
+workflows do not set concurrency. If adding callee concurrency, use a distinct prefix:
+`github.workflow` identifies the caller even in a reusable workflow, so identical caller/callee
+groups can cancel the calling run.
+
+Commands require Bash. Regular fixture CI targets Ubuntu for Python/CDK/package jobs and `macos-15`
+for Swift packages. Python defaults to 3.13/3.14, CDK fixture Node to 22; Swift comes from the
+selected runner image and is logged. Package installation paths are POSIX and the package workflow
+is Ubuntu-only. Windows and self-hosted runners are not validated support targets. Python runner
+overrides and Swift matrices require consumer validation: a configurable label does not guarantee
+tool compatibility. Xcode app builds remain outside the Swift contract.
+
+## Candidate Validation and Compatibility
+
+The manual [release-candidate workflow](../.github/workflows/release-candidate.yml) broadens Python
+quality checks to Ubuntu/macOS, builds packages on both supported Python versions, checks Swift on
+baseline/current macOS images, and synthesizes the Node CDK fixture. Select the candidate ref in
+GitHub's manual-run UI; review logs/artifacts and separately confirm normal CI passed for that ref.
+It does not publish, deploy, tag, or update consumers. Local checks cannot establish hosted success
+or actual consumer compatibility.
+
+Before releasing, review workflow/action paths; input names, types, defaults, and requiredness;
+permissions and secrets; outputs; artifact names/content/retention; runner and tool changes; and
+caller templates. Document breaking changes and migrations, run `make check`, then obtain hosted
+candidate and representative consumer evidence. Adopt a tested full SHA for immutability; movable
+major tags offer convenience but may change behavior without a consumer diff. Creating or moving
+tags and publishing remain separately authorized steps.
