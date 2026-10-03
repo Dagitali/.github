@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+- Generalize Python caching with an optional cache-manager/disable input, including package metadata
+  path overrides and CDK Python cache control, preserving existing pip defaults and Node cache
+  logic.
+- Align default CDK installation checks and environment reporting with sibling project setup
+  actions; retain custom installer ownership of environment validation and strengthen setup
+  parity/failure tests.
 - Align shared automation conventions with Dagitali siblings: deny workflow-level token permissions
   by default and grant read access per job, report Python environments, reuse Python setup in
   library CI, and support setup-only callers through an empty installation command without changing
