@@ -4,10 +4,11 @@
 #
 # Responsibilities
 # - Provide a minimal consumer-owned workflow starter.
+# - Cancel stale CI runs for the same workflow and ref, not other callers.
 #
 # Maintainer Notes
 # - Replace the release-SHA placeholder before use; preserve caller
-# permissions.
+#   permissions.
 
 # Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before
 # use.
@@ -21,6 +22,10 @@ on:
   merge_group:
 
 permissions: {}
+
+concurrency:
+  group: consumer-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   swift-ci:
