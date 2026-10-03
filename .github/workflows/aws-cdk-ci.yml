@@ -106,7 +106,10 @@ jobs:
       - name: Install AWS CDK CLI
         env:
           CDK_VERSION: ${{ inputs.cdk-version }}
-        run: npm install --global "aws-cdk@${CDK_VERSION}"
+        run: |
+          npm install --global "aws-cdk@${CDK_VERSION}"
+          node --version
+          cdk --version
 
       - name: Install dependencies with custom command
         if: inputs.install-command != ''
