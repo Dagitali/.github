@@ -70,6 +70,7 @@ The library CI also executes these fixtures:
 | --- | --- |
 | Python | Ruff, mypy, pytest; clean wheel/sdist installation and import |
 | Node CDK, with and without lockfile | Node tests and credential-free CloudFormation synthesis |
+| Python CDK | Default editable installation, Ruff, pytest template assertions, offline synthesis |
 | Swift package | macOS build and XCTest |
 | Composite actions | Python setup/quality and Node CDK quality on a fresh runner |
 
@@ -93,3 +94,13 @@ not publish or mint PyPI credentials.
 Run the manual [candidate workflow](../.github/workflows/release-candidate.yml) on the candidate ref
 before release to expand the runtime matrix without expanding each PR run. Review normal CI as well.
 This workflow never publishes or deploys; local success is not hosted candidate evidence.
+
+The Python CDK fixture pins CDK/constructs and test tools in its own `pyproject.toml`. Its
+environment-agnostic SQS stack performs no context lookups and needs no AWS credentials or
+bootstrap. Copy it outside the checkout, install `.[dev]` in a fresh virtual environment, and run
+Ruff, pytest, and synthesis with the pinned CLI. Never deploy it. Its L2 resource and template
+assertion provide workflow evidence, not production infrastructure.
+
+Package directory tests cover absent/empty output, stale/hidden files, symlinks, and a non-directory
+path, including preservation on rejection. Diagnostic upload conditions, actual report retention,
+dependency-review API availability, and merge-group check emission still need hosted evidence.
