@@ -67,6 +67,17 @@ jobs:
           python --version
           python -m pip show build twine
 
+      - name: Require clean distribution directory
+        run: |
+          if [[ -L dist || ( -e dist && ! -d dist ) ]]; then
+            echo 'dist must be an absent or empty real directory' >&2
+            exit 1
+          fi
+          if [[ -d dist ]] && [[ -n "$(find dist -mindepth 1 -print -quit)" ]]; then
+            echo 'dist must be empty before building; existing files were preserved' >&2
+            exit 1
+          fi
+
       - name: Build distribution
         run: python -m build
 
