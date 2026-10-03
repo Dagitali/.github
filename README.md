@@ -1,12 +1,14 @@
 <!--
 
-**Here are some ideas to get you started:**
+README.md
+Dagitali shared automation library
 
-🙋‍♀️ A short introduction - what is your project all about?
-🌈 Contribution guidelines - how can the community get involved?
-👩‍💻 Useful resources - where can the community find your docs? Is there anything else the community should know?
-🍿 Fun facts - what does your team eat for breakfast?
-🧙 Remember, you can do mighty things with the power of [Markdown](https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+Responsibilities
+- Explain organization defaults and explicitly adopted shared automation.
+
+Maintainer Notes
+- Distinguish automatic community defaults from consumer-owned workflows.
+- Keep maintainer setup and runtime contracts in the linked guides.
 -->
 # Dagitali GitHub Defaults
 
