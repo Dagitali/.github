@@ -4,6 +4,7 @@
 # Responsibilities
 # - Shared fixtures and data-driven collection for the automation library.
 # - Load real input-validation steps without executing remote actions.
+# - Document declaration and fixture parameter contracts alongside types.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -92,8 +93,11 @@ def pytest_generate_tests(
 def read_yaml(path: Path) -> dict[str, Any]:
     """Return a declaration mapping with YAML scalars preserved as strings.
 
-    Any is confined to heterogeneous YAML fields; Popo owns schema/policy validation.
-    This cast is a typing aid, not runtime validation. Read and parse errors propagate.
+    BaseLoader keeps keys such as 'on' and scalar defaults from implicit
+    boolean or numeric conversion, so declaration comparisons use their written
+    values. Any is confined to heterogeneous YAML fields; Popo owns
+    schema/policy validation. This cast is a typing aid, not runtime
+    validation. Read and parse errors propagate.
     """
     return cast(
         dict[str, Any],
@@ -193,8 +197,17 @@ def cache_validation_steps_fixture() -> dict[str, list[dict[str, Any]]]:
 def parity_case_fixture(
     request: pytest.FixtureRequest,
 ) -> tuple[dict[str, Any], dict[str, Any], tuple[str, ...], tuple[str, ...] | None]:
-    """Return paired workflow/action declarations, fields, and shared input names."""
-    workflow, action, keys, names = request.param
+    """
+    Return paired workflow/action declarations and the fields to compare.
+
+    Each trusted fixture parameter selects workflow/action stems, step fields,
+    and optional shared input names. None selects all action inputs; an
+    explicit tuple limits comparisons for setup's single-version/matrix-version
+    boundary. Returned mappings retain string scalars and must be treated as
+    read-only.
+    """
+    case: tuple[str, str, tuple[str, ...], tuple[str, ...] | None] = request.param
+    workflow, action, keys, names = case
     wf = read_yaml(ROOT / f".github/workflows/{workflow}.yml")
     composite = read_yaml(ROOT / f"actions/{action}/action.yml")
     return wf, composite, keys, names
