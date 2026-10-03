@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Align shared setup with sibling fail-fast input validation: reject unsupported Python cache
+  selectors before setup, and validate CDK language/cache before caller preparation. Preserve valid
+  defaults, cache disabling, and Node CDK behavior; add typed parity and real-shell regression
+  tests.
 - Make Python lint, non-mutating format checks, and strict typing reproducible parts of the local
   and hosted gate, using pinned Ruff/mypy/YAML stubs and sibling-aligned rules. Preserve independent
   fixture environments, configurable tools/paths, and automation-library-specific validation. Refine
