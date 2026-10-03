@@ -1,5 +1,10 @@
 # Testing
 
+Make policy-root override tests cover automation, documentation, and explicit release checks. The
+release target rejects a missing version before invoking the interpreter. Installed pre-push hooks
+delegate once to the existing full Make gate; hooks remain local feedback rather than hosted
+enforcement. Feature-branch checks still do not require an invented release version.
+
 Python setup parity compares cache defaults and setup options, excluding only the deliberately
 different single-version versus matrix-version selector. Hosted setup-only fixture coverage disables
 caching explicitly. CDK dependency-check tests execute the real workflow shell with controlled
