@@ -47,3 +47,18 @@ jobs:
     with:
       runners: '["macos-15", "macos-latest"]'
       working-directory: tests/fixtures/swift
+
+  python-cdk:
+    uses: ./.github/workflows/aws-cdk-ci.yml
+    with:
+      language: python
+      cdk-version: '2.1144.0'
+      working-directory: tests/fixtures/python-cdk
+      format-command: ruff format --check .
+      lint-command: ruff check .
+      test-command: pytest --junitxml=test-results.xml
+      synth-command: cdk synth --quiet > synth.log 2>&1
+      diagnostics-name: candidate-python-cdk-diagnostics
+      diagnostics-path: |
+        tests/fixtures/python-cdk/test-results.xml
+        tests/fixtures/python-cdk/synth.log
