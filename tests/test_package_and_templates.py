@@ -31,11 +31,13 @@ def package_runner(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> Callable[..., subprocess.CompletedProcess[str]]:
-    """Return a Bash runner with controllable pip/venv boundaries.
+    """
+    Return a Bash runner with controllable pip/venv boundaries.
 
-    Keyword arguments override environment variables, including failure stage and smoke command.
-    The shim does not install distributions; hosted fixtures supply that evidence. Nonzero exits
-    are returned for assertions, while subprocess timeouts raise and pytest cleans temporary files.
+    Keyword arguments override environment variables, including the failure stage
+    and smoke command. The shim does not install distributions; hosted fixtures
+    supply that evidence. Nonzero exits are returned for assertions; subprocess
+    timeouts raise. Pytest cleans temporary files.
     """
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
@@ -61,7 +63,7 @@ def package_runner(
     (tmp_path / "dist").mkdir()
 
     def run(script: str, **environment: str) -> subprocess.CompletedProcess[str]:
-        """Execute a trusted command in the isolated test directory, returning captured output."""
+        """Run a trusted shell script in isolation and return captured output."""
         return subprocess.run(
             ["bash", "-euo", "pipefail", "-c", script + "\ntouch next-step"],
             cwd=tmp_path,
@@ -100,7 +102,7 @@ def package_steps_fixture(
 def test_distribution_directory_boundary(
     package_steps: dict[str, dict[str, Any]], tmp_path: Path, state: str
 ) -> None:
-    """Require fresh distribution output while preserving rejected paths and stale files."""
+    """Require fresh distribution output; preserve rejected paths and stale files."""
     dist = tmp_path / "dist"
     if state in ("empty", "stale", "hidden"):
         dist.mkdir()
@@ -167,13 +169,14 @@ def test_installation_failure_and_smoke_isolation(
     tmp_path: Path,
     stage: str,
 ) -> None:
-    """Verify installation failures stop execution and successful smoke commands use isolated environments."""
+    """Verify fail-fast installation and isolated smoke environments."""
     for filename in ("fixture.whl", "fixture.tar.gz"):
         (tmp_path / "dist" / filename).touch()
     report = tmp_path / "environment.json"
     command = "python -c " + shlex.quote(
         "import json, os; "
-        f'open({str(report)!r}, "w").write(json.dumps(dict(os.environ, cwd=os.getcwd())))'
+        f'open({str(report)!r}, "w").write('
+        "json.dumps(dict(os.environ, cwd=os.getcwd())))"
     )
     result = package_runner(
         package_steps["Test wheel and source distribution installations"]["run"],
@@ -198,7 +201,7 @@ def test_generated_callers_lint(
     repo_root: Path,
     tmp_path: Path,
 ) -> None:
-    """Render temporary starters and lint syntax without claiming remote commit existence."""
+    """Lint rendered temporary starters without claiming remote commit existence."""
     templates = sorted((repo_root / "workflow-templates").glob("*.yml"))
     assert templates, "No starter workflows found"
     generated = []

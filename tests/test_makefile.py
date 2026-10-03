@@ -36,7 +36,7 @@ def test_aliases(
     alias: str | None,
     target: str,
 ) -> None:
-    """Verify default and compatibility target invocations produce the same Make commands."""
+    """Verify default and compatibility targets produce identical Make commands."""
     actual = run_make("-n", *([alias] if alias else []))
     expected = run_make("-n", target)
     assert actual.returncode == expected.returncode == 0
@@ -71,15 +71,59 @@ def test_existing_directory_and_symlink_are_preserved(
 def test_gate_does_not_install_or_repeat_pins(
     run_make: Callable[..., subprocess.CompletedProcess[str]],
 ) -> None:
-    """Keep the default gate non-installing and avoid redundant pin-policy invocations."""
+    """Keep the gate non-installing and avoid redundant pin-policy invocations."""
     result = run_make("-n", "check")
     assert result.returncode == 0, result.stderr
-    for command in ("actionlint", "pytest", "check-automation-contracts", "check-docs"):
+    for command in (
+        "ruff check",
+        "ruff format --check",
+        "mypy",
+        "actionlint",
+        "pytest",
+        "check-automation-contracts",
+        "check-docs",
+    ):
         assert command in result.stdout
     assert result.stdout.count("check-automation-contracts") == 1
     assert "--pins-only" not in result.stdout
     assert "pip install" not in result.stdout
     assert "-m venv" not in result.stdout
+
+
+@pytest.mark.parametrize(
+    "target,options,command",
+    [
+        (
+            "python-lint",
+            ["RUFF=custom-ruff", "PYTHON_LINT_PATHS=custom-tests"],
+            "custom-ruff check custom-tests",
+        ),
+        (
+            "format-check",
+            ["RUFF=custom-ruff", "PYTHON_FORMAT_PATHS=custom-tests"],
+            "custom-ruff format --check custom-tests",
+        ),
+        (
+            "typecheck",
+            ["MYPY=custom-mypy --config-file custom.toml"],
+            "custom-mypy --config-file custom.toml",
+        ),
+    ],
+)
+def test_python_quality_overrides(
+    run_make: Callable[..., subprocess.CompletedProcess[str]],
+    target: str,
+    options: list[str],
+    command: str,
+) -> None:
+    """Honor Python tool and path overrides without installing or rewriting files.
+
+    Dry runs isolate command construction from optional contributor tools.
+    Type-check discovery stays in the selected mypy configuration.
+    """
+    result = run_make("-n", target, *options)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == command
 
 
 @pytest.mark.parametrize(
@@ -146,7 +190,7 @@ def test_interpreter_precedence(
     override: str | None,
     expected: str,
 ) -> None:
-    """Respect explicit interpreters, then active environments, then managed environments."""
+    """Prefer explicit interpreters, then active environments, then managed ones."""
     executable = tmp_path / "managed env/bin/python"
     executable.parent.mkdir(parents=True)
     executable.symlink_to(sys.executable)
@@ -225,7 +269,7 @@ def test_reuses_matching_venv_with_spaces_without_modification(
     tmp_path: Path,
     run_make: Callable[..., subprocess.CompletedProcess[str]],
 ) -> None:
-    """Reuse a matching environment at a spaced path without replacing its configuration."""
+    """Reuse a matching environment at a spaced path without replacing configuration."""
     venv = tmp_path / "managed env"
     subprocess.run(
         [sys.executable, "-m", "venv", "--without-pip", str(venv)],
