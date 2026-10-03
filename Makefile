@@ -32,7 +32,9 @@ HELP_TARGET_WIDTH ?= 22
 
 PROJECT_TOOLS_MODULE ?= popo
 TESTS_DIR ?= tests
-AUTOMATION_ROOT ?= .
+REPOSITORY_ROOT ?= .
+AUTOMATION_ROOT ?= $(REPOSITORY_ROOT)
+RELEASE_VERSION ?=
 WORKFLOW_PATHS ?= .github/workflows/*.yml workflow-templates/*.yml
 
 ### Python ###
@@ -121,6 +123,7 @@ show-venv: ## Print managed-environment and interpreter locations
 ##@ Quality
 
 .PHONY: check check-pre-push self-check lint workflow-lint automation-contracts github-actions-pins
+.PHONY: release-changelog
 # Full contract validation in lint already includes the pin policy.
 check: lint test docs-markdown ## Run the default local quality gate
 
@@ -139,6 +142,11 @@ automation-contracts: ## Check local automation interfaces and template metadata
 github-actions-pins: ## Verify remote GitHub Actions use immutable commits
 	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)" --pins-only
 
+release-changelog: ## Verify a dated changelog section (RELEASE_VERSION=x.y.z)
+	@test -n "$(strip $(RELEASE_VERSION))" || \
+		(echo "RELEASE_VERSION is required" >&2; exit 2)
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-release-changelog "$(RELEASE_VERSION)" --root "$(REPOSITORY_ROOT)"
+
 ##@ Testing
 
 .PHONY: test
@@ -149,7 +157,7 @@ test: ## Run the default regression suite
 
 .PHONY: docs-markdown docs-check
 docs-markdown: ## Verify local Markdown links and heading anchors
-	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-docs --root .
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-docs --root "$(REPOSITORY_ROOT)"
 
 docs-check: docs-markdown ## Check Markdown documentation (compatibility alias)
 
