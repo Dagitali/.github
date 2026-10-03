@@ -9,6 +9,46 @@ import yaml
 # SECTION: TESTS
 
 
+@pytest.mark.parametrize(
+    'language,tool',
+    [('Python', 'python'), ('Node.js', 'npm')],
+)
+@pytest.mark.parametrize(
+    'status',
+    [0, 17],
+    ids=['compatible', 'incompatible'],
+)
+def test_cdk_dependency_check_failure(
+    repo_root,
+    tmp_path,
+    monkeypatch,
+    language,
+    tool,
+    status,
+):
+    workflow = yaml.load(
+        (repo_root / '.github/workflows/aws-cdk-ci.yml').read_text(), Loader=yaml.BaseLoader,
+    )
+    step = next(
+        step for step in workflow['jobs']['quality']['steps']
+        if step['name'] == f'Verify {language} dependency compatibility'
+    )
+    stub = tmp_path / tool
+    stub.write_text('#!/bin/bash\nprintf "%s\\n" "$*" > invocation\nexit "$TOOL_STATUS"\n')
+    stub.chmod(0o755)
+    monkeypatch.setenv('PATH', str(tmp_path) + os.pathsep + os.environ['PATH'])
+    monkeypatch.setenv('TOOL_STATUS', str(status))
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run'] + '\ntouch next-step'],
+        cwd=tmp_path, text=True, capture_output=True, check=False, timeout=30,
+    )
+    assert result.returncode == status, result.stderr
+    assert (tmp_path / 'invocation').read_text().strip() == (
+        '-m pip check' if tool == 'python' else 'ls --depth=0'
+    )
+    assert (tmp_path / 'next-step').exists() == (status == 0)
+
+
 def test_publishing_stays_in_consumer_job(repo_root):
     release_template = yaml.load(
         (repo_root / 'workflow-templates/python-release.yml').read_text(),
@@ -68,7 +108,12 @@ def test_workflow_action_parity(parity_case):
     for step in action['runs']['steps']:
         peer = next(item for item in steps if item.get('name') == step['name'])
         for key in keys:
-            assert step.get(key) == peer.get(key), (step['name'], key)
+            actual, expected = step.get(key), peer.get(key)
+            if key == 'with' and actual is not None and expected is not None:
+                # The action selects one version; the workflow selects a matrix member.
+                actual = {name: value for name, value in actual.items() if name != 'python-version'}
+                expected = {name: value for name, value in expected.items() if name != 'python-version'}
+            assert actual == expected, (step['name'], key)
 
 
 # !SECTION
