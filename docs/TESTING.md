@@ -101,6 +101,13 @@ bootstrap. Copy it outside the checkout, install `.[dev]` in a fresh virtual env
 Ruff, pytest, and synthesis with the pinned CLI. Never deploy it. Its L2 resource and template
 assertion provide workflow evidence, not production infrastructure.
 
+Workflow isolation assertions also enforce deny-by-default global permissions and job-scoped,
+read-only token grants. Python setup parity includes installation/check conditions and version
+reporting. Library composite CI exercises setup-only mode before the default fixture installation;
+Swift CI retains build/test logs using the same optional diagnostic contract as Python/CDK. Generic
+YAML validation now includes Dependabot and pre-commit configuration. These parser checks do not
+establish that hosted dependency updates or artifact uploads succeed.
+
 Package directory tests cover absent/empty output, stale/hidden files, symlinks, and a non-directory
 path, including preservation on rejection. Diagnostic upload conditions, actual report retention,
 dependency-review API availability, and merge-group check emission still need hosted evidence.
