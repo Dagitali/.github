@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- Add sibling-aligned, explicit `fix`, `fmt`, and `format` commands with overridable tools/paths.
+  Keep safe fixes and formatting outside the read-only quality gate, hooks, and CI; extend typed
+  Make command/alias coverage and document source-editing boundaries.
 - Expand manual candidate checks to validate the automation library itself on Python 3.13/3.14,
   alongside consumer fixtures. Retain the ordinary PR gate and check names, with typed declaration
   parity coverage for setup, validation-tool pins, permissions, and commands. Rewrap current
