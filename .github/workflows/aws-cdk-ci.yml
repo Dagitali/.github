@@ -59,12 +59,17 @@ on:
         description: Unique diagnostic artifact name for this caller job.
         type: string
         default: cdk-diagnostics
+      diagnostics-retention-days:
+        description: Diagnostic retention in days, subject to repository limits.
+        type: number
+        default: 7
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   quality:
+    permissions:
+      contents: read
     name: CDK quality and synth
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -168,4 +173,4 @@ jobs:
           name: ${{ inputs.diagnostics-name }}
           path: ${{ inputs.diagnostics-path }}
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: ${{ inputs.diagnostics-retention-days }}
