@@ -1,5 +1,10 @@
 # Testing
 
+Validation matrices explicitly disable fail-fast, including the locked/unlocked Node CDK cases, so
+one failing leg does not cancel evidence from another. The existing workflow-boundary test covers
+this policy alongside read-only permissions and the non-publishing boundary, without another test
+suite. Individual failures still fail the job; hosted scheduling remains separately verified.
+
 Package contract tests trace artifact metadata from the upload step through job and reusable
 workflow outputs, retaining success-only upload after installation checks. Package declarations are
 loaded once by a typed session fixture and treated as read-only by step and output tests. Only
