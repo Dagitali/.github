@@ -1,5 +1,10 @@
 # Testing
 
+Manual candidate validation runs the library's `make check` on Python 3.13 and 3.14, separately from
+its consumer fixtures. A declaration-parity test keeps checkout, installation, tool pins,
+permissions, timeout, and gate commands aligned with regular CI, allowing only runtime selection to
+differ. This does not expand ordinary PR jobs or establish hosted success on either runtime.
+
 The existing rendered-starter integration check also verifies workflow/ref-scoped CI concurrency,
 merge-group triggers, and the absence of auto-cancellation for publishing starters. This extends
 coverage without a duplicate template test suite. Actionlint validates rendered syntax; only hosted

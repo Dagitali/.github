@@ -252,6 +252,11 @@ tool compatibility. Xcode app builds remain outside the Swift contract.
 
 ## Candidate Validation and Compatibility
 
+The candidate also runs this library's full `make check` on Python 3.13 and 3.14, following the
+sibling runtime-matrix convention. Those checks use the same setup and tool pins as regular CI and
+start independently of consumer fixtures. Ordinary PR validation remains single-runtime; manual
+candidate check names are not a replacement for verified required PR/merge-group checks.
+
 The manual [release-candidate workflow](../.github/workflows/release-candidate.yml) broadens Python
 quality checks to Ubuntu/macOS, builds packages on both supported Python versions, checks Swift on
 baseline/current macOS images, and synthesizes the Node CDK fixture. Select the candidate ref in
