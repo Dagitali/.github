@@ -11,6 +11,14 @@ on:
         description: Directory containing pyproject.toml.
         type: string
         default: .
+      cache:
+        description: setup-python cache manager; pip, pipenv, poetry, or empty to disable caching.
+        type: string
+        default: pip
+      cache-dependency-path:
+        description: Dependency paths relative to checkout; empty uses working-directory/pyproject.toml.
+        type: string
+        default: ''
       smoke-command:
         description: Optional command run outside the source tree in each clean installed environment.
         type: string
@@ -56,8 +64,8 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ inputs.python-version }}
-          cache: pip
-          cache-dependency-path: ${{ format('{0}/pyproject.toml', inputs.working-directory) }}
+          cache: ${{ inputs.cache }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install build tooling
         env:
