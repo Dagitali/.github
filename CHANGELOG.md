@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Expand manual candidate checks to validate the automation library itself on Python 3.13/3.14,
+  alongside consumer fixtures. Retain the ordinary PR gate and check names, with typed declaration
+  parity coverage for setup, validation-tool pins, permissions, and commands. Rewrap current
+  ignore/profile headers to 79 characters, preserving provenance and rendered content.
 - Add a sibling-aligned release-notes template scoped to automation interfaces, consumer migration,
   hosted evidence, artifact contracts, and rollback, without enabling publication or inventing a
   release archive. Clarify typed YAML/parity fixture contracts without changing test behavior.
