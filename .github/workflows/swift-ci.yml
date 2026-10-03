@@ -19,12 +19,25 @@ on:
         description: Swift test command; empty skips it.
         type: string
         default: swift test --parallel
+      diagnostics-path:
+        description: Optional report/log paths relative to checkout; empty disables upload.
+        type: string
+        default: ''
+      diagnostics-name:
+        description: Diagnostic artifact prefix; runner label is appended.
+        type: string
+        default: swift-diagnostics
+      diagnostics-retention-days:
+        description: Diagnostic retention in days, subject to repository limits.
+        type: number
+        default: 7
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   test:
+    permissions:
+      contents: read
     name: Swift on ${{ matrix.runner }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
@@ -57,3 +70,12 @@ jobs:
         env:
           COMMAND: ${{ inputs.test-command }}
         run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Upload diagnostics
+        if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ inputs.diagnostics-name }}-${{ matrix.runner }}
+          path: ${{ inputs.diagnostics-path }}
+          if-no-files-found: warn
+          retention-days: ${{ inputs.diagnostics-retention-days }}
