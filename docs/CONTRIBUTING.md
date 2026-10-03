@@ -108,7 +108,10 @@ library CI intentionally refer to this checkout; remotely called workflows retai
 
 Use [testing](TESTING.md) for focused validation. Add a regression test for changed behavior. Do not
 introduce deploys or publishing into the library's own CI. Fixtures must remain free of cloud
-credentials. For release work, follow the [release policy](../RELEASE-POLICY.md).
+credentials. For release work, follow the [release policy](../RELEASE-POLICY.md). Use the
+[release-notes template](../.github/RELEASE-NOTES-TEMPLATE.md) to record the exact candidate,
+consumer compatibility, local/hosted evidence, artifact changes, and rollback. Record missing checks
+explicitly; preparing notes does not authorize tagging, publication, or consumer rollout.
 
 The local pre-commit configuration supplies hygiene and commit-message checks. It complements `make
 check`; hooks alone do not validate GitHub expressions or hosted runner behavior. Review hook
