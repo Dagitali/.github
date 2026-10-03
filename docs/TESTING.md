@@ -1,5 +1,12 @@
 # Testing
 
+Cache guard tests compare the real setup action and three workflow declarations, including selector
+wiring and ordering before runtime setup. The shared shell is executed once per input with accepted,
+disabled, misspelled, and shell-like values; invalid values fail before the next stage. CDK ordering
+assertions keep language and Python-cache validation ahead of caller preparation while preserving
+the prepare-before-cache-detection contract. These local checks do not establish hosted cache
+success.
+
 Make policy-root override tests cover automation, documentation, and explicit release checks. The
 release target rejects a missing version before invoking the interpreter. Installed pre-push hooks
 delegate once to the existing full Make gate; hooks remain local feedback rather than hosted
