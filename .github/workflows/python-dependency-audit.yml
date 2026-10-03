@@ -1,0 +1,107 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/python-dependency-audit.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Inspect caller-selected Python dependencies in an isolated environment.
+# - Keep inspection tooling separate and retain machine-readable evidence.
+#
+# Maintainer Notes
+# - Installs execute caller code; use trusted code without credentials.
+# - Never publish, deploy, or automatically repair dependencies.
+
+name: Reusable Python Dependency Audit
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python runtime for the inspected environment.
+        type: string
+        default: '3.13'
+      working-directory:
+        description: Caller project directory.
+        type: string
+        default: .
+      install-command:
+        description: Installation command in the isolated target environment; no dev extras by default.
+        type: string
+        default: python -m pip install .
+      project-distribution:
+        description: Installed project distribution to exclude from public advisory queries.
+        type: string
+        required: true
+      tool-version:
+        description: Exact pip-audit version; transitive tools remain resolver-selected.
+        type: string
+        default: '2.10.1'
+      artifact-name:
+        description: Unique evidence artifact name.
+        type: string
+        default: python-dependency-audit
+      artifact-retention-days:
+        description: Evidence retention in days, subject to repository limits.
+        type: number
+        default: 14
+
+permissions: {}
+
+jobs:
+  inspect:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Initialize inspection paths
+        working-directory: .
+        run: |
+          {
+            echo "TARGET_ENV=$RUNNER_TEMP/inspection-target"
+            echo "TOOL_ENV=$RUNNER_TEMP/inspection-tools"
+            echo "REPORT_PATH=$RUNNER_TEMP/audit.json"
+          } >> "$GITHUB_ENV"
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
+        with:
+          python-version: ${{ inputs.python-version }}
+      - name: Prepare isolated inspection environments
+        env:
+          INSTALL_COMMAND: ${{ inputs.install-command }}
+          TOOL_VERSION: ${{ inputs.tool-version }}
+        run: |
+          [[ -n "$INSTALL_COMMAND" ]]
+          python -m venv "$TARGET_ENV"
+          python -m venv "$TOOL_ENV"
+          env -u PYTHONPATH -u PYTHONHOME VIRTUAL_ENV="$TARGET_ENV" \
+            PATH="$TARGET_ENV/bin:$PATH" PYTHON="$TARGET_ENV/bin/python" \
+            bash -euo pipefail -c "$INSTALL_COMMAND"
+          "$TARGET_ENV/bin/python" -m pip check
+          "$TOOL_ENV/bin/python" -m pip install "pip-audit==$TOOL_VERSION"
+      - name: Audit resolved runtime dependencies
+        env:
+          PROJECT_DISTRIBUTION: ${{ inputs.project-distribution }}
+        run: |
+          [[ -n "$PROJECT_DISTRIBUTION" ]]
+          "$TARGET_ENV/bin/python" -m pip freeze \
+            --exclude "$PROJECT_DISTRIBUTION" --exclude pip > "$RUNNER_TEMP/audit-requirements.txt"
+          "$TOOL_ENV/bin/python" -m pip_audit \
+            --requirement "$RUNNER_TEMP/audit-requirements.txt" \
+            --no-deps --disable-pip --strict --format json --output "$REPORT_PATH"
+      - name: Upload findings
+        if: ${{ always() && !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ env.REPORT_PATH }}
+          archive: true
+          if-no-files-found: warn
+          retention-days: ${{ inputs.artifact-retention-days }}
