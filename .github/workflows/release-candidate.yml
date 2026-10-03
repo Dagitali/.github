@@ -1,11 +1,11 @@
 name: Release candidate validation
+run-name: Release candidate validation on ${{ github.ref_name }}
 
 # Select the candidate branch/ref in GitHub's manual-run UI. Never publishes.
 on:
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 concurrency:
   group: candidate-${{ github.workflow }}-${{ github.ref }}
@@ -13,6 +13,8 @@ concurrency:
 
 jobs:
   python:
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -23,6 +25,8 @@ jobs:
       working-directory: tests/fixtures/python
 
   package:
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -35,6 +39,8 @@ jobs:
       smoke-command: python -c 'import dagitali_fixture; assert dagitali_fixture.add(2, 3) == 5'
 
   cdk:
+    permissions:
+      contents: read
     uses: ./.github/workflows/aws-cdk-ci.yml
     with:
       language: node
@@ -43,12 +49,21 @@ jobs:
       test-command: npm test
 
   swift:
+    permissions:
+      contents: read
     uses: ./.github/workflows/swift-ci.yml
     with:
       runners: '["macos-15", "macos-latest"]'
       working-directory: tests/fixtures/swift
+      build-command: swift build --build-tests > build.log 2>&1
+      test-command: swift test --parallel > test.log 2>&1
+      diagnostics-path: |
+        tests/fixtures/swift/build.log
+        tests/fixtures/swift/test.log
 
   python-cdk:
+    permissions:
+      contents: read
     uses: ./.github/workflows/aws-cdk-ci.yml
     with:
       language: python
