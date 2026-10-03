@@ -4,6 +4,7 @@
 # Responsibilities
 # - Repository-specific parity, shell, and publication contracts.
 # - Verify constrained inputs fail before setup or caller preparation.
+# - Keep candidate library validation aligned with the regular quality gate.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -21,6 +22,48 @@ import pytest
 import yaml
 
 # SECTION: TESTS
+
+
+def test_candidate_library_validation_parity(repo_root: Path) -> None:
+    """
+    Compare the actual candidate gate with regular CI, except runtime
+    selection.
+
+    A manual candidate checks both supported Python minors without changing PR
+    check names or requiring consumer fixture success to start library checks.
+    Declaration parity verifies configuration, not hosted execution or
+    scheduling.
+    """
+    baseline: dict[str, Any] = yaml.load(
+        (repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8"),
+        Loader=yaml.BaseLoader,
+    )
+    candidate: dict[str, Any] = yaml.load(
+        (repo_root / ".github/workflows/release-candidate.yml").read_text(
+            encoding="utf-8"
+        ),
+        Loader=yaml.BaseLoader,
+    )
+    regular = baseline["jobs"]["validate"]
+    expanded = candidate["jobs"]["validate"]
+    assert candidate["on"] == {"workflow_dispatch": ""}
+    assert expanded["strategy"] == {
+        "fail-fast": "false",
+        "matrix": {"python-version": ["3.13", "3.14"]},
+    }
+    assert "needs" not in expanded
+    for field in ("permissions", "runs-on", "timeout-minutes"):
+        assert expanded[field] == regular[field], field
+    for expected, actual in zip(regular["steps"], expanded["steps"], strict=True):
+        if expected.get("uses") == "./actions/setup-python-project":
+            expected = {
+                **expected,
+                "with": {
+                    **expected["with"],
+                    "python-version": "${{ matrix.python-version }}",
+                },
+            }
+        assert actual == expected
 
 
 @pytest.mark.parametrize(
