@@ -39,7 +39,7 @@ def test_shell_behavior(shell_implementation, tmp_path, command, status, output)
     shell, script = shell_implementation
     assert shell == 'bash', 'Add execution coverage for this shell'
     result = subprocess.run(
-        [shell, '-euo', 'pipefail', '-c', script],
+        [shell, '-euo', 'pipefail', '-c', script + '\ntouch next-step'],
         cwd=tmp_path,
         env=dict(os.environ, COMMAND=command),
         capture_output=True,
@@ -48,6 +48,7 @@ def test_shell_behavior(shell_implementation, tmp_path, command, status, output)
         timeout=30,
     )
     assert result.returncode == status, result.stdout + result.stderr
+    assert (tmp_path / 'next-step').exists() == (status == 0)
     if output is not None:
         assert (tmp_path / 'result.txt').read_text() == output
 
