@@ -14,8 +14,12 @@ replacement for GitHub's action metadata schema or runner validation.
 Generic parser and input-validation tests live in Popo. `tests/test_contracts.py` retains
 workflow/action parity, shell failure propagation, and publishing isolation. Parity tests use a
 parameterized fixture while retaining their distinct input and step-field checks. Shell behavior is
-exercised once per distinct shell/script pair across the quality actions; new script variants are
-included automatically, and an unsupported shell fails explicitly.
+exercised once per distinct shell/script pair across quality actions and workflow command wrappers;
+new script variants are included automatically, and an unsupported shell fails explicitly. Failure
+cases verify that a subsequent shell stage is not reached. Package-boundary tests exercise missing
+wheel/sdist rejection, install/check/smoke failures, and smoke environment isolation using stubbed
+pip/venv boundaries. These do not emulate GitHub's scheduler or install real distributions; hosted
+fixtures provide actual build, installation, and artifact evidence.
 
 Repository validation and the Python runtime fixture pin pytest 9.1.1. `make test` runs the
 repository suite; `make test TEST_ARGS="-q -k parity"` selects focused cases. Plain `python -m
@@ -40,9 +44,11 @@ fixture package independently of repository test helpers.
 using the selected interpreter and tools module. `make github-actions-pins` invokes
 `check-automation-contracts --pins-only` with the same consumer configuration. Only exact configured
 Dagitali release-SHA placeholders pointing to existing local workflows/actions are exempt in
-templates. No temporary copies or substitutions are needed; source templates are unchanged. This is
-a syntax-check exception, not evidence that a release SHA exists. Other unpinned template references
-still fail.
+templates. Popo requires no substitutions; source templates are unchanged. This is a syntax-check
+exception, not evidence that a release SHA exists. Other unpinned template references still fail.
+Separately, pytest renders temporary copies of every starter with a syntactically valid full SHA and
+`main` default branch, then runs actionlint. This checks generated caller syntax, not remote commit
+existence. The test honors Make's exported `ACTIONLINT` override.
 
 Popo owns the generic pin policy, including its exemptions for local and container references. It
 does not verify commit existence or container immutability. `tests/test_popo_integration.py` keeps
@@ -83,3 +89,7 @@ Hosted CI is the authority for GitHub expression resolution, runner tools, actio
 artifact transfer, permissions, and macOS behavior. Local lint and unit tests do not establish
 hosted success. PyPI publication requires a separately authorized consumer release; library CI does
 not publish or mint PyPI credentials.
+
+Run the manual [candidate workflow](../.github/workflows/release-candidate.yml) on the candidate ref
+before release to expand the runtime matrix without expanding each PR run. Review normal CI as well.
+This workflow never publishes or deploys; local success is not hosted candidate evidence.
