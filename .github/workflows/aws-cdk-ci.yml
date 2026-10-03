@@ -31,6 +31,10 @@ on:
         description: Custom dependency install command; empty uses a language-specific default.
         type: string
         default: ''
+      prepare-command:
+        description: Optional command after checkout, before runtime setup; runs from the checkout root.
+        type: string
+        default: ''
       format-command:
         description: Formatting check; empty skips it.
         type: string
@@ -66,6 +70,13 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Prepare project
+        if: inputs.prepare-command != ''
+        working-directory: .
+        env:
+          COMMAND: ${{ inputs.prepare-command }}
+        run: bash -euo pipefail -c "$COMMAND"
 
       - name: Validate language
         if: inputs.language != 'python' && inputs.language != 'node'
