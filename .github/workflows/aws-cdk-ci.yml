@@ -51,6 +51,14 @@ on:
         description: CDK synthesis command.
         type: string
         default: cdk synth --quiet
+      diagnostics-path:
+        description: Optional report/log paths relative to checkout; empty disables upload.
+        type: string
+        default: ''
+      diagnostics-name:
+        description: Unique diagnostic artifact name for this caller job.
+        type: string
+        default: cdk-diagnostics
 
 permissions:
   contents: read
@@ -152,3 +160,12 @@ jobs:
         env:
           COMMAND: ${{ inputs.synth-command }}
         run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Upload diagnostics
+        if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ inputs.diagnostics-name }}
+          path: ${{ inputs.diagnostics-path }}
+          if-no-files-found: warn
+          retention-days: 7
