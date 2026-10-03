@@ -4,6 +4,7 @@
 #
 # Responsibilities
 # - Validate the automation library and credential-free consumer fixtures.
+# - Preserve independent results from every validation matrix leg.
 #
 # Maintainer Notes
 # - Keep hosted evidence distinct from local lint; never publish or deploy.
@@ -78,6 +79,7 @@ jobs:
     permissions:
       contents: read
     strategy:
+      fail-fast: false
       matrix:
         fixture: [node-cdk, node-cdk-locked]
     uses: ./.github/workflows/aws-cdk-ci.yml
