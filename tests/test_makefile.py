@@ -4,6 +4,7 @@
 # Responsibilities
 # - Exercise the real Makefile; mock only the test runner's subprocess
 #   boundary.
+# - Keep explicit source-editing targets separate from the quality gate.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -29,6 +30,7 @@ import pytest
         pytest.param(None, "check", id="default"),
         ("check-pre-push", "check"),
         ("docs-check", "docs-markdown"),
+        ("format", "fmt"),
     ],
 )
 def test_aliases(
@@ -71,7 +73,7 @@ def test_existing_directory_and_symlink_are_preserved(
 def test_gate_does_not_install_or_repeat_pins(
     run_make: Callable[..., subprocess.CompletedProcess[str]],
 ) -> None:
-    """Keep the gate non-installing and avoid redundant pin-policy invocations."""
+    """Keep the gate non-installing, non-fixing, and free of repeated pin checks."""
     result = run_make("-n", "check")
     assert result.returncode == 0, result.stderr
     for command in (
@@ -88,6 +90,8 @@ def test_gate_does_not_install_or_repeat_pins(
     assert "--pins-only" not in result.stdout
     assert "pip install" not in result.stdout
     assert "-m venv" not in result.stdout
+    assert "--fix" not in result.stdout
+    assert result.stdout.count("ruff format ") == 1
 
 
 @pytest.mark.parametrize(
@@ -104,6 +108,16 @@ def test_gate_does_not_install_or_repeat_pins(
             "custom-ruff format --check custom-tests",
         ),
         (
+            "fix",
+            ["RUFF=custom-ruff", "PYTHON_LINT_PATHS=custom-tests"],
+            "custom-ruff check --fix custom-tests",
+        ),
+        (
+            "fmt",
+            ["RUFF=custom-ruff", "PYTHON_FORMAT_PATHS=custom-tests"],
+            "custom-ruff format custom-tests",
+        ),
+        (
             "typecheck",
             ["MYPY=custom-mypy --config-file custom.toml"],
             "custom-mypy --config-file custom.toml",
@@ -116,9 +130,13 @@ def test_python_quality_overrides(
     options: list[str],
     command: str,
 ) -> None:
-    """Honor Python tool and path overrides without installing or rewriting files.
+    """
+    Verify tool/path overrides for read-only and explicit source-editing
+    targets.
 
-    Dry runs isolate command construction from optional contributor tools.
+    Dry runs inspect source-editing commands without modifying repository files
+    or invoking optional contributor tools. Fixes stay safe by default: no
+    unsafe-fix flag is added. Selected paths remain under the caller's control.
     Type-check discovery stays in the selected mypy configuration.
     """
     result = run_make("-n", target, *options)
