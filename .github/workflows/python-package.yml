@@ -1,3 +1,13 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# .github/workflows/python-package.yml
+# Dagitali shared automation library
+#
+# Responsibilities: Build and validate fresh wheel/source artifacts in isolated
+# environments.
+#
+# Maintainer Notes: Upload only validated distributions;
+# publication belongs to the consumer.
+
 name: Reusable Python Package CI
 
 on:

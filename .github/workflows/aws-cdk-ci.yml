@@ -1,3 +1,13 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# .github/workflows/aws-cdk-ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities: Validate Python or Node CDK projects through offline
+# synthesis.
+#
+# Maintainer Notes: Preserve lockfile-aware caching; never obtain
+# credentials or deploy.
+
 name: Reusable AWS CDK CI
 
 on:

@@ -1,3 +1,10 @@
+// FixtureTests.swift — Swift package smoke coverage.
+//
+// Responsibilities: Verify the package API is buildable and callable under
+// XCTest.
+//
+// Maintainer Notes: No simulator, signing identity, or application host is
+// required.
 import XCTest
 @testable import Fixture
 

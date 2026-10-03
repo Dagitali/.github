@@ -1,4 +1,14 @@
-# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before use.
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# workflow-templates/swift-ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities: Provide a minimal consumer-owned workflow starter.
+#
+# Maintainer Notes: Replace the release-SHA placeholder before use; preserve
+# caller permissions.
+
+# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before
+# use.
 name: Swift CI
 
 on:

@@ -1,3 +1,11 @@
+# requirements-dev.txt
+# Dagitali shared automation library
+#
+# Responsibilities: Pin the tools used by the local and hosted validation gate.
+#
+# Maintainer Notes: Update immutable Popo references deliberately; checks never
+# install tools.
+
 popo @ git+https://github.com/Dagitali/popo.git@2a9d3bbf5d321f8c4e53ee29746d258159c05064  # Pinned v0.3.7
 pytest==9.1.1
 # Repository validation only; this repository is not a Python distribution.

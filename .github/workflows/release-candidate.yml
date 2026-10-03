@@ -1,3 +1,12 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# .github/workflows/release-candidate.yml
+# Dagitali shared automation library
+#
+# Responsibilities: Expand fixture validation through manual candidate runs.
+#
+# Maintainer Notes: Retain unique artifact names and a non-publishing release
+# boundary.
+
 name: Release candidate validation
 run-name: Release candidate validation on ${{ github.ref_name }}
 

@@ -1,3 +1,11 @@
+# pyproject.toml
+# Dagitali shared automation library
+#
+# Responsibilities: Configure Popo consumer policy and pytest discovery.
+#
+# Maintainer Notes: This root is an automation library, not an installable
+# Python package.
+
 # Consumer policy and test configuration; this is not a Python distribution.
 
 [tool.popo.automation]

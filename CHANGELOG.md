@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- Document automation and fixture responsibilities with file headers and schema hints; expand Python
+  helper/test docstrings and annotate paths, pytest fixtures, callbacks, YAML data, and subprocess
+  results. Preserve executable behavior, public interfaces, and comment-free JSON/locks.
 - Align local policy entry points with sibling projects: connect the installed pre-push hook to the
   existing Make gate, expose an overridable repository root, and add an explicit Popo-backed
   `release-changelog` target without changing the default feature-branch checks or publishing

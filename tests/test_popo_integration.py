@@ -1,7 +1,18 @@
+# tests/test_popo_integration.py
+# Dagitali shared automation library
+#
+# Responsibilities: Check consumer policy against the installed public Popo CLI.
+#
+# Maintainer Notes: Keep fixture/test effects isolated; do not duplicate Popo
+# policy logic.
+
 """Check consumer policy against the installed public Popo CLI."""
+
+from __future__ import annotations
 
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -9,28 +20,31 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    'reference,status',
+    "reference,status",
     [
         pytest.param(
-            'Dagitali/.github/.github/workflows/python-ci.yml@REPLACE_WITH_RELEASE_SHA',
+            "Dagitali/.github/.github/workflows/python-ci.yml@REPLACE_WITH_RELEASE_SHA",
             0,
-            id='self-placeholder',
+            id="self-placeholder",
         ),
-        pytest.param('actions/checkout@v6', 1, id='third-party-mutable'),
+        pytest.param("actions/checkout@v6", 1, id="third-party-mutable"),
     ],
 )
-def test_repository_template_pin_policy(automation_copy, reference, status):
-    template = automation_copy / 'workflow-templates/popo-probe.yml'
-    template.write_text('jobs:\n  probe:\n    uses: ' + reference + '\n')
+def test_repository_template_pin_policy(
+    automation_copy: Path, reference: str, status: int
+) -> None:
+    """Check self-placeholder acceptance and mutable third-party rejection through Popo CLI."""
+    template = automation_copy / "workflow-templates/popo-probe.yml"
+    template.write_text("jobs:\n  probe:\n    uses: " + reference + "\n")
     result = subprocess.run(
         [
             sys.executable,
-            '-m',
-            'popo',
-            'check-automation-contracts',
-            '--root',
+            "-m",
+            "popo",
+            "check-automation-contracts",
+            "--root",
             str(automation_copy),
-            '--pins-only',
+            "--pins-only",
         ],
         capture_output=True,
         text=True,

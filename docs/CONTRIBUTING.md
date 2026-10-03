@@ -1,5 +1,12 @@
 # Contributing to the Automation Library
 
+Use concise file headers for handwritten automation and fixture code: identify the file's
+responsibility and meaningful maintainer constraints. Add YAML editor schema hints where applicable.
+Do not add comments to JSON or generated lockfiles; preserve required language directives such as
+Swift's first-line tools version. Document Python helper side effects, failure behavior, and return
+values, and annotate test/fixture interfaces with Path, pytest types, and captured subprocess types.
+Dynamic YAML fields may use Any deliberately; type annotations do not replace Popo validation.
+
 Installed pre-push hooks now invoke `make check-pre-push`, the same gate as `make check`, without
 passing filenames or limiting checks to changed paths. Install hooks explicitly with `make hooks`
 after installing pre-commit; editing the configuration does not install hooks automatically. The

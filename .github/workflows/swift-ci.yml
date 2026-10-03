@@ -1,3 +1,13 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# .github/workflows/swift-ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities: Build and test Swift packages on caller-selected macOS
+# runners.
+#
+# Maintainer Notes: This is not an Xcode application, signing, or
+# distribution workflow.
+
 name: Reusable Swift CI
 
 on:
