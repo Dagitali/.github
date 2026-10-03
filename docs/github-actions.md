@@ -9,6 +9,8 @@ repositories still own their triggers, required checks, runtime policy, and rele
 - [Python Releases](#python-releases)
 - [Composite Actions and Drift Prevention](#composite-actions-and-drift-prevention)
 - [Access and Maintenance](#access-and-maintenance)
+- [Cancellation and Support Boundaries](#cancellation-and-support-boundaries)
+- [Candidate Validation and Compatibility](#candidate-validation-and-compatibility)
 
 ## Adoption
 
@@ -105,6 +107,8 @@ outside the source tree, for example `python -c 'import your_package'`. Inherite
 environment through `PATH`, `VIRTUAL_ENV`, and `PYTHON`; use `python` or `"$PYTHON"`, not an
 absolute system interpreter. Commands remain trusted caller code.
 
+The builder first requires an absent or empty real `dist/` directory; stale or hidden files,
+symlinks, and non-directory paths fail without deletion. This prevents uploading old distributions.
 Both wheel and `.tar.gz` source distributions are required before metadata validation. Each is
 installed separately and checked with `pip check`. Only those files are uploaded after validation
 succeeds, under `artifact-name` (default `python-dist`), retained for `artifact-retention-days`
@@ -160,6 +164,25 @@ See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POL
 [PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
 
 ## Cancellation and Support Boundaries
+
+Python and CDK workflows accept optional `diagnostics-path` values relative to the checkout root.
+Callers must generate those reports/logs through their commands (for example `pytest
+--junitxml=test-results.xml` or `cdk synth --quiet > synth.log 2>&1`). Uploads run after success or
+failure, but not cancellation; absent files warn rather than masking the original failure. Retention
+is seven days. `diagnostics-name` is caller-controlled; Python appends runner and Python version,
+while CDK callers must provide unique names for repeated/matrix calls. Never include credentials,
+secrets, or confidential synthesis context in diagnostic paths. Diagnostics are not release
+distributions and do not enable downstream publication.
+
+Library CI now calls dependency review on PRs only. Confirm dependency graph/API availability before
+adopting this gate in private consumers. It reviews dependency changes, not every installed
+dependency. A resolved-dependency audit, such as Popo's isolated manual audit, is a separate future
+extension; it should preserve findings and failures and never apply automatic fixes.
+
+Library CI and Python/CDK/Swift starters handle `merge_group`. See [branch-protection
+guidance](../.github/BRANCH-PROTECTION.md) for selecting verified hosted check names and
+coordinating transitions. PR-only review and manual candidate jobs are not required merge-queue
+gates. No hosted setting is changed by these files.
 
 Consumers own concurrency. For PR CI, use a caller group such as `consumer-ci-${{ github.workflow
 }}-${{ github.ref }}` with `cancel-in-progress: true`. For releases, use a separate
