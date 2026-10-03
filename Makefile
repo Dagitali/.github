@@ -59,6 +59,7 @@ PYTHON ?= python3
 endif
 PRE_COMMIT ?= $(PYTHON) -m pre_commit
 ACTIONLINT ?= actionlint
+export ACTIONLINT
 PYTEST ?= $(PYTHON) -m pytest
 HOOK_INSTALL_ARGS ?=
 
