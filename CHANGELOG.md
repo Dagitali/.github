@@ -11,6 +11,9 @@
 
 ### Shared Automation
 
+- Upgrade pinned checkout/upload/download actions to v7.0.1/v7.0.1/v8.0.1, retaining package
+  archives, artifact outputs, and non-publishing permissions. Add optional isolated Python
+  dependency auditing and validated CycloneDX inventories with configurable tool pins and retention.
 - Deny workflow-level token permissions by default and grant read access per job; retain immutable
   external action pins and consumer-owned publication.
 - Default Python CI to 3.13/3.14, reuse Python setup in library CI, report environments, and support
@@ -34,6 +37,11 @@
   workflow/ref cancellation while keeping release publication separate.
 
 ### Validation and Tests
+
+- Extend manual candidates with deterministic per-runtime package callers and downstream artifact
+  ID/digest/content checks, both Node CDK installation paths, optional dependency inspection, and
+  failure-aware SHA/runtime/result summaries. Add focused archive and summary behavior tests without
+  changing ordinary required-check names or introducing hosted publication.
 
 - Add repository CI, contract regression tests, and hosted language/composite-action fixtures,
   including a pinned, credential-free Python CDK fixture for offline synthesis in regular and

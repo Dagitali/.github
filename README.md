@@ -38,6 +38,7 @@ referenced explicitly, while workflow templates must be selected when creating a
 Dagitali repositories can also reuse the centrally maintained automation in this repository:
 
 - Reusable Python, AWS CDK, Swift package, package-build, and dependency-review workflows
+- Optional reusable Python resolved-dependency audits and validated CycloneDX inventories
 - Composite actions for Python setup, Python quality checks, and AWS CDK quality checks
 - Organization workflow templates that create minimal caller workflows and consumer-owned releases
 
