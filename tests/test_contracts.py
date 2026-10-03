@@ -14,15 +14,108 @@
 
 from __future__ import annotations
 
+import hashlib
+import io
+import json
 import os
 import subprocess
+import tarfile
+import zipfile
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pytest
 import yaml
 
+# SECTION: FIXTURES
+
+
+@pytest.fixture(
+    name='candidate',
+    scope='session',
+)
+def candidate_fixture(
+    repo_root: Path,
+) -> dict[str, Any]:
+    """Load candidate declarations once; callers must treat them as read-only."""
+    return cast(
+        dict[str, Any],
+        yaml.load(
+            (repo_root / '.github/workflows/release-candidate.yml').read_text(),
+            Loader=yaml.BaseLoader,
+        ),
+    )
+
+
+# !SECTION
+
+
 # SECTION: TESTS
+
+
+@pytest.mark.parametrize(
+    'state', ['valid', 'wrong-digest', 'extra-file', 'missing-sdist']
+)
+def test_candidate_download_validation(
+    candidate: dict[str, Any], tmp_path: Path, state: str
+) -> None:
+    """Execute the downloaded-archive guard against local synthetic distributions."""
+    downloaded = tmp_path / 'downloaded'
+    downloaded.mkdir()
+    wheel = io.BytesIO()
+    with zipfile.ZipFile(wheel, 'w') as archive:
+        archive.writestr('fixture.py', 'VALUE = 1\n')
+    sdist = io.BytesIO()
+    with tarfile.open(fileobj=sdist, mode='w:gz') as archive:
+        member = tarfile.TarInfo('fixture/pyproject.toml')
+        member.size = 0
+        archive.addfile(member)
+    artifact = downloaded / 'artifact.zip'
+    with zipfile.ZipFile(artifact, 'w') as archive:
+        archive.writestr('fixture.whl', wheel.getvalue())
+        if state != 'missing-sdist':
+            archive.writestr('fixture.tar.gz', sdist.getvalue())
+        if state == 'extra-file':
+            archive.writestr('unexpected.txt', 'unexpected')
+    digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    step = candidate['jobs']['package-consumer']['steps'][2]
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run']],
+        cwd=tmp_path,
+        env=dict(
+            os.environ, ARTIFACT_DIGEST='0' * 64 if state == 'wrong-digest' else digest
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert (result.returncode == 0) == (state == 'valid'), result.stderr
+
+
+def test_candidate_evidence_contract(
+    candidate: dict[str, Any], repo_root: Path
+) -> None:
+    """Retain deterministic outputs, locked fixtures, and honest result aggregation."""
+    jobs = candidate['jobs']
+    for name, version in [('package', '3.13'), ('package-python314', '3.14')]:
+        assert 'strategy' not in jobs[name]
+        assert jobs[name]['with']['python-version'] == version
+        assert jobs[name]['with']['artifact-name'] == f'candidate-python-dist-{version}'
+    consumer = jobs['package-consumer']
+    assert consumer['needs'] == ['package', 'package-python314']
+    download = consumer['steps'][1]['with']
+    assert 'needs.package.outputs.artifact-id' in download['artifact-ids']
+    assert 'needs.package-python314.outputs.artifact-id' in download['artifact-ids']
+    assert download['skip-decompress'] == 'true'
+    assert download['digest-mismatch'] == 'error'
+    regular = yaml.load(
+        (repo_root / '.github/workflows/ci.yml').read_text(), Loader=yaml.BaseLoader
+    )
+    assert jobs['cdk'] == regular['jobs']['cdk']
+    summary = jobs['summary']
+    assert set(summary['needs']) == set(jobs) - {'summary'}
+    assert summary['if'] == '${{ always() }}'
 
 
 def test_candidate_library_validation_parity(repo_root: Path) -> None:
@@ -65,6 +158,41 @@ def test_candidate_library_validation_parity(repo_root: Path) -> None:
                 },
             }
         assert actual == expected
+
+
+@pytest.mark.parametrize(
+    'outcome',
+    ['success', 'failure', 'skipped', 'cancelled'],
+)
+def test_candidate_summary_outcomes(
+    candidate: dict[str, Any],
+    tmp_path: Path,
+    outcome: str,
+) -> None:
+    """Render actual summary code; missing evidence must never produce a pass."""
+    report = tmp_path / 'summary.md'
+    step = candidate['jobs']['summary']['steps'][0]
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run']],
+        env=dict(
+            os.environ,
+            RESULTS=json.dumps(
+                {
+                    'package': {'result': outcome, 'outputs': {}},
+                    'package-python314': {'result': 'success', 'outputs': {}},
+                }
+            ),
+            CANDIDATE_SHA='a' * 40,
+            GITHUB_STEP_SUMMARY=str(report),
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert (result.returncode == 0) == (outcome == 'success'), result.stderr
+    assert f'| package | {outcome} |' in report.read_text()
+    assert 'No artifact evidence available' in report.read_text()
 
 
 @pytest.mark.parametrize(
@@ -116,7 +244,117 @@ def test_cdk_dependency_check_failure(
     assert (tmp_path / 'next-step').exists() == (status == 0)
 
 
-def test_publishing_stays_in_consumer_job(repo_root: Path) -> None:
+@pytest.mark.parametrize(
+    'stem',
+    ['python-dependency-audit', 'python-sbom'],
+)
+@pytest.mark.parametrize(
+    'status',
+    [0, 17],
+    ids=['success', 'inspection-failure'],
+)
+def test_dependency_inspection_failure_propagation(
+    repo_root: Path,
+    tmp_path: Path,
+    stem: str,
+    status: int,
+) -> None:
+    """Run real inspection shells with isolated tool shims, never public services.
+
+    A failed audit or inventory must stop subsequent work while retaining any
+    produced findings. Tool invocations are recorded to check target selection.
+    """
+    workflow = yaml.load(
+        (repo_root / f'.github/workflows/{stem}.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    for name in ('target', 'tools'):
+        bin_path = tmp_path / name / 'bin'
+        bin_path.mkdir(parents=True)
+        interpreter = bin_path / 'python'
+        interpreter.write_text(
+            '#!/bin/bash\n'
+            + (
+                'printf "fixture-dependency==1.0\\n"\n'
+                if name == 'target'
+                else 'printf "%s\\n" "$*" > "$RUNNER_TEMP/invocation"\n'
+                'printf "{}\\n" > "$REPORT_PATH"\nexit "$TOOL_STATUS"\n'
+            )
+        )
+        interpreter.chmod(0o755)
+    step = workflow['jobs']['inspect']['steps'][-2]
+    report = tmp_path / 'report.json'
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run'] + '\ntouch next-step'],
+        cwd=tmp_path,
+        env=dict(
+            os.environ,
+            TARGET_ENV=str(tmp_path / 'target'),
+            TOOL_ENV=str(tmp_path / 'tools'),
+            RUNNER_TEMP=str(tmp_path),
+            PROJECT_DISTRIBUTION='fixture',
+            REPORT_PATH=str(report),
+            TOOL_STATUS=str(status),
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert result.returncode == status, result.stderr
+    assert (tmp_path / 'next-step').exists() == (status == 0)
+    assert report.read_text().strip() == '{}'
+    invocation = (tmp_path / 'invocation').read_text()
+    if stem.endswith('audit'):
+        assert '--no-deps --disable-pip --strict --format json' in invocation
+        assert (tmp_path / 'audit-requirements.txt').read_text().strip() == (
+            'fixture-dependency==1.0'
+        )
+    else:
+        assert str(tmp_path / 'target/bin/python') in invocation
+        assert '--output-format JSON --validate' in invocation
+
+
+@pytest.mark.parametrize(
+    'stem',
+    ['python-dependency-audit', 'python-sbom'],
+)
+def test_dependency_inspection_isolation(
+    repo_root: Path,
+    stem: str,
+) -> None:
+    """Keep tools out of inspected environments and preserve failure evidence."""
+    workflow = yaml.load(
+        (repo_root / f'.github/workflows/{stem}.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    inputs = workflow['on']['workflow_call']['inputs']
+    assert inputs['install-command']['default'] == 'python -m pip install .'
+    steps = workflow['jobs']['inspect']['steps']
+    prepare = next(
+        step
+        for step in steps
+        if step['name'] == 'Prepare isolated inspection environments'
+    )
+    assert '"$TARGET_ENV/bin/python" -m pip check' in prepare['run']
+    assert 'PATH="$TARGET_ENV/bin:$PATH"' in prepare['run']
+    assert '"$TOOL_ENV/bin/python" -m pip install' in prepare['run']
+    upload = steps[-1]
+    assert upload['with']['archive'] == 'true'
+    if stem.endswith('audit'):
+        audit = steps[-2]
+        assert '--no-deps --disable-pip --strict' in audit['run']
+        assert '--exclude "$PROJECT_DISTRIBUTION" --exclude pip' in audit['run']
+        assert '--fix' not in audit['run']
+        assert upload['if'] == '${{ always() && !cancelled() }}'
+    else:
+        assert '--output-format JSON --validate' in steps[-2]['run']
+        assert 'if' not in upload
+
+
+def test_publishing_stays_in_consumer_job(
+    repo_root: Path,
+) -> None:
     """Limit publishing identity to the consumer job after validated packaging."""
     release_template = yaml.load(
         (repo_root / 'workflow-templates/python-release.yml').read_text(),
