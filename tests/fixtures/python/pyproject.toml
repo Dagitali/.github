@@ -19,15 +19,27 @@ readme = "README.md"
 requires-python = ">=3.13"
 
 [project.optional-dependencies]
-dev = ["ruff==0.11.13", "mypy==1.15.0", "pytest==9.1.1"]
+dev = ["ruff==0.16.10", "mypy==1.15.0", "pytest==9.1.1"]
+
+[tool.mypy]
+strict = true
 
 [tool.pytest.ini_options]
 minversion = "9.1.1"
 testpaths = ["."]
 addopts = "--strict-config --strict-markers"
 
+# Keep standalone fixture formatting aligned when copied outside the checkout.
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.format]
+quote-style = "single"
+nested-string-quote-style = "preferred"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP", "W"]
+
 [tool.setuptools]
 py-modules = ["dagitali_fixture"]
-
-[tool.mypy]
-strict = true
