@@ -3,6 +3,7 @@
 #
 # Responsibilities
 # - Shared fixtures and data-driven collection for the automation library.
+# - Load real input-validation steps without executing remote actions.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -132,6 +133,33 @@ def automation_copy_fixture(
     ):
         shutil.copytree(repo_root / location, tmp_path / location)
     return tmp_path
+
+
+@pytest.fixture(
+    name="cache_validation_steps",
+    scope="session",
+)
+def cache_validation_steps_fixture() -> dict[str, list[dict[str, Any]]]:
+    """Load Python setup declarations for input parity and shell behavior tests.
+
+    Values retain heterogeneous YAML fields, not executable GitHub expressions.
+    Tests must treat these session-shared declarations as read-only.
+    """
+    sources = (
+        ("actions/setup-python-project/action.yml", None),
+        (".github/workflows/python-ci.yml", "quality"),
+        (".github/workflows/python-package.yml", "build"),
+        (".github/workflows/aws-cdk-ci.yml", "quality"),
+    )
+    result: dict[str, list[dict[str, Any]]] = {}
+    for path, job in sources:
+        declaration = read_yaml(ROOT / path)
+        result[path] = (
+            declaration["runs"]["steps"]
+            if job is None
+            else declaration["jobs"][job]["steps"]
+        )
+    return result
 
 
 @pytest.fixture(
