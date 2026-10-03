@@ -39,6 +39,14 @@ on:
         description: Test command; set to an empty string to skip.
         type: string
         default: pytest
+      diagnostics-path:
+        description: Optional report/log paths relative to checkout; empty disables upload.
+        type: string
+        default: ''
+      diagnostics-name:
+        description: Diagnostic artifact prefix; runner and Python version are appended.
+        type: string
+        default: python-diagnostics
 
 permissions:
   contents: read
@@ -101,3 +109,12 @@ jobs:
         env:
           COMMAND: ${{ inputs.test-command }}
         run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Upload diagnostics
+        if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ inputs.diagnostics-name }}-${{ inputs.runs-on }}-${{ matrix.python-version }}
+          path: ${{ inputs.diagnostics-path }}
+          if-no-files-found: warn
+          retention-days: 7
