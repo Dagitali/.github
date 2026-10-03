@@ -5,6 +5,7 @@
 # - Repository-specific parity, shell, and publication contracts.
 # - Verify constrained inputs fail before setup or caller preparation.
 # - Keep candidate library validation aligned with the regular quality gate.
+# - Preserve independent evidence from all validation matrix legs.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -197,16 +198,6 @@ def test_python_cache_validation_parity(
     assert len(scripts) == 1, 'Cache guards must share the same shell behavior'
 
 
-def test_reusable_workflow_does_not_publish(workflow_path: Path) -> None:
-    """Keep library workflows non-publishing with explicit read-only job permissions."""
-    assert 'pypa/gh-action-pypi-publish@' not in workflow_path.read_text()
-    workflow = yaml.load(workflow_path.read_text(), Loader=yaml.BaseLoader)
-    assert workflow['permissions'] == {}
-    for job in workflow['jobs'].values():
-        assert 'permissions' in job
-        assert set(job['permissions'].items()) <= {('contents', 'read')}
-
-
 @pytest.mark.parametrize(
     'command,status,output',
     [
@@ -273,6 +264,32 @@ def test_workflow_action_parity(
                     if name != 'python-version'
                 }
             assert actual == expected, (step['name'], key)
+
+
+def test_workflow_validation_boundaries(
+    workflow_path: Path,
+) -> None:
+    """
+    Keep validation non-publishing, read-only, and non-fail-fast across
+    matrices.
+
+    Each failing matrix leg must still fail; independent legs retain their own
+    evidence. This checks declarations, not GitHub scheduling or cancellation.
+    """
+    assert 'pypa/gh-action-pypi-publish@' not in workflow_path.read_text()
+    workflow: dict[str, Any] = yaml.load(
+        workflow_path.read_text(encoding='utf-8'), Loader=yaml.BaseLoader
+    )
+    assert workflow['permissions'] == {}
+    jobs: dict[str, dict[str, Any]] = workflow['jobs']
+    for name, job in jobs.items():
+        assert 'permissions' in job
+        assert set(job['permissions'].items()) <= {('contents', 'read')}
+        if 'matrix' in job.get('strategy', {}):
+            assert job['strategy'].get('fail-fast') == 'false', (
+                workflow_path.name,
+                name,
+            )
 
 
 # !SECTION
