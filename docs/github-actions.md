@@ -1,164 +1,144 @@
 # Shared GitHub Actions
 
-This repository is Dagitali's central library of reusable workflows, composite actions, and
-organization workflow templates. Consuming repositories keep only the trigger and
-repository-specific inputs; shared implementation stays here.
+Dagitali maintains reusable workflows, composite actions, and starter templates here. Caller
+repositories still own their triggers, required checks, runtime policy, and release identity.
 
-- [Reusable Workflows](#reusable-workflows)
-- [Python Package Builds and Releases](#python-package-builds-and-releases)
-- [Composite Actions](#composite-actions)
-- [Versioning and Pinning](#versioning-and-pinning)
-- [Repository Access and Permissions](#repository-access-and-permissions)
-- [Workflow Templates](#workflow-templates)
+- [Adoption](#adoption)
+- [Workflow Contracts](#workflow-contracts)
+- [Existing Dagitali Projects](#existing-dagitali-projects)
+- [Python Releases](#python-releases)
+- [Composite Actions and Drift Prevention](#composite-actions-and-drift-prevention)
+- [Access and Maintenance](#access-and-maintenance)
 
-## Reusable Workflows
+## Adoption
 
-Reusable workflows live directly in `.github/workflows/` and are called at the job level. A caller
-repository still needs a small workflow file because the central workflow cannot create triggers in
-another repository.
+Before using a template, replace `REPLACE_WITH_RELEASE_SHA` with the full commit SHA of a tested,
+published release containing the required workflow and inputs. The remote tags verified during this
+change were `v0.0.0` and `v0.1.0`; `v1` did not exist. These new changes are unreleased. Do not
+assume an older release contains this interface.
 
-For example, create `.github/workflows/ci.yml` in a consuming Python repository:
-
-```yaml
-name: CI
-
-on:
-  push:
-  pull_request:
-
-permissions:
-  contents: read
-
-jobs:
-  python-ci:
-    uses: Dagitali/.github/.github/workflows/python-ci.yml@v1
-    with:
-      python-versions: '["3.12", "3.13"]'
-```
-
-AWS CDK callers can select Python or Node.js and override project-specific commands:
+Copy a file from `workflow-templates/` into the consumer's `.github/workflows/` directory.
+Replace GitHub's `$default-branch` placeholder manually when copying locally; the GitHub
+template chooser replaces it automatically. Select triggers appropriate to the consumer,
+including `merge_group` if it uses a merge queue.
 
 ```yaml
-jobs:
-  cdk-ci:
-    uses: Dagitali/.github/.github/workflows/aws-cdk-ci.yml@v1
-    with:
-      language: node
-      working-directory: infra
-      lint-command: npm run lint
-      test-command: npm test
-```
-
-Swift Package Manager projects can call the Swift workflow:
-
-```yaml
-jobs:
-  swift-ci:
-    uses: Dagitali/.github/.github/workflows/swift-ci.yml@v1
-```
-
-Dependency review must be called by a workflow triggered by `pull_request`:
-
-```yaml
-name: Dependency review
-
+name: Python CI
 on:
   pull_request:
-
-permissions:
-  contents: read
-
-jobs:
-  dependency-review:
-    uses: Dagitali/.github/.github/workflows/dependency-review.yml@v1
-    with:
-      fail-on-severity: moderate
-```
-
-The dependency review API requires GitHub Dependency Graph support. Availability can depend on
-repository visibility and the organization's GitHub plan.
-
-## Python Package Builds and Releases
-
-Use `python-package.yml` on pushes and pull requests to build both the source distribution and
-wheel, validate their metadata, and upload them as a workflow artifact.
-
-Publishing is intentionally separate. Call `python-publish.yml` only from a trusted release or tag
-workflow, grant `id-token: write` in the caller, and protect the named GitHub environment. Configure
-that environment as a PyPI trusted publisher so no long-lived PyPI token is needed.
-
-Artifacts normally do not cross workflow runs. The build and publish jobs should therefore be called
-from the same caller workflow, with the publish job depending on the build job:
-
-```yaml
-name: Release
-
-on:
   push:
-    tags: ['v*']
-
 permissions:
   contents: read
-  id-token: write
-
 jobs:
-  package:
-    uses: Dagitali/.github/.github/workflows/python-package.yml@v1
-
-  publish:
-    needs: package
-    uses: Dagitali/.github/.github/workflows/python-publish.yml@v1
+  python:
+    uses: Dagitali/.github/.github/workflows/python-ci.yml@REPLACE_WITH_RELEASE_SHA
+    with:
+      python-versions: '["3.13", "3.14"]'
 ```
 
-## Composite Actions
+The default Python commands require Ruff, mypy, and pytest in the project's `dev` extra. Inputs
+ending in `-command` execute trusted repository-maintainer shell code. Never populate them from PR
+titles, issue bodies, or other untrusted event text.
 
-Composite actions are called from a step inside an ordinary job. The caller must check out its
-repository first. For example:
+## Workflow Contracts
+
+The YAML declarations are authoritative for all inputs and defaults.
+
+| Workflow | Scope | Consumer requirements |
+| --- | --- | --- |
+| `python-ci.yml` | Python formatting, lint, typing, tests | Installable project, compatible Python matrix, configured tools |
+| `aws-cdk-ci.yml` | Python or Node CDK app synthesis and optional checks | `cdk.json`, dependencies, offline synthesis context |
+| `swift-ci.yml` | Swift Package Manager builds and tests | `Package.swift`; Swift supplied by the selected macOS runner |
+| `python-package.yml` | Build, metadata check, clean wheel and sdist installation | Buildable `pyproject.toml`; optional installed-package smoke command |
+| `dependency-review.yml` | Dependency changes on pull requests | Dependency graph/API availability for the consumer's plan and visibility |
+
+Python CI defaults to 3.13 and 3.14 to match the inspected Popo and AWS CDK construct support
+ranges. Consumers must choose their own supported versions; this is not an organization-wide Python
+support mandate.
+
+`working-directory` is relative to the consumer checkout. Python cache paths default to that
+directory's `pyproject.toml`; explicit `cache-dependency-path` values are relative to the checkout
+root. Checkouts fetch history and tags for SCM-derived versions and do not persist credentials.
+Python setup runs `pip check` after installation.
+
+CDK's Node mode uses `npm ci` and caching when a lockfile exists; without one, caching is off and
+`npm install` is used. Commit a lockfile for reproducibility. Set an exact `cdk-version` when
+required; the default major `2` deliberately tracks current compatible CLI releases. Python CDK
+projects may override their install command and cache dependency path. An optional `prepare-command`
+runs from the checkout root after checkout and before runtime setup or cache detection. Use it to
+assemble project files needed by subsequent steps. An empty value skips preparation.
+
+The CDK workflow itself leaves format, lint, and test commands empty for language independence. The
+Python CDK starter explicitly enables Ruff formatting, Ruff linting, and pytest. Synthesis must work
+without AWS credentials: commit necessary CDK context or use fixture context. Do not use this
+workflow for deployment or credential-dependent account lookups.
+
+The Swift workflow is for packages, including packages nested inside a repository. It is not a
+complete CI replacement for Waytally, which needs an Xcode project, schemes, simulator selection,
+and result bundles. Keep its Xcode automation until a separately tested Xcode workflow is adopted.
+
+## Existing Dagitali Projects
+
+These are migration examples based on the inspected local projects, not claims that the repositories
+have been migrated or that hosted integration has passed.
+
+- **Popo:** use Python 3.13/3.14; keep its `make check` policy and artifact tests. To delegate to
+  that gate, set `format-command`, `lint-command`, and `typecheck-command` to empty strings, and
+  `test-command: make check`. Verify the Makefile's interpreter selection for the runner.
+- **aws-cdk-static-site:** use Python/package workflows and preserve its construct and example
+  tests. This is a construct library; the CDK-app template is not a drop-in replacement.
+- **dagitali.com:** its CDK app is under `infra`. Use `working-directory: infra` and its actual
+  install/test commands. Keep root repository checks and production deployment separate.
+- **Waytally:** retain Xcode-specific CI; use Swift package CI only for its package subprojects.
+
+## Python Releases
+
+Use the [Python release template](../workflow-templates/python-release.yml). It calls the reusable
+package builder, then downloads the tested distributions and publishes in a consumer-owned job.
+Configure a protected `pypi` environment with reviewers and allowed release tags, and register the
+consumer repository, actual workflow filename, and environment with PyPI.
+
+Only the publishing job has `id-token: write`. Build and installation tests have no publishing
+identity. An optional `smoke-command` runs separately in clean wheel and sdist virtual environments,
+outside the source tree, for example `python -c 'import your_package'`.
+
+The old reusable `python-publish.yml` has been removed from this unreleased revision. PyPI trusted
+publishing from reusable workflows is explicitly unsupported; move publishing into the caller before
+adopting this revision. See the [PyPA publishing action documentation]. No template publishes until
+installed and triggered in a consumer with the required configuration.
+
+## Composite Actions and Drift Prevention
+
+Check out the consumer before using a remote composite action:
 
 ```yaml
-jobs:
-  quality:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: Dagitali/.github/actions/setup-python-project@v1
-        with:
-          python-version: '3.13'
-      - uses: Dagitali/.github/actions/python-quality@v1
+steps:
+  - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+    with:
+      persist-credentials: false
+  - uses: Dagitali/.github/actions/setup-python-project@REPLACE_WITH_RELEASE_SHA
+  - uses: Dagitali/.github/actions/python-quality@REPLACE_WITH_RELEASE_SHA
 ```
 
-`actions/cdk-quality` provides the quality and synthesis portion of CDK CI for repositories that
-need to assemble a custom job. The calling job is responsible for installing its runtime,
-dependencies, and the CDK CLI before invoking it.
+`actions/cdk-quality` expects its caller to install the runtime, dependencies, and CDK CLI. Reusable
+workflows retain their own steps: `./actions/...` inside a remotely called workflow would resolve
+against the consumer checkout. Contract tests enforce parity between shared actions and workflows,
+avoiding a floating self-reference that would bypass the caller's selected version.
 
-## Versioning and Pinning
+## Access and Maintenance
 
-- Use a moving major tag such as `@v1` for convenient organization-wide updates that preserve
-  backward compatibility.
-- Pin to a full commit SHA when reproducibility and supply-chain security are more important than
-  automatic updates.
-- Avoid `@main` in production callers. It can change without notice and makes rollbacks harder.
-- When releasing breaking changes, create a new major tag. Keep the previous major tag available
-  while callers migrate.
-- Automation maintainers should move the `v1` tag only after the workflows and actions have been
-  validated on representative repositories.
+Automatic community-health defaults require a public `.github` repository. Private workflow/action
+sharing has separate Actions access settings and does not make community-health defaults public.
+Caller and organization policies must permit the referenced actions and reusable workflows.
 
-GitHub resolves both reusable workflows and composite actions from the referenced tag, branch, or
-SHA. A caller pinned to a SHA must update deliberately to receive fixes.
+External actions are pinned to full commit SHAs. Dependabot maintains Actions and Python validation
+dependencies; maintainers must also inspect references in templates and composite actions after
+updates. Popo checks workflows, composite actions, and templates through its automation-contract CLI
+using this repository's `pyproject.toml` policy. Only configured self-targeting template
+placeholders are exempt; sources are never rewritten. Refresh pre-commit hooks and review the
+resulting changes.
 
-## Repository Access and Permissions
+See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POLICY.md), and
+[testing](TESTING.md).
 
-If this `.github` repository is private, enable **Settings → Actions → General → Access → Accessible
-from repositories in the Dagitali organization**. Callers also need permission to use the
-third-party actions referenced here.
-
-Permissions can stay the same or become more restrictive as workflows are nested; a reusable
-workflow cannot elevate permissions withheld by its caller. Grant `id-token: write` only to trusted
-release workflows that use PyPI trusted publishing. Do not pass AWS deployment credentials to the
-CDK CI workflow: it performs synthesis, not deployment.
-
-## Workflow Templates
-
-Files under `workflow-templates/` appear in GitHub's **New workflow** interface for Dagitali
-repositories. Selecting a template copies a small caller workflow into the consuming repository. The
-generated file should be reviewed and adjusted for language, paths, and commands before merging.
+[PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
