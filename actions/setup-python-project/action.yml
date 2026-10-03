@@ -14,6 +14,10 @@ inputs:
     description: Dependency path relative to checkout; empty uses working-directory/pyproject.toml.
     required: false
     default: ''
+  cache:
+    description: setup-python cache manager; pip, pipenv, poetry, or empty to disable caching.
+    required: false
+    default: pip
   install-command:
     description: Trusted installation command; empty sets up Python without installing dependencies.
     required: false
@@ -26,7 +30,7 @@ runs:
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: ${{ inputs.python-version }}
-        cache: pip
+        cache: ${{ inputs.cache }}
         cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
     - name: Install project
