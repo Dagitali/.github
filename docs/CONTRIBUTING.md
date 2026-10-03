@@ -1,5 +1,17 @@
 # Contributing to the Automation Library
 
+Installed pre-push hooks now invoke `make check-pre-push`, the same gate as `make check`, without
+passing filenames or limiting checks to changed paths. Install hooks explicitly with `make hooks`
+after installing pre-commit; editing the configuration does not install hooks automatically. The
+hook uses already-installed system/project tools and never installs missing dependencies.
+
+`REPOSITORY_ROOT` defaults to `.` and controls documentation/release policy checks and the default
+`AUTOMATION_ROOT`; an explicit `AUTOMATION_ROOT` still wins. This does not relocate workflow linting
+or pytest: use `WORKFLOW_PATHS` and `TESTS_DIR` for those. Release maintainers can run `make
+release-changelog RELEASE_VERSION=x.y.z` against a prepared dated changelog section. The target
+requires an explicit version, delegates to Popo, and is not part of the ordinary feature-branch
+gate.
+
 The root CONTRIBUTING.md is an organization-wide community default. This guide is specific
 to maintaining Dagitali/.github.
 
