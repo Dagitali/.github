@@ -11,7 +11,7 @@
 # - Honor explicit overrides and active environments, then the managed environment.
 # - Setup is explicit; checks never install dependencies or replace environments.
 # - This repository is an automation library, not a Python distribution.
-# - Keep unittest, actionlint, and template validation as purposeful differences.
+# - Keep actionlint and template validation as purposeful differences.
 # - No target publishes, deploys, or deletes output.
 #
 # Common Flows
@@ -59,7 +59,7 @@ PYTHON ?= python3
 endif
 PRE_COMMIT ?= $(PYTHON) -m pre_commit
 ACTIONLINT ?= actionlint
-UNITTEST ?= $(PYTHON) -m unittest
+PYTEST ?= $(PYTHON) -m pytest
 HOOK_INSTALL_ARGS ?=
 
 ### Installation ###
@@ -120,7 +120,8 @@ show-venv: ## Print managed-environment and interpreter locations
 ##@ Quality
 
 .PHONY: check check-pre-push self-check lint workflow-lint automation-contracts github-actions-pins
-check: lint test self-check ## Run the default local quality gate
+# Full contract validation in lint already includes the pin policy.
+check: lint test docs-markdown ## Run the default local quality gate
 
 check-pre-push: check ## Run the local pre-push checks
 
@@ -141,7 +142,7 @@ github-actions-pins: ## Verify remote GitHub Actions use immutable commits
 
 .PHONY: test
 test: ## Run the default regression suite
-	$(UNITTEST) discover -s "$(TESTS_DIR)" -p '$(TEST_PATTERN)' $(TEST_ARGS)
+	$(PYTEST) "$(TESTS_DIR)" -o python_files='$(TEST_PATTERN)' $(TEST_ARGS)
 
 ##@ Documentation
 
