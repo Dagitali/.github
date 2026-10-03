@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+- Require wheel and source artifacts before upload; isolate installed-package smoke environments,
+  pin overridable build/Twine tools, expose artifact retention, and pin fixture CDK tooling.
+- Check generated callers with actionlint and exercise package failure/isolation boundaries. Add
+  manual, non-publishing release-candidate validation and document artifact contracts, cancellation,
+  support limits, and compatibility review.
 - Simplify Make gate assertions and environment-isolation mocks, inline the single-use release
   template fixture, and reduce the Python fixture to one smoke test. Store Node fixture sources once
   and assemble the locked variant through the optional CDK `prepare-command` before cache detection,
