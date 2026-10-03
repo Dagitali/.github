@@ -16,6 +16,7 @@
 # - This repository is an automation library, not a Python distribution.
 # - Keep actionlint and template validation as purposeful differences.
 # - Check root Python helpers without importing fixture dependencies.
+# - Formatting and safe fixes are explicit opt-ins, never check prerequisites.
 # - No target publishes, deploys, or deletes output.
 #
 # Common Flows
@@ -131,7 +132,7 @@ show-venv: ## Print managed-environment and interpreter locations
 ##@ Quality
 
 .PHONY: check check-pre-push self-check lint workflow-lint automation-contracts github-actions-pins
-.PHONY: release-changelog python-lint format-check typecheck
+.PHONY: release-changelog python-lint format-check typecheck fix fmt format
 # Full contract validation in lint already includes the pin policy.
 check: lint typecheck test docs-markdown ## Run the default local quality gate
 
@@ -143,6 +144,14 @@ lint: python-lint format-check workflow-lint automation-contracts ## Validate Py
 
 python-lint: ## Check Python helpers and fixture code with Ruff
 	$(RUFF) check $(PYTHON_LINT_PATHS)
+
+fix: ## Apply safe Ruff fixes to explicitly selected Python paths
+	$(RUFF) check --fix $(PYTHON_LINT_PATHS)
+
+fmt: ## Format explicitly selected Python paths with Ruff
+	$(RUFF) format $(PYTHON_FORMAT_PATHS)
+
+format: fmt ## Format Python code (compatibility alias)
 
 format-check: ## Verify Python formatting without changing files
 	$(RUFF) format --check $(PYTHON_FORMAT_PATHS)
