@@ -20,10 +20,10 @@ def create_stack() -> Stack:
     No context lookups or credentials are needed. Never deploy this fixture.
     """
     app = App()
-    stack = Stack(app, "PythonFixture")
+    stack = Stack(app, 'PythonFixture')
     Queue(
         stack,
-        "Queue",
+        'Queue',
         encryption=QueueEncryption.SQS_MANAGED,
         enforce_ssl=True,
         removal_policy=RemovalPolicy.DESTROY,
@@ -31,5 +31,5 @@ def create_stack() -> Stack:
     return stack
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     create_stack().node.root.synth()
