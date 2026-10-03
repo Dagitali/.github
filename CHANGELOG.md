@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- Exercise a pinned, offline Python CDK fixture in regular and candidate CI. Reject stale package
+  output without deleting it. Add opt-in Python/CDK failure diagnostics, merge-group triggers, PR
+  dependency review, and branch-protection/release-evidence guidance.
 - Require wheel and source artifacts before upload; isolate installed-package smoke environments,
   pin overridable build/Twine tools, expose artifact retention, and pin fixture CDK tooling.
 - Check generated callers with actionlint and exercise package failure/isolation boundaries. Add
