@@ -19,6 +19,15 @@ containing these changes is published.
 5. Record the exact commit, compatibility changes, validation evidence, and migration instructions.
 6. Update starter references only to an existing release containing their required interfaces.
 
+Record candidate evidence in release notes: exact candidate SHA, normal CI and manual candidate run
+links, representative consumer callers/results, artifact names/content/retention changes, permission
+and interface changes, and the previous known-good SHA with rollback instructions. Distinguish local
+checks from hosted runs and record unresolved limitations. Do not claim branch protection or merge
+queue enforcement without separately verifying hosted settings. When preparing a dated release
+section, use the installed Popo public CLI `python -m popo check-release-changelog VERSION` rather
+than writing another changelog validator. It checks changelog structure, not hosted evidence,
+workflow compatibility, or release authorization.
+
 These changes are unreleased and include a breaking removal of python-publish.yml. The historical
 v0.1.0 tag remains unchanged. During 0.x development, document breaking changes in a new minor
 release. After 1.0, use a new major version for breaking interface changes.
