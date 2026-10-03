@@ -15,6 +15,7 @@
 #   environments.
 # - This repository is an automation library, not a Python distribution.
 # - Keep actionlint and template validation as purposeful differences.
+# - Check root Python helpers without importing fixture dependencies.
 # - No target publishes, deploys, or deletes output.
 #
 # Common Flows
@@ -66,6 +67,10 @@ PRE_COMMIT ?= $(PYTHON) -m pre_commit
 ACTIONLINT ?= actionlint
 export ACTIONLINT
 PYTEST ?= $(PYTHON) -m pytest
+RUFF ?= $(PYTHON) -m ruff
+MYPY ?= $(PYTHON) -m mypy
+PYTHON_FORMAT_PATHS ?= tests
+PYTHON_LINT_PATHS ?= $(PYTHON_FORMAT_PATHS)
 HOOK_INSTALL_ARGS ?=
 
 ### Installation ###
@@ -126,15 +131,24 @@ show-venv: ## Print managed-environment and interpreter locations
 ##@ Quality
 
 .PHONY: check check-pre-push self-check lint workflow-lint automation-contracts github-actions-pins
-.PHONY: release-changelog
+.PHONY: release-changelog python-lint format-check typecheck
 # Full contract validation in lint already includes the pin policy.
-check: lint test docs-markdown ## Run the default local quality gate
+check: lint typecheck test docs-markdown ## Run the default local quality gate
 
 check-pre-push: check ## Run the local pre-push checks
 
 self-check: github-actions-pins docs-markdown ## Run applicable repository-policy checks
 
-lint: workflow-lint automation-contracts ## Validate workflows and automation contracts
+lint: python-lint format-check workflow-lint automation-contracts ## Validate Python and automation
+
+python-lint: ## Check Python helpers and fixture code with Ruff
+	$(RUFF) check $(PYTHON_LINT_PATHS)
+
+format-check: ## Verify Python formatting without changing files
+	$(RUFF) format --check $(PYTHON_FORMAT_PATHS)
+
+typecheck: ## Check root Python helper types using pyproject.toml
+	$(MYPY)
 
 workflow-lint: ## Check workflow and starter-template syntax with actionlint
 	$(ACTIONLINT) $(WORKFLOW_PATHS)
