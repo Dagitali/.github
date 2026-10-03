@@ -19,6 +19,18 @@ on:
         description: Name of the uploaded distribution artifact.
         type: string
         default: python-dist
+      artifact-retention-days:
+        description: Artifact retention in days, subject to repository limits.
+        type: number
+        default: 7
+      build-version:
+        description: Exact PyPA build version (transitive and backend dependencies remain project-owned).
+        type: string
+        default: '1.6.1'
+      twine-version:
+        description: Exact Twine version for metadata validation.
+        type: string
+        default: '7.0.0'
 
 permissions:
   contents: read
@@ -47,13 +59,27 @@ jobs:
           cache-dependency-path: ${{ format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install build tooling
-        run: python -m pip install --upgrade build twine
+        env:
+          BUILD_VERSION: ${{ inputs.build-version }}
+          TWINE_VERSION: ${{ inputs.twine-version }}
+        run: |
+          python -m pip install "build==$BUILD_VERSION" "twine==$TWINE_VERSION"
+          python --version
+          python -m pip show build twine
 
       - name: Build distribution
         run: python -m build
 
       - name: Validate distribution metadata
-        run: python -m twine check dist/*
+        run: |
+          shopt -s nullglob
+          wheels=(dist/*.whl)
+          sdists=(dist/*.tar.gz)
+          if (( ${#wheels[@]} == 0 || ${#sdists[@]} == 0 )); then
+            echo 'Both wheel and source distributions are required' >&2
+            exit 1
+          fi
+          python -m twine check "${wheels[@]}" "${sdists[@]}"
 
       - name: Test wheel and source distribution installations
         env:
@@ -63,10 +89,12 @@ jobs:
             test -f "$distribution"
             install_env="$(mktemp -d)"
             python -m venv "$install_env/venv"
-            "$install_env/venv/bin/python" -m pip install "$PWD/$distribution"
-            "$install_env/venv/bin/python" -m pip check
+            env -u PYTHONPATH -u PYTHONHOME "$install_env/venv/bin/python" -m pip install "$PWD/$distribution"
+            env -u PYTHONPATH -u PYTHONHOME "$install_env/venv/bin/python" -m pip check
             if [[ -n "$SMOKE_COMMAND" ]]; then
-              (cd "$install_env" && PATH="$install_env/venv/bin:$PATH" bash -euo pipefail -c "$SMOKE_COMMAND")
+              (cd "$install_env" && env -u PYTHONPATH -u PYTHONHOME \
+                VIRTUAL_ENV="$install_env/venv" PATH="$install_env/venv/bin:$PATH" \
+                PYTHON="$install_env/venv/bin/python" bash -euo pipefail -c "$SMOKE_COMMAND")
             fi
           done
 
@@ -74,5 +102,8 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ inputs.artifact-name }}
-          path: ${{ format('{0}/dist/', inputs.working-directory) }}
+          path: |
+            ${{ inputs.working-directory }}/dist/*.whl
+            ${{ inputs.working-directory }}/dist/*.tar.gz
           if-no-files-found: error
+          retention-days: ${{ inputs.artifact-retention-days }}
