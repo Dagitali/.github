@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Align locked/unlocked Node CDK validation with sibling non-fail-fast matrix policy so failures
+  retain independent evidence. Extend existing typed workflow-boundary coverage without weakening
+  failure reporting or changing caller concurrency. Rewrap current header comments to 79 characters
+  while preserving their content and URL references.
 - Mirror sibling Ruff single-quote and preferred nested-string formatting settings. Align the
   standalone Python fixtures with root Ruff 0.16.10 and self-contained formatting/lint policy;
   reformat Python sources while preserving existing work and string values.
