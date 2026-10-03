@@ -6,7 +6,8 @@
 # - Provide a minimal consumer-owned workflow starter.
 #
 # Maintainer Notes
-# - Replace the release-SHA placeholder before use; preserve caller permissions.
+# - Replace the release-SHA placeholder before use; preserve caller
+#   permissions.
 
 # Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before
 # use.
