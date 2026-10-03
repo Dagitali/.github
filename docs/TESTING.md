@@ -1,5 +1,22 @@
 # Testing
 
+Candidate checks now consume package outputs in a downstream job for both Python versions, verify
+the downloaded archive digest, and check distribution contents. Local parameterized tests execute
+the real guard with valid, mismatched-digest, extra-file, and missing-sdist archives. Summary tests
+execute its renderer for success, failure, skipped, and cancelled dependencies. Declaration checks
+retain deterministic package outputs, regular/candidate Node fixture parity, and complete summary
+dependencies. Hosted runs are still required to establish artifact transfer and action
+compatibility.
+
+Optional Python audit and SBOM workflows separate inspected and tool environments. Contract tests
+cover installation isolation, runtime-only defaults, audit exclusions/failure evidence, and
+validated inventory generation. Real inspection shells run against isolated tool shims to check
+success/failure propagation and preservation of produced reports, without public service calls.
+Manual candidate runs inspect the Python CDK fixture with public advisories; local checks do not
+query advisories or prove a vulnerability-free dependency graph. Missing audit findings never
+suppress the audit's exit status. New workflows are included automatically in Popo, actionlint, and
+read-only/non-publishing boundary checks.
+
 Validation matrices explicitly disable fail-fast, including the locked/unlocked Node CDK cases, so
 one failing leg does not cancel evidence from another. The existing workflow-boundary test covers
 this policy alongside read-only permissions and the non-publishing boundary, without another test

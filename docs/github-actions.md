@@ -11,6 +11,7 @@ repositories still own their triggers, required checks, runtime policy, and rele
 - [Access and Maintenance](#access-and-maintenance)
 - [Cancellation and Support Boundaries](#cancellation-and-support-boundaries)
 - [Candidate Validation and Compatibility](#candidate-validation-and-compatibility)
+- [Optional Dependency Inspection](#optional-dependency-inspection)
 
 ## Adoption
 
@@ -70,6 +71,8 @@ these checks do not install alternative package managers or validate remote cach
 | `swift-ci.yml` | Swift Package Manager builds and tests | `Package.swift`; Swift supplied by the selected macOS runner |
 | `python-package.yml` | Build, metadata check, clean wheel and sdist installation | Buildable `pyproject.toml`; optional installed-package smoke command |
 | `dependency-review.yml` | Dependency changes on pull requests | Dependency graph/API availability for the consumer's plan and visibility |
+| `python-dependency-audit.yml` | Resolved Python dependency vulnerability audit | Trusted install command and project distribution name; public advisory access |
+| `python-sbom.yml` | Validated CycloneDX inventory of an installed Python environment | Trusted install command; runtime dependency environment |
 
 Python CI defaults to 3.13 and 3.14 to match the inspected Popo and AWS CDK construct support
 ranges. Consumers must choose their own supported versions; this is not an organization-wide Python
@@ -286,3 +289,78 @@ caller templates. Document breaking changes and migrations, run `make check`, th
 candidate and representative consumer evidence. Adopt a tested full SHA for immutability; movable
 major tags offer convenience but may change behavior without a consumer diff. Creating or moving
 tags and publishing remain separately authorized steps.
+
+Candidate Node CDK checks cover both locked and unlocked installations using the same preparation
+and commands as ordinary CI. Package callers have separate jobs for Python 3.13 and 3.14: matrix
+reusable-workflow outputs cannot identify every leg reliably. A downstream consumer downloads each
+archive by the returned ID, verifies its SHA-256 against the returned digest, and checks wheel/sdist
+contents. Artifact downloads also fail on server-digest mismatch. These are same-run transfers,
+without additional API credentials; no publication occurs.
+
+The final candidate summary records the exact SHA, declared runtime/runner coverage, aggregate job
+outcomes, and available package artifact links. Inspect matrix legs for individual results. Failed,
+skipped, or cancelled dependencies make the summary fail; the summary never replaces those jobs or
+ordinary required checks. GitHub cancellation may prevent even an `always()` summary from running.
+
+Checkout is pinned to v7.0.1, upload-artifact to v7.0.1, and download-artifact to v8.0.1. Package
+uploads explicitly retain zipped archives and the existing names, retention, and output contracts.
+These Node 24 actions require compatible runners; GitHub-hosted runners remain the validated target,
+not arbitrary self-hosted runners or GitHub Enterprise Server. Checkout's unsafe fork opt-in is not
+enabled. See the upstream [checkout](https://github.com/actions/checkout),
+[upload](https://github.com/actions/upload-artifact), and
+[download](https://github.com/actions/download-artifact) compatibility notes.
+
+## Optional Dependency Inspection
+
+These Ubuntu-only reusable workflows complement PR dependency review, rather than replacing it.
+Consumer repositories choose their own manual/scheduled triggers. The library exercises both only
+in manual candidate validation, using its credential-free Python CDK fixture; ordinary PR checks
+and their required-check names are unchanged. Python support and installation commands remain
+consumer-owned. Neither workflow gives the root automation library a fictitious runtime package.
+
+```yaml
+name: Inspect Python dependencies
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  audit:
+    permissions:
+      contents: read
+    uses: Dagitali/.github/.github/workflows/python-dependency-audit.yml@REPLACE_WITH_RELEASE_SHA
+    with:
+      project-distribution: my-project
+  inventory:
+    permissions:
+      contents: read
+    uses: Dagitali/.github/.github/workflows/python-sbom.yml@REPLACE_WITH_RELEASE_SHA
+```
+
+Common inputs are `python-version` (default `3.13`), `working-directory` (`.`), `install-command`
+(`python -m pip install .`), `tool-version`, `artifact-name`, and `artifact-retention-days` (`14`).
+The audit additionally requires `project-distribution`: the installed project's distribution name,
+not its import module. Defaults pin pip-audit 2.10.1 or cyclonedx-bom 7.2.2 and use artifact names
+`python-dependency-audit` or `python-sbom`. Give each invocation a unique artifact name when calling
+one workflow multiple times. Tool transitives and caller build backends are resolver-selected.
+
+Installation runs in a fresh target virtual environment; inspection tools use a separate environment.
+The default installs runtime dependencies only. Overrides can install requirements files or extras,
+but then reports cover that selected environment, not necessarily a production runtime. Use `python`
+or `$PYTHON` from the supplied environment, not an absolute interpreter or another virtualenv.
+Installation executes project/build code and may access package indexes: do not pass secrets or
+run privileged untrusted code. No deployment, publishing, automatic fixes, or cached environments
+are involved.
+
+The audit freezes resolved dependencies, excluding the named project and pip, then queries public
+advisories with `--no-deps --disable-pip --strict`. Unpublished/VCS/editable dependencies that cannot
+be audited must be handled deliberately; failures are not silently suppressed. Dependency names
+and versions leave the runner for advisory queries. JSON findings upload even after audit failure,
+unless cancelled; missing findings warn without converting the original failure into success.
+This is dependency auditing, not source or CDK infrastructure security analysis.
+See [pip-audit's security model](https://github.com/pypa/pip-audit).
+
+The inventory uses CycloneDX's validated environment command and uploads only on successful
+generation. It includes the installed project, runtime dependencies, and target bootstrap tools,
+but not the isolated SBOM generator. It is a Python dependency inventory, not an exhaustive source,
+Node, Swift, container, or deployed-resource SBOM, and is not a signature or provenance attestation.
+See [CycloneDX environment usage](https://cyclonedx-bom-tool.readthedocs.io/en/latest/usage.html).
