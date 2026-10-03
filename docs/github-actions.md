@@ -232,12 +232,16 @@ guidance](../.github/BRANCH-PROTECTION.md) for selecting verified hosted check n
 coordinating transitions. PR-only review and manual candidate jobs are not required merge-queue
 gates. No hosted setting is changed by these files.
 
-Consumers own concurrency. For PR CI, use a caller group such as `consumer-ci-${{ github.workflow
-}}-${{ github.ref }}` with `cancel-in-progress: true`. For releases, use a separate
-`consumer-release-...` group with `cancel-in-progress: false` and protected environments. Reusable
-workflows do not set concurrency. If adding callee concurrency, use a distinct prefix:
-`github.workflow` identifies the caller even in a reusable workflow, so identical caller/callee
-groups can cancel the calling run.
+Consumers own concurrency. Python, CDK, and Swift CI starters now use the caller group
+`consumer-ci-${{ github.workflow }}-${{ github.ref }}` with `cancel-in-progress: true`, following
+the sibling projects' per-workflow/per-ref policy. New runs can cancel older runs for the same PR,
+branch, or merge-group ref; different workflow names or refs do not share a group. Keep workflow
+names distinct when adopting multiple starters, and customize the policy if every run must finish.
+This does not deduplicate push and PR runs, which have different refs. Existing consumer workflow
+files are not updated automatically. For releases, use a separate `consumer-release-...` group with
+`cancel-in-progress: false` and protected environments. Reusable workflows do not set concurrency.
+If adding callee concurrency, use a distinct prefix: `github.workflow` identifies the caller even in
+a reusable workflow, so identical caller/callee groups can cancel the calling run.
 
 Commands require Bash. Regular fixture CI targets Ubuntu for Python/CDK/package jobs and `macos-15`
 for Swift packages. Python defaults to 3.13/3.14, CDK fixture Node to 22; Swift comes from the
