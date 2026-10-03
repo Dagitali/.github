@@ -21,6 +21,11 @@ def test_publishing_stays_in_consumer_job(repo_root):
 
 def test_reusable_workflow_does_not_publish(workflow_path):
     assert 'pypa/gh-action-pypi-publish@' not in workflow_path.read_text()
+    workflow = yaml.load(workflow_path.read_text(), Loader=yaml.BaseLoader)
+    assert workflow['permissions'] == {}
+    for job in workflow['jobs'].values():
+        assert 'permissions' in job
+        assert set(job['permissions'].items()) <= {('contents', 'read')}
 
 
 @pytest.mark.parametrize(
