@@ -5,6 +5,7 @@
 # Responsibilities
 # - Build and validate fresh wheel/source artifacts in isolated environments.
 # - Reject unsupported cache selectors before runtime setup.
+# - Expose validated upload metadata without adding publishing identity.
 #
 # Maintainer Notes
 # - Upload only validated distributions; publication belongs to the consumer.
@@ -50,6 +51,16 @@ on:
         description: Exact Twine version for metadata validation.
         type: string
         default: '7.0.0'
+    outputs:
+      artifact-id:
+        description: GitHub identifier of the validated distribution upload.
+        value: ${{ jobs.build.outputs.artifact-id }}
+      artifact-url:
+        description: Authenticated download URL, valid while the artifact exists.
+        value: ${{ jobs.build.outputs.artifact-url }}
+      artifact-digest:
+        description: SHA-256 digest of the uploaded artifact archive, not individual distributions.
+        value: ${{ jobs.build.outputs.artifact-digest }}
 
 permissions: {}
 
@@ -60,6 +71,10 @@ jobs:
     name: Build and validate distribution
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
     defaults:
       run:
         shell: bash
@@ -143,6 +158,7 @@ jobs:
           done
 
       - name: Upload distribution
+        id: upload
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ inputs.artifact-name }}
