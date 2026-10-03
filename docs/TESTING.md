@@ -1,5 +1,10 @@
 # Testing
 
+The existing rendered-starter integration check also verifies workflow/ref-scoped CI concurrency,
+merge-group triggers, and the absence of auto-cancellation for publishing starters. This extends
+coverage without a duplicate template test suite. Actionlint validates rendered syntax; only hosted
+runs can establish cancellation and required-check behavior.
+
 Cache guard tests compare the real setup action and three workflow declarations, including selector
 wiring and ordering before runtime setup. The shared shell is executed once per input with accepted,
 disabled, misspelled, and shell-like values; invalid values fail before the next stage. CDK ordering
