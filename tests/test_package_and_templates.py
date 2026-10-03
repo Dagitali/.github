@@ -1,0 +1,150 @@
+"""Behavior at the package artifact boundary and generated caller integration."""
+
+import json
+import os
+import shlex
+import subprocess
+import sys
+
+import pytest
+import yaml
+
+# SECTION: FIXTURES
+
+
+@pytest.fixture(name='package_runner')
+def package_runner(
+    tmp_path,
+    monkeypatch,
+):
+    """Stub pip/venv boundaries, executing the workflow's real Bash orchestration."""
+    bin_dir = tmp_path / 'bin'
+    bin_dir.mkdir()
+    python = bin_dir / 'python'
+    python.write_text(
+        f'#!{sys.executable}\n'
+        'import os, pathlib, shutil, sys\n'
+        'args = sys.argv[1:]\n'
+        'if args[:2] == ["-m", "venv"]:\n'
+        '    target = pathlib.Path(args[2]) / "bin"\n'
+        '    target.mkdir(parents=True)\n'
+        '    shutil.copy2(__file__, target / "python")\n'
+        'elif args[:2] == ["-m", "pip"]:\n'
+        '    sys.exit(17 if args[2] == os.environ.get("FAIL_STAGE") else 0)\n'
+        'else:\n'
+        f'    os.execv({sys.executable!r}, [{sys.executable!r}, *args])\n'
+    )
+    python.chmod(0o755)
+    monkeypatch.setenv('PATH', str(bin_dir) + os.pathsep + os.environ['PATH'])
+    monkeypatch.setenv('PYTHONPATH', str(tmp_path / 'poison-source'))
+    monkeypatch.setenv('PYTHONHOME', sys.base_prefix)
+    # The outer venv shim is independent of Python's startup environment.
+    (tmp_path / 'dist').mkdir()
+
+    def run(script, **environment):
+        return subprocess.run(
+            ['bash', '-euo', 'pipefail', '-c', script + '\ntouch next-step'],
+            cwd=tmp_path,
+            env=dict(os.environ, **environment),
+            text=True,
+            capture_output=True,
+            timeout=30,
+            check=False,
+        )
+
+    return run
+
+
+@pytest.fixture(name='package_steps')
+def package_steps_fixture(
+    repo_root,
+):
+    data = yaml.load(
+        (repo_root / '.github/workflows/python-package.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    return {step['name']: step for step in data['jobs']['build']['steps']}
+
+
+# !SECTION
+
+
+# SECTION: TESTS
+
+
+@pytest.mark.parametrize(
+    'files',
+    [(), ('fixture.whl',), ('fixture.tar.gz',)],
+    ids=['no-distributions', 'wheel-only', 'sdist-only'],
+)
+def test_incomplete_distribution_fails(
+    package_steps,
+    package_runner,
+    tmp_path,
+    files,
+):
+    for filename in files:
+        (tmp_path / 'dist' / filename).touch()
+    result = package_runner(package_steps['Validate distribution metadata']['run'])
+    assert result.returncode != 0
+    assert 'Both wheel and source distributions are required' in result.stderr
+    assert not (tmp_path / 'next-step').exists()
+
+
+@pytest.mark.parametrize(
+    'stage',
+    ['install', 'check', 'smoke', 'success'],
+)
+def test_installation_failure_and_smoke_isolation(
+    package_steps,
+    package_runner,
+    tmp_path,
+    stage,
+):
+    for filename in ('fixture.whl', 'fixture.tar.gz'):
+        (tmp_path / 'dist' / filename).touch()
+    report = tmp_path / 'environment.json'
+    command = (
+        "python -c " + shlex.quote(
+            'import json, os; '
+            f'open({str(report)!r}, "w").write(json.dumps(dict(os.environ, cwd=os.getcwd())))'
+        )
+    )
+    result = package_runner(
+        package_steps['Test wheel and source distribution installations']['run'],
+        FAIL_STAGE=stage,
+        SMOKE_COMMAND='exit 17' if stage == 'smoke' else command,
+    )
+    assert result.returncode == (0 if stage == 'success' else 17), result.stderr
+    assert (tmp_path / 'next-step').exists() == (stage == 'success')
+    if stage == 'success':
+        environment = json.loads(report.read_text())
+        assert 'PYTHONPATH' not in environment
+        assert 'PYTHONHOME' not in environment
+        assert environment['PYTHON'] == environment['VIRTUAL_ENV'] + '/bin/python'
+        assert environment['PATH'].split(os.pathsep)[0] == environment['VIRTUAL_ENV'] + '/bin'
+        assert environment['cwd'] != str(tmp_path)
+
+
+def test_generated_callers_lint(
+    repo_root,
+    tmp_path,
+):
+    templates = sorted((repo_root / 'workflow-templates').glob('*.yml'))
+    assert templates, 'No starter workflows found'
+    generated = []
+    for source in templates:
+        target = tmp_path / source.name
+        target.write_text(
+            source.read_text().replace('REPLACE_WITH_RELEASE_SHA', 'a' * 40)
+            .replace('$default-branch', 'main')
+        )
+        generated.append(str(target))
+    result = subprocess.run(
+        [*shlex.split(os.environ.get('ACTIONLINT', 'actionlint')), *generated],
+        cwd=repo_root, text=True, capture_output=True, check=False, timeout=60,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+# !SECTION
