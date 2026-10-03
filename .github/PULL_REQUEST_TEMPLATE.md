@@ -1,3 +1,15 @@
+<!--
+.github/PULL_REQUEST_TEMPLATE.md
+Dagitali organization default
+
+Responsibilities
+- Collect change scope, validation, compatibility, and rollback evidence.
+
+Maintainer Notes
+- Keep this community default generic for all consuming repositories.
+- Record missing evidence explicitly; never include credentials.
+-->
+
 ## Summary
 
 <!-- What changed, and why? -->
@@ -10,13 +22,15 @@
 
 <!-- Describe the tests or manual checks performed. -->
 
-<!-- For automation changes: record the validated SHA, local commands, hosted run links,
-     representative consumer evidence, and checks not yet run. -->
+<!-- For automation changes: record the validated SHA, local commands,
+     hosted run links, representative consumer evidence, and checks not yet
+     run. -->
 
 ## Compatibility and Rollback
 
-<!-- Describe affected paths, inputs/defaults, permissions, outputs, artifacts, and
-     required-check names. Link migration guidance and the known-good rollback SHA. -->
+<!-- Describe affected paths, inputs/defaults, permissions, outputs,
+     artifacts, and required-check names. Link migration guidance and the
+     known-good rollback SHA. -->
 
 ## Checklist
 
