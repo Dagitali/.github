@@ -8,11 +8,12 @@ on:
     branches: [$default-branch]
   merge_group:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   python-ci:
+    permissions:
+      contents: read
     uses: Dagitali/.github/.github/workflows/python-ci.yml@REPLACE_WITH_RELEASE_SHA
     with:
       python-versions: '["3.13", "3.14"]'

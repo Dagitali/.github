@@ -8,9 +8,10 @@ on:
     branches: [$default-branch]
   merge_group:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   swift-ci:
+    permissions:
+      contents: read
     uses: Dagitali/.github/.github/workflows/swift-ci.yml@REPLACE_WITH_RELEASE_SHA

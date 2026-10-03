@@ -5,11 +5,12 @@ on:
   push:
     tags: ['v*']
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   package:
+    permissions:
+      contents: read
     uses: Dagitali/.github/.github/workflows/python-package.yml@REPLACE_WITH_RELEASE_SHA
 
   publish:
