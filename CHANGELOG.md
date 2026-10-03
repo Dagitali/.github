@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Make Python lint, non-mutating format checks, and strict typing reproducible parts of the local
+  and hosted gate, using pinned Ruff/mypy/YAML stubs and sibling-aligned rules. Preserve independent
+  fixture environments, configurable tools/paths, and automation-library-specific validation. Refine
+  typed helper docstrings and wrap remaining starter-header comments to 79 characters.
 - Align file headers with sibling responsibility/maintainer bullet conventions and enforce a
   79-character header-comment limit, including compact equivalent YAML schema directives. Preserve
   existing Python documentation/types and all executable automation contracts.
