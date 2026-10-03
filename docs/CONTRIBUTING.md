@@ -15,6 +15,13 @@ Swift's first-line tools version. Document Python helper side effects, failure b
 values, and annotate test/fixture interfaces with Path, pytest types, and captured subprocess types.
 Dynamic YAML fields may use Any deliberately; type annotations do not replace Popo validation.
 
+The generated portion of `.gitignore` retains its original [generator
+URL](https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
+and [editable profile
+selection](https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
+here so header comments stay within 79 characters without splitting URLs. Review regenerated
+patterns rather than overwriting project-specific additions.
+
 Installed pre-push hooks now invoke `make check-pre-push`, the same gate as `make check`, without
 passing filenames or limiting checks to changed paths. Install hooks explicitly with `make hooks`
 after installing pre-commit; editing the configuration does not install hooks automatically. The
