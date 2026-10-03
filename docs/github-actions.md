@@ -145,6 +145,20 @@ workflows retain their own steps: `./actions/...` inside a remotely called workf
 against the consumer checkout. Contract tests enforce parity between shared actions and workflows,
 avoiding a floating self-reference that would bypass the caller's selected version.
 
+Python setup defaults are unchanged. Set `install-command: ''` for setup-only mode; installation and
+its `pip check` are both skipped, while Python/pip versions are still reported. Use an explicit
+cache metadata path for requirements-only repositories, for example `requirements-dev.txt`. Unlike
+project-local setup actions with `extras`/`editable` switches, this shared action retains one
+trusted command that supports packages, requirements files, constraints, and alternative installers.
+Python CI supports the same empty-command convention, but quality commands still run unless
+individually disabled. Setup-only mode does not create a virtual environment or install test tools.
+
+All workflows and starters deny permissions by default and grant `contents: read` at the jobs that
+need it. Reusable-workflow callers must grant that permission to the calling job; a callee cannot
+elevate a caller's token. The release template still grants `id-token: write` only to publication.
+See [GitHub's reusable workflow
+guidance](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
+
 ## Access and Maintenance
 
 Automatic community-health defaults require a public `.github` repository. Private workflow/action
@@ -158,6 +172,15 @@ using this repository's `pyproject.toml` policy. Only configured self-targeting 
 placeholders are exempt; sources are never rewritten. Refresh pre-commit hooks and review the
 resulting changes.
 
+Dependency updates follow the repository default branch rather than imposing `develop`. Weekly
+Monday schedules are staggered in UTC; commit prefixes follow the sibling projects' `ci`/`build`
+convention and labels use Dependabot defaults. Maintenance covers validation requirements, both
+Python fixtures, Node fixtures, Actions, and pre-commit hooks. Dependabot's pre-commit ecosystem
+provides reviewable hook updates; see [supported
+ecosystems](https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories).
+Popo also parses Dependabot and pre-commit YAML for generic syntax/duplicate-key checks; this does
+not replace ecosystem-specific hosted validation.
+
 See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POLICY.md), and
 [testing](TESTING.md).
 
@@ -165,11 +188,13 @@ See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POL
 
 ## Cancellation and Support Boundaries
 
-Python and CDK workflows accept optional `diagnostics-path` values relative to the checkout root.
-Callers must generate those reports/logs through their commands (for example `pytest
+Python, CDK, and Swift workflows accept optional `diagnostics-path` values relative to the checkout
+root. Callers must generate those reports/logs through their commands (for example `pytest
 --junitxml=test-results.xml` or `cdk synth --quiet > synth.log 2>&1`). Uploads run after success or
 failure, but not cancellation; absent files warn rather than masking the original failure. Retention
-is seven days. `diagnostics-name` is caller-controlled; Python appends runner and Python version,
+defaults to seven days and is configurable with `diagnostics-retention-days`, subject to repository
+limits. `diagnostics-name` is caller-controlled; Python appends runner and Python version,
+Swift appends the runner label,
 while CDK callers must provide unique names for repeated/matrix calls. Never include credentials,
 secrets, or confidential synthesis context in diagnostic paths. Diagnostics are not release
 distributions and do not enable downstream publication.
