@@ -16,11 +16,12 @@ on:
         type: string
         default: ''
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   dependency-review:
+    permissions:
+      contents: read
     name: Review dependency changes
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
