@@ -52,6 +52,17 @@ Keep changes focused. A workflow input or default is a public interface: update 
 documentation, fixtures, contract tests, and changelog together. Preserve full action commit pins.
 Quality workflow and composite-action steps are deliberately duplicated and checked for parity.
 
+Library CI uses the shared Python setup action with an explicit requirements-file command and cache
+path. Requirements-only projects need not pretend to be Python packages. An empty `install-command`
+provides setup-only mode; CI separately exercises it before installing the Python fixture. Keep the
+default editable/dev installation unchanged for existing callers.
+
+Align common automation conventions, not application-specific behavior: job-scoped permissions,
+environment reporting, generic caller commands, diagnostic retention controls, and reviewable
+dependency maintenance. Do not import package-release/build targets, AWS deployment, Xcode signing,
+or hard-coded `main`/`develop` routing solely to match a sibling repository. Local action paths in
+library CI intentionally refer to this checkout; remotely called workflows retain standalone steps.
+
 Use [testing](TESTING.md) for focused validation. Add a regression test for changed behavior. Do not
 introduce deploys or publishing into the library's own CI. Fixtures must remain free of cloud
 credentials. For release work, follow the [release policy](../RELEASE-POLICY.md).
