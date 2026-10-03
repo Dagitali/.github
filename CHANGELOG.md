@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Align local policy entry points with sibling projects: connect the installed pre-push hook to the
+  existing Make gate, expose an overridable repository root, and add an explicit Popo-backed
+  `release-changelog` target without changing the default feature-branch checks or publishing
+  policy.
 - Generalize Python caching with an optional cache-manager/disable input, including package metadata
   path overrides and CDK Python cache control, preserving existing pip defaults and Node cache
   logic.
