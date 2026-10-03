@@ -47,16 +47,25 @@ dependencies. Optional `make hooks` requires pre-commit to be installed separate
 
 Shared conventions include `check-pre-push`, `docs-markdown`, `self-check`, and annotated help.
 `docs-check` remains an alias. Both projects use pytest. Purposeful differences from Popo: this
-library uses actionlint rather than package lint/build commands; `self-check` runs only applicable pin and
-documentation policies rather than Popo's package-oriented `check-all`. It has no distribution,
-runtime-install, or publishing targets. `lint` retains workflow and contract validation.
+library adds actionlint and automation contracts to Python checks; `self-check` runs only applicable
+pin and documentation policies rather than Popo's package-oriented `check-all`. It has no
+distribution, runtime-install, or publishing targets. `lint` includes Ruff lint/format checks
+alongside workflow and contract validation; `typecheck` runs strict mypy over root regression
+helpers.
 
-Override `PROJECT_TOOLS_MODULE`, `ACTIONLINT`, `PYTEST`, `AUTOMATION_ROOT`, `WORKFLOW_PATHS`,
-`TESTS_DIR`, `TEST_PATTERN`, or `TEST_ARGS`
-when needed. A replacement tools module must provide the same CLI commands as Popo.
-The test runner is `PYTEST` (default `$(PYTHON) -m pytest`), replacing `UNITTEST`.
-`TEST_PATTERN` overrides pytest's `python_files`; `TEST_ARGS` accepts pytest options,
-for example `make test TEST_ARGS="-q -k parity"`.
+`make format-check`, `make python-lint`, and `make typecheck` run without modifying source files.
+Ruff follows the siblings' Python 3.13 target and lint rule families, retaining existing quote
+formatting. Mypy excludes `tests/fixtures/`: those independent projects own their dependency
+environments and hosted checks. Ruff still checks their Python source, respecting nested settings.
+The pinned YAML stubs allow strict checking without suppressing missing imports.
+
+Override `PROJECT_TOOLS_MODULE`, `ACTIONLINT`, `PYTEST`, `RUFF`, `MYPY`, `AUTOMATION_ROOT`,
+`WORKFLOW_PATHS`, `TESTS_DIR`, `TEST_PATTERN`, or `TEST_ARGS` when needed. A replacement tools
+module must provide the same CLI commands as Popo. `PYTHON_FORMAT_PATHS` defaults to `tests`;
+`PYTHON_LINT_PATHS` inherits it unless overridden. Mypy discovery is configured in `pyproject.toml`;
+override `MYPY` to select another configuration. The test runner is `PYTEST` (default `$(PYTHON) -m
+pytest`), replacing `UNITTEST`. `TEST_PATTERN` overrides pytest's `python_files`; `TEST_ARGS`
+accepts pytest options, for example `make test TEST_ARGS="-q -k parity"`.
 
 `requirements-dev.txt` pins Popo v0.3.7 to its published Git commit. Setup requires network access;
 checks run locally without it. Use Popo's public CLI for generic repository policies, not imports
