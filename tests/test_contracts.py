@@ -7,6 +7,7 @@
 # - Keep candidate library validation aligned with the regular quality gate.
 # - Preserve independent evidence from all validation matrix legs.
 # - Check inspection reporting without installing tools or querying services.
+# - Preserve evidence when optional tool-version queries fail.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -554,11 +555,27 @@ def test_inspection_summary_evidence(
     data: dict[str, Any] | None,
     expected: str,
 ) -> None:
-    """Render actual evidence summaries without claiming failed reports are clean."""
+    """
+    Render evidence with successful, failed, and unavailable tool queries.
+
+    Executable shims record the real pip-list invocation without installing
+    packages. Version-query failures must retain report status and fall back
+    explicitly; they must not label failed inspection reports as clean.
+    """
     report = tmp_path / 'report.json'
     if data is not None:
         report.write_text(json.dumps(data))
     summary = tmp_path / 'summary.md'
+    invocation = tmp_path / 'tool-invocation'
+    if outcome != 'skipped':
+        tool_python = tmp_path / 'tools/bin/python'
+        tool_python.parent.mkdir(parents=True)
+        tool_python.write_text(
+            '#!/bin/bash\nprintf "%s\\n" "$*" > "$TOOL_INVOCATION"\n'
+            'printf \'[{"name":"fixture-tool","version":"1.2.3"}]\\n\'\n'
+            'exit "$VERSION_STATUS"\n'
+        )
+        tool_python.chmod(0o755)
     step = inspection_steps['Report inspection evidence']
     result = subprocess.run(
         ['bash', '-euo', 'pipefail', '-c', step['run']],
@@ -573,6 +590,8 @@ def test_inspection_summary_evidence(
             RESOLUTION='default',
             TOOL_VERSION='1.2.3',
             GITHUB_STEP_SUMMARY=str(summary),
+            TOOL_INVOCATION=str(invocation),
+            VERSION_STATUS='0' if outcome == 'success' else '17',
         ),
         capture_output=True,
         text=True,
@@ -583,6 +602,13 @@ def test_inspection_summary_evidence(
     rendered = summary.read_text()
     assert 'a' * 40 in rendered
     assert 'No artifact available' in rendered
+    if outcome == 'success':
+        assert 'fixture-tool' in rendered
+    else:
+        assert 'Tool environment unavailable' in rendered
+        assert 'fixture-tool' not in rendered
+    if outcome != 'skipped':
+        assert invocation.read_text().strip() == '-m pip list --format=json'
     if outcome != 'success':
         assert expected in rendered
         assert 'Validated inventory' not in rendered
