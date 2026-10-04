@@ -343,6 +343,21 @@ not its import module. Defaults pin pip-audit 2.10.1 or cyclonedx-bom 7.2.2 and 
 `python-dependency-audit` or `python-sbom`. Give each invocation a unique artifact name when calling
 one workflow multiple times. Tool transitives and caller build backends are resolver-selected.
 
+Additional opt-in tool inputs are `tool-dependency-resolution` (`default`, `lowest`, or `highest`),
+`resolver-version` (uv `0.12.3`), and `tool-constraints-path` (empty by default; otherwise relative
+to the checkout). The unchanged default uses pip. Boundary modes install uv in a third, separate
+environment, keep the direct inspection-tool pin, and resolve wheel-only tool dependencies with uv's
+lowest/highest strategy. Constraints apply only to tool dependencies, not the inspected project.
+Invalid modes fail before setup. The default does not install uv or apply constraints.
+
+Manual candidates retain default-tool validation and separately exercise both boundary modes with
+[inspection constraints](../requirements/inspection-constraints.txt). These are tested compatibility
+floors, not upstream's absolute minima: unconstrained lowest resolution selects legacy packages that
+fail on modern Python. Floors keep urllib3, pyparsing, pip-api, and CycloneDX's shared library in
+compatible ranges. Lowest-mode environments are compatibility experiments, not recommended
+production locks or a claim that the tools' own dependencies are vulnerability-free. Review local
+smokes and hosted matrix results when changing these floors; other platforms remain unverified.
+
 Installation runs in a fresh target virtual environment; inspection tools use a separate environment.
 The default installs runtime dependencies only. Overrides can install requirements files or extras,
 but then reports cover that selected environment, not necessarily a production runtime. Use `python`
@@ -359,8 +374,34 @@ unless cancelled; missing findings warn without converting the original failure 
 This is dependency auditing, not source or CDK infrastructure security analysis.
 See [pip-audit's security model](https://github.com/pypa/pip-audit).
 
+The excluded audit distribution must be a valid distribution name, match the caller directory's
+`pyproject.toml` `[project].name` after standard name normalization, and be installed in the target
+environment. Invalid names fail before installation; mismatched/missing metadata fails before the
+advisory query. This guards against silently excluding a different dependency. Requirements-only or
+legacy-metadata projects must provide suitable project metadata before adopting this workflow.
+
 The inventory uses CycloneDX's validated environment command and uploads only on successful
 generation. It includes the installed project, runtime dependencies, and target bootstrap tools,
 but not the isolated SBOM generator. It is a Python dependency inventory, not an exhaustive source,
 Node, Swift, container, or deployed-resource SBOM, and is not a signature or provenance attestation.
 See [CycloneDX environment usage](https://cyclonedx-bom-tool.readthedocs.io/en/latest/usage.html).
+
+Inspection summaries include the candidate SHA, runtime, requested/resolved tool versions,
+resolution mode, selected project scope, report status, and any uploaded artifact link. Audit
+findings remain distinct from a failed tool/query with no findings; a missing report is never a
+clean audit. Summary steps do not suppress inspection failures. Both workflows expose an additive
+`artifact-url` output on successful completion; failed reusable jobs may not return outputs even
+when findings uploaded. The candidate summary includes returned default-job links and a run-artifact
+navigation link for boundary/failure reports, explicitly noting that navigation is not proof of
+report existence. Review each matrix leg for exact resolution and results.
+
+This library's PR dependency-review caller includes `runtime,development,unknown` because validation
+tools are part of its security surface. The reusable default remains `runtime`; consuming projects
+own their scope policy. Dependabot groups named validation tools before production/development
+groups, keeping requirements-only root tools separate even if classified as production. Runtime and
+development fixture groups follow supported package-manager classification; schedules stay in UTC.
+
+Repository-specific [CODEOWNERS](../.github/CODEOWNERS) covers automation, fixtures, dependency
+policy, and governance using the sibling maintainer account. It does not establish organization-wide
+ownership or enable review enforcement. See [branch protection
+guidance](../.github/BRANCH-PROTECTION.md) for the separately configured hosted review requirements.
