@@ -22,6 +22,11 @@ workflow Python should document reusable helper arguments, file effects, and fai
 candidate renderer accepts its payload/path explicitly and appends before checking job outcomes.
 Typing heterogeneous GitHub payloads with Any is deliberate, not runtime schema validation.
 
+Inspection summary helpers likewise use typed interpreter paths and captured subprocess results.
+Tool-version queries are best-effort: absent environments or failed pip-list commands retain an
+explicit fallback rather than discarding inspection evidence. Keep launch errors visible and do not
+turn this reporting helper into a dependency installer or security audit.
+
 The generated portion of `.gitignore` retains its original [generator
 URL](https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
 and [editable profile

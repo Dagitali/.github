@@ -11,6 +11,11 @@ Maintainer Notes
 -->
 # Testing
 
+The existing parameterized inspection-summary cases also exercise successful, nonzero, and absent
+tool-version queries. Executable shims capture the actual pip-list arguments; failed queries retain
+the explicit unavailable message and the original report status. This coverage uses the same
+fixtures and cases, without another suite, package installation, or advisory-service calls.
+
 Candidate-summary cases execute the workflow's typed renderer for all aggregate outcomes and verify
 that existing summary content survives appends. Refactoring the renderer does not change dependency
 selection, missing-artifact warnings, or the final failure gate; hosted behavior remains separately
