@@ -186,8 +186,10 @@ jobs:
       working-directory: tests/fixtures/python-cdk
 
   summary:
+    # Tool pins stay fixed while only their transitive resolution varies.
+    # Boundaries are supplementary; inspect all matrix legs independently.
     if: ${{ always() }}
-    needs: [validate, python, package, package-python314, package-consumer, cdk, swift, python-cdk, dependency-audit, dependency-inventory]
+    needs: [validate, python, package, package-python314, package-consumer, cdk, swift, python-cdk, dependency-audit, dependency-inventory, audit-boundaries, inventory-boundaries]
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -197,6 +199,7 @@ jobs:
         env:
           RESULTS: ${{ toJSON(needs) }}
           CANDIDATE_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python3 - <<'PY'
           import json
@@ -216,6 +219,42 @@ jobs:
                   report.write(f"\n{name}: {url or 'No artifact evidence available'}\n")
               report.write('\nMatrix outcomes are aggregate; inspect job legs for individual '
                            'results. Skipped/cancelled checks are missing evidence, not passes.\n')
+              report.write(f"\nInspection evidence: {os.environ['RUN_URL']}#artifacts\n")
+              for name in ('dependency-audit', 'dependency-inventory'):
+                  outputs = results.get(name, {}).get('outputs', {})
+                  report.write(f"\n{name}: {outputs.get('artifact-url') or 'No returned artifact link; inspect run artifacts'}\n")
+              report.write('Audit/inventory jobs include default, lowest, and highest tool '
+                           'dependency resolution. Inspect their summaries and named artifacts; '
+                           'a run link alone does not prove that any report exists.\n')
           if any(job['result'] != 'success' for job in results.values()):
               raise SystemExit('Candidate validation is incomplete or failed')
           PY
+
+  audit-boundaries:
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        resolution: [lowest, highest]
+    uses: ./.github/workflows/python-dependency-audit.yml
+    with:
+      working-directory: tests/fixtures/python-cdk
+      project-distribution: dagitali-python-cdk-fixture
+      tool-dependency-resolution: ${{ matrix.resolution }}
+      artifact-name: candidate-audit-${{ matrix.resolution }}
+      tool-constraints-path: requirements/inspection-constraints.txt
+
+  inventory-boundaries:
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        resolution: [lowest, highest]
+    uses: ./.github/workflows/python-sbom.yml
+    with:
+      working-directory: tests/fixtures/python-cdk
+      tool-dependency-resolution: ${{ matrix.resolution }}
+      artifact-name: candidate-inventory-${{ matrix.resolution }}
+      tool-constraints-path: requirements/inspection-constraints.txt
