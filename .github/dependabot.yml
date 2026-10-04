@@ -38,8 +38,12 @@ updates:
       prefix: build
       include: scope
     groups:
-      python-dependencies:
-        patterns: ['*']
+      python-validation-tools:
+        patterns: [popo, pytest, ruff, mypy, PyYAML, pyyaml, types-*]
+      python-runtime-dependencies:
+        dependency-type: production
+      python-development-dependencies:
+        dependency-type: development
   - package-ecosystem: npm
     directories:
       - /tests/fixtures/node-cdk
