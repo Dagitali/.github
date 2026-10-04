@@ -88,6 +88,9 @@
 
 ### Documentation and Maintenance
 
+- Align CODEOWNERS with sibling default-owner and grouped-surface conventions, retaining all
+  existing owners and adding explicit profile coverage. Cover new paths and root policies through
+  the fallback without changing hosted review enforcement or consumer ownership.
 - Align issue-form/chooser and branch-protection headers with sibling maintainer conventions while
   preserving community defaults. Document and type candidate/inspection summary helpers' payloads,
   interpreter paths, captured results, append-only file effects, and failure boundaries; retain
