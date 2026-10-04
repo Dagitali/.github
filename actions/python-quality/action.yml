@@ -4,9 +4,14 @@
 #
 # Responsibilities
 # - Run trusted caller-defined Python quality commands.
+# - Propagate check failures without installing or repairing dependencies.
 #
 # Maintainer Notes
 # - Keep defaults and command steps aligned with the reusable Python workflow.
+# - The caller checks out source and installs Python and quality tools first.
+# - Empty command inputs skip only their corresponding checks.
+# - Commands execute caller code; environment indirection is not a sandbox.
+# - Keep report paths, artifact uploads, and failure conditions in the caller.
 
 name: Python quality checks
 description: Run configurable formatting, linting, type-checking, and test commands.

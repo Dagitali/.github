@@ -5,9 +5,14 @@
 # Responsibilities
 # - Set up Python and optionally run a trusted installation command.
 # - Reject unsupported cache selectors before runtime setup.
+# - Verify installed dependency compatibility and report Python/pip versions.
 #
 # Maintainer Notes
 # - Check out first; preserve setup parity and empty-command behavior.
+# - Keep remote action references pinned to full commit SHAs.
+# - Cache paths are checkout-relative, not relative to working-directory.
+# - An empty install command skips installation and pip check, not reporting.
+# - Install commands execute trusted caller code; this is not a sandbox.
 
 name: Set up Python project
 description: Set up cached Python and optionally install dependencies with a caller-owned command.

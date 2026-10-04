@@ -4,9 +4,14 @@
 #
 # Responsibilities
 # - Run quality checks and offline CDK synthesis in the caller environment.
+# - Propagate check failures without installing or repairing dependencies.
 #
 # Maintainer Notes
 # - The caller installs runtimes and dependencies; preserve workflow parity.
+# - Check out source and install the CDK CLI before invoking this action.
+# - Optional quality commands may be empty; synthesis remains required.
+# - Synthesis executes caller code; do not supply deployment credentials.
+# - Keep report paths, artifact uploads, and failure conditions in the caller.
 
 name: AWS CDK quality checks
 description: Run configurable quality checks and synthesize an AWS CDK application.
