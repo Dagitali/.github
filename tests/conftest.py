@@ -5,6 +5,7 @@
 # - Shared fixtures and data-driven collection for the automation library.
 # - Load real input-validation steps without executing remote actions.
 # - Document declaration and fixture parameter contracts alongside types.
+# - Share read-only inspection declarations across behavior and policy tests.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -164,6 +165,39 @@ def cache_validation_steps_fixture() -> dict[str, list[dict[str, Any]]]:
             else declaration['jobs'][job]['steps']
         )
     return result
+
+
+@pytest.fixture(name='inspection_steps', scope='session')
+def inspection_steps_fixture(
+    inspection_workflow: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+    """Index inspection steps by name without copying or mutating declarations.
+
+    Both workflows name their steps. Returned values reference the shared
+    workflow fixture and must remain read-only; this helper does not validate
+    GitHub's schema or replace Popo's generic checks.
+    """
+    steps: list[dict[str, Any]] = inspection_workflow['jobs']['inspect']['steps']
+    return {step['name']: step for step in steps}
+
+
+@pytest.fixture(
+    name='inspection_workflow',
+    scope='session',
+    params=['python-dependency-audit', 'python-sbom'],
+)
+def inspection_workflow_fixture(
+    request: pytest.FixtureRequest,
+    repo_root: Path,
+) -> dict[str, Any]:
+    """Load each real inspection workflow once without executing its commands.
+
+    Parameters are trusted workflow stems. Parsing errors propagate; callers
+    must treat the session-shared declaration as read-only. Heterogeneous YAML
+    fields deliberately retain Any, as in the existing declaration fixtures.
+    """
+    stem: str = request.param
+    return read_yaml(repo_root / f'.github/workflows/{stem}.yml')
 
 
 @pytest.fixture(
