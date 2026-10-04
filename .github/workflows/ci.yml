@@ -8,6 +8,8 @@
 #
 # Maintainer Notes
 # - Keep hosted evidence distinct from local lint; never publish or deploy.
+# - Preserve job identifiers and names used by required branch checks.
+# - Keep make check authoritative for local and hosted library validation.
 
 name: Automation library CI
 

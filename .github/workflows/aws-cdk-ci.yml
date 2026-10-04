@@ -8,6 +8,8 @@
 #
 # Maintainer Notes
 # - Preserve lockfile-aware caching; never obtain credentials or deploy.
+# - Caller workflows own triggers and cancellation, not this shared workflow.
+# - Offline synthesis executes caller code; it is not a sandbox boundary.
 
 name: Reusable AWS CDK CI
 

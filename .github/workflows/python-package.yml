@@ -9,6 +9,8 @@
 #
 # Maintainer Notes
 # - Upload only validated distributions; publication belongs to the consumer.
+# - Build backends and smoke commands execute trusted caller code.
+# - Archive outputs describe the upload, not each distribution's checksum.
 
 name: Reusable Python Package CI
 

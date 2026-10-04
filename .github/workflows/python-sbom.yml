@@ -11,6 +11,8 @@
 # Maintainer Notes
 # - Installs execute caller code; use trusted code without credentials.
 # - Never publish, deploy, or automatically repair dependencies.
+# - Inventory the installed target, not repository sources or tooling.
+# - Inventory validation is not a vulnerability audit or health verdict.
 
 name: Reusable Python Dependency Inventory
 
@@ -184,9 +186,9 @@ jobs:
               )
               return result.stdout if result.returncode == 0 else 'Tool environment unavailable'
 
-          report_path = pathlib.Path(os.environ.get('REPORT_PATH', '__missing_report__'))
-          outcome = os.environ['INSPECTION_OUTCOME']
-          status = 'Missing report'
+          report_path: pathlib.Path = pathlib.Path(os.environ.get('REPORT_PATH', '__missing_report__'))
+          outcome: str = os.environ['INSPECTION_OUTCOME']
+          status: str = 'Missing report'
           if report_path.is_file():
               try:
                   data = json.loads(report_path.read_text())
@@ -195,7 +197,7 @@ jobs:
                   status = 'Invalid report; inspect tool failure'
           if outcome != 'success':
               status += f'; inspection outcome: {outcome or "not run"}'
-          tool_python = pathlib.Path(os.environ.get('TOOL_ENV', '__missing_tools__')) / 'bin/python'
+          tool_python: pathlib.Path = pathlib.Path(os.environ.get('TOOL_ENV', '__missing_tools__')) / 'bin/python'
           versions: str = read_tool_versions(tool_python)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
               summary.write(f"## Python inventory: {status}\n\n")

@@ -9,6 +9,7 @@
 #
 # Maintainer Notes
 # - Retain unique artifact names and a non-publishing release boundary.
+# - Expanded matrices stay manual; do not replace ordinary required checks.
 
 name: Release candidate validation
 run-name: Release candidate validation on ${{ github.ref_name }}

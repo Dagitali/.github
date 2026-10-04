@@ -11,6 +11,8 @@
 # Maintainer Notes
 # - Installs execute caller code; use trusted code without credentials.
 # - Never publish, deploy, or automatically repair dependencies.
+# - Audit the target runtime, not tooling or dependencies excluded by callers.
+# - A failed inspection with zero findings must not report a clean audit.
 
 name: Reusable Python Dependency Audit
 
@@ -155,11 +157,16 @@ jobs:
           import tomllib
 
           def normalize(name: str) -> str:
-              """Normalize a distribution name for metadata comparison."""
+              """Return a case-insensitive distribution-name comparison key.
+
+              Collapse runs of hyphens, underscores, and dots to a hyphen.
+              This pure helper compares declared and excluded identities;
+              it does not validate names or query installed distributions.
+              """
               return re.sub(r'[-_.]+', '-', name).lower()
 
-          expected = os.environ['PROJECT_DISTRIBUTION']
-          declared = tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['name']
+          expected: str = os.environ['PROJECT_DISTRIBUTION']
+          declared: str = tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['name']
           if normalize(expected) != normalize(declared):
               raise SystemExit('Excluded distribution must match pyproject.toml project.name')
           importlib.metadata.distribution(expected)
@@ -212,13 +219,13 @@ jobs:
               )
               return result.stdout if result.returncode == 0 else 'Tool environment unavailable'
 
-          report_path = pathlib.Path(os.environ.get('REPORT_PATH', '__missing_report__'))
-          outcome = os.environ['INSPECTION_OUTCOME']
-          status = 'Missing report'
+          report_path: pathlib.Path = pathlib.Path(os.environ.get('REPORT_PATH', '__missing_report__'))
+          outcome: str = os.environ['INSPECTION_OUTCOME']
+          status: str = 'Missing report'
           if report_path.is_file():
               try:
                   data = json.loads(report_path.read_text())
-                  findings = sum(len(item['vulns']) for item in data['dependencies'])
+                  findings: int = sum(len(item['vulns']) for item in data['dependencies'])
                   status = f'{findings} vulnerability findings'
                   if outcome != 'success' and findings == 0:
                       status += '; audit/tool failure, not a clean audit'
@@ -226,7 +233,7 @@ jobs:
                   status = 'Invalid report; inspect tool failure'
           if outcome != 'success':
               status += f'; inspection outcome: {outcome or "not run"}'
-          tool_python = pathlib.Path(os.environ.get('TOOL_ENV', '__missing_tools__')) / 'bin/python'
+          tool_python: pathlib.Path = pathlib.Path(os.environ.get('TOOL_ENV', '__missing_tools__')) / 'bin/python'
           versions: str = read_tool_versions(tool_python)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
               summary.write(f"## Dependency audit: {status}\n\n")

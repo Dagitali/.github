@@ -9,6 +9,8 @@
 # Maintainer Notes
 # - Preserve setup/quality parity with composite actions and propagate
 #   failures.
+# - Caller workflows own triggers and cancellation, not this shared workflow.
+# - Command inputs execute caller code; they are not a sandbox boundary.
 
 name: Reusable Python CI
 
