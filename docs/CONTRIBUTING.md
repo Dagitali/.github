@@ -127,6 +127,13 @@ production/development fixture groups. CODEOWNERS uses the sibling maintainer ac
 repository access, but hosted review rules and independent reviewers remain separate
 responsibilities.
 
+CODEOWNERS keeps a default maintainer first, followed by explicit library-surface rules, matching
+the sibling CDK and website repositories. The fallback covers new paths and root policy files;
+explicit rules preserve reviewable boundaries for future specialization, including the organization
+profile. GitHub uses the last matching rule. Keep ownerless exceptions deliberate and retain
+ownership of CODEOWNERS itself through `/.github/`. This routing applies only to this repository;
+consumer repositories manage their own owners and hosted enforcement.
+
 Library CI uses the shared Python setup action with an explicit requirements-file command and cache
 path. Requirements-only projects need not pretend to be Python packages. An empty `install-command`
 provides setup-only mode; CI separately exercises it before installing the Python fixture. Keep the
