@@ -145,6 +145,15 @@ dependency maintenance. Do not import package-release/build targets, AWS deploym
 or hard-coded `main`/`develop` routing solely to match a sibling repository. Local action paths in
 library CI intentionally refer to this checkout; remotely called workflows retain standalone steps.
 
+Public composite actions stay under `actions/`, unlike the siblings' repository-local
+`.github/actions/` paths. Moving them would break remote consumer references. Keep setup
+command-based rather than copying project-specific extras, dependency groups, Make targets, or Xcode
+wrappers. Setup reports Python/pip even when installation is skipped; quality actions use the
+caller's installed tools and do not repair dependencies. Empty optional checks skip their step, but
+CDK synthesis remains required. Following the siblings' separation of responsibilities, keep report
+production commands configurable and artifact upload/failure policy in the caller. Treat command
+inputs and synthesis as trusted code execution, not a sandbox boundary.
+
 Workflow headers record these boundaries alongside sibling-style maintainer guidance: preserve
 required-check identities, keep expanded candidate matrices manual, and leave shared workflow
 triggers/cancellation to callers. Build, synthesis, and command inputs execute trusted project code,
