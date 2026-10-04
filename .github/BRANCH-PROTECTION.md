@@ -1,3 +1,14 @@
+<!--
+.github/BRANCH-PROTECTION.md
+Dagitali shared automation library
+
+Responsibilities
+- Explain review ownership and safe required-check transitions.
+
+Maintainer Notes
+- This guidance does not configure hosted rules or prove enforcement.
+- Keep integration policy independent of a fixed branching model.
+-->
 # Branch Protection Guidance
 
 This is a proposed maintainer baseline, not evidence of active hosted settings.

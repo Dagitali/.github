@@ -15,6 +15,13 @@ Swift's first-line tools version. Document Python helper side effects, failure b
 values, and annotate test/fixture interfaces with Path, pytest types, and captured subprocess types.
 Dynamic YAML fields may use Any deliberately; type annotations do not replace Popo validation.
 
+Issue-form and chooser headers follow sibling responsibility/maintainer conventions, while keeping
+the organization default's existing field IDs, requiredness, labels, and reporting routes. Do not
+copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. Inline
+workflow Python should document reusable helper arguments, file effects, and failure behavior; the
+candidate renderer accepts its payload/path explicitly and appends before checking job outcomes.
+Typing heterogeneous GitHub payloads with Any is deliberate, not runtime schema validation.
+
 The generated portion of `.gitignore` retains its original [generator
 URL](https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
 and [editable profile
