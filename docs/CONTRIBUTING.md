@@ -145,6 +145,13 @@ dependency maintenance. Do not import package-release/build targets, AWS deploym
 or hard-coded `main`/`develop` routing solely to match a sibling repository. Local action paths in
 library CI intentionally refer to this checkout; remotely called workflows retain standalone steps.
 
+Workflow headers record these boundaries alongside sibling-style maintainer guidance: preserve
+required-check identities, keep expanded candidate matrices manual, and leave shared workflow
+triggers/cancellation to callers. Build, synthesis, and command inputs execute trusted project code,
+not sandboxed code. Audit findings concern the selected runtime dependencies; an installed-target
+SBOM is neither a source inventory nor a vulnerability verdict. Inline inspection-state annotations
+document expected values without adding runtime validation or suppressing existing failures.
+
 Use [testing](TESTING.md) for focused validation. Add a regression test for changed behavior. Do not
 introduce deploys or publishing into the library's own CI. Fixtures must remain free of cloud
 credentials. For release work, follow the [release policy](../RELEASE-POLICY.md). Use the
