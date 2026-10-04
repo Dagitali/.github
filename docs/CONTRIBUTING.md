@@ -107,6 +107,14 @@ Keep changes focused. A workflow input or default is a public interface: update 
 documentation, fixtures, contract tests, and changelog together. Preserve full action commit pins.
 Quality workflow and composite-action steps are deliberately duplicated and checked for parity.
 
+Review inspection constraints deliberately using the manual candidate's lowest/highest matrices; do
+not replace direct tool pins or production defaults with a lowest-resolution environment. The
+constraints document tested compatibility floors and exclude legacy dependency combinations, not
+every security advisory. Root validation tools receive a separate Dependabot group before
+production/development fixture groups. CODEOWNERS uses the sibling maintainer account with verified
+repository access, but hosted review rules and independent reviewers remain separate
+responsibilities.
+
 Library CI uses the shared Python setup action with an explicit requirements-file command and cache
 path. Requirements-only projects need not pretend to be Python packages. An empty `install-command`
 provides setup-only mode; CI separately exercises it before installing the Python fixture. Keep the
