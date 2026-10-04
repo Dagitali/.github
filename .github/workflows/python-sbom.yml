@@ -5,6 +5,7 @@
 # Responsibilities
 # - Inspect caller-selected Python dependencies in an isolated environment.
 # - Keep inspection tooling separate and retain machine-readable evidence.
+# - Report resolved target dependencies separately from inspection tools.
 #
 # Maintainer Notes
 # - Installs execute caller code; use trusted code without credentials.
@@ -129,6 +130,11 @@ jobs:
               "${constraints[@]}" "cyclonedx-bom==$TOOL_VERSION"
           fi
           "$TOOL_ENV/bin/python" -m pip check
+      - name: Report inspected environment
+        run: |
+          "$TARGET_ENV/bin/python" --version
+          "$TARGET_ENV/bin/python" -m pip --version
+          "$TARGET_ENV/bin/python" -m pip list --format=json
       - name: Generate validated dependency inventory
         id: inspection
         run: |
