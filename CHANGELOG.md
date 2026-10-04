@@ -89,8 +89,9 @@
 ### Documentation and Maintenance
 
 - Align issue-form/chooser and branch-protection headers with sibling maintainer conventions while
-  preserving community defaults. Document and type the candidate summary renderer's payload,
-  append-only file effects, and failure boundary; retain existing reports and aggregate outcomes.
+  preserving community defaults. Document and type candidate/inspection summary helpers' payloads,
+  interpreter paths, captured results, append-only file effects, and failure boundaries; retain
+  existing reports, aggregate outcomes, and explicit fallbacks for unavailable tool versions.
 - Add repository-specific review ownership, broaden only library dependency review to development
   and unknown scopes, and separate validation-tool/runtime/development update groups. Document
   hosted enforcement limits and checked-in inspection compatibility floors for manual candidates.
