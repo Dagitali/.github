@@ -92,9 +92,12 @@
   existing owners and adding explicit profile coverage. Cover new paths and root policies through
   the fallback without changing hosted review enforcement or consumer ownership.
 - Align issue-form/chooser and branch-protection headers with sibling maintainer conventions while
-  preserving community defaults. Document and type candidate/inspection summary helpers' payloads,
-  interpreter paths, captured results, append-only file effects, and failure boundaries; retain
-  existing reports, aggregate outcomes, and explicit fallbacks for unavailable tool versions.
+  preserving community defaults. Clarify workflow scheduling, trusted-code, required-check, and
+  audit/inventory boundaries in maintainer headers. Expand distribution-name helper documentation
+  and annotate inspection state without changing commands or public defaults. Document and type
+  candidate/inspection summary helpers' payloads, interpreter paths, captured results, append-only
+  file effects, and failure boundaries; retain existing reports, aggregate outcomes, and explicit
+  fallbacks for unavailable tool versions.
 - Add repository-specific review ownership, broaden only library dependency review to development
   and unknown scopes, and separate validation-tool/runtime/development update groups. Document
   hosted enforcement limits and checked-in inspection compatibility floors for manual candidates.
