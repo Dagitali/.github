@@ -66,6 +66,8 @@ jobs:
       contents: read
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/dependency-review.yml
+    with:
+      fail-on-scopes: runtime,development,unknown
 
   package:
     permissions:
