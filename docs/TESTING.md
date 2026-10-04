@@ -1,4 +1,21 @@
+<!--
+docs/TESTING.md
+Dagitali shared automation library
+
+Responsibilities
+- Explain local contracts, isolated fixtures, and hosted evidence boundaries.
+
+Maintainer Notes
+- Keep shared declaration fixtures read-only and runtime effects isolated.
+- Local passing checks do not establish hosted runner or advisory success.
+-->
 # Testing
+
+Inspection declarations are session-scoped, parameterized fixtures in `conftest.py`, parsed through
+the existing typed YAML loader. Named step mappings are read-only views of those declarations; tests
+reuse them rather than maintaining separate loaders or fixture copies. Environment-report ordering
+is checked alongside isolation, and the existing installation behavior cases exercise target
+version/dependency reporting through shims without adding another suite or network calls.
 
 Inspection installation tests execute the real shell with isolated venv/pip shims, checking target
 PATH/interpreter routing, pip versus optional boundary resolution, and failure before tool setup.
