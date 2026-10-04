@@ -2,6 +2,12 @@
 
 This is a proposed maintainer baseline, not evidence of active hosted settings.
 
+The repository-specific [CODEOWNERS](CODEOWNERS) routes automation, tests, dependency policy, and
+governance changes to the sibling projects' maintainer, @djrlj694. Write/admin access was verified
+when adding the file; maintainers must recheck access when ownership changes. Require code-owner
+review through hosted rules if appropriate for available independent reviewers. Ownership is not
+inherited by consuming repositories, and the file does not activate enforcement by itself.
+
 Require reviewed pull requests, resolved conversations, and successful validation for integration
 branches. Restrict force pushes, deletion, and bypass access. Choose approval requirements that
 match available independent reviewers; authors cannot independently approve their own changes.
