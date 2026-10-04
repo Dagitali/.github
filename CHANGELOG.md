@@ -108,6 +108,8 @@
 - Document automation/fixture responsibilities with sibling-style headers and compact YAML schema
   hints; expand Python helper/test docstrings and type annotations. Wrap header comments to 79
   characters, preserve generator/Markdown URLs and hidden guidance, and keep rendered community
-  defaults, ignore patterns, executable contracts, and JSON/generated locks unchanged.
+  defaults, ignore patterns, executable contracts, and JSON/generated locks unchanged. Clarify
+  composite-action prerequisites, setup-only reporting, trusted commands, failure propagation, and
+  caller-owned artifact policy while preserving public paths and generic inputs.
 - Add PR dependency review and stagger dependency maintenance in UTC, covering external actions,
   both Python fixtures, and pre-commit. Include maintenance YAML in Popo validation.
