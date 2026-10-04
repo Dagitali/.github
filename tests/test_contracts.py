@@ -6,6 +6,7 @@
 # - Verify constrained inputs fail before setup or caller preparation.
 # - Keep candidate library validation aligned with the regular quality gate.
 # - Preserve independent evidence from all validation matrix legs.
+# - Check inspection reporting without installing tools or querying services.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -46,16 +47,6 @@ def candidate_fixture(
             Loader=yaml.BaseLoader,
         ),
     )
-
-
-@pytest.fixture(params=['python-dependency-audit', 'python-sbom'])
-def inspection_steps(request: pytest.FixtureRequest, repo_root: Path) -> dict[str, Any]:
-    """Return named inspection steps for both reusable consumer interfaces."""
-    workflow = yaml.load(
-        (repo_root / f'.github/workflows/{request.param}.yml').read_text(),
-        Loader=yaml.BaseLoader,
-    )
-    return {step['name']: step for step in workflow['jobs']['inspect']['steps']}
 
 
 # !SECTION
@@ -309,18 +300,13 @@ def test_cdk_dependency_check_failure(
 
 
 @pytest.mark.parametrize(
-    'stem',
-    ['python-dependency-audit', 'python-sbom'],
-)
-@pytest.mark.parametrize(
     'status',
     [0, 17],
     ids=['success', 'inspection-failure'],
 )
 def test_dependency_inspection_failure_propagation(
-    repo_root: Path,
+    inspection_workflow: dict[str, Any],
     tmp_path: Path,
-    stem: str,
     status: int,
 ) -> None:
     """Run real inspection shells with isolated tool shims, never public services.
@@ -328,10 +314,7 @@ def test_dependency_inspection_failure_propagation(
     A failed audit or inventory must stop subsequent work while retaining any
     produced findings. Tool invocations are recorded to check target selection.
     """
-    workflow = yaml.load(
-        (repo_root / f'.github/workflows/{stem}.yml').read_text(),
-        Loader=yaml.BaseLoader,
-    )
+    workflow = inspection_workflow
     for name in ('target', 'tools'):
         bin_path = tmp_path / name / 'bin'
         bin_path.mkdir(parents=True)
@@ -373,7 +356,7 @@ def test_dependency_inspection_failure_propagation(
     assert (tmp_path / 'next-step').exists() == (status == 0)
     assert report.read_text().strip() == '{}'
     invocation = (tmp_path / 'invocation').read_text()
-    if stem.endswith('audit'):
+    if 'project-distribution' in workflow['on']['workflow_call']['inputs']:
         assert '--no-deps --disable-pip --strict --format json' in invocation
         assert (tmp_path / 'audit-requirements.txt').read_text().strip() == (
             'fixture-dependency==1.0'
@@ -383,19 +366,15 @@ def test_dependency_inspection_failure_propagation(
         assert '--output-format JSON --validate' in invocation
 
 
-@pytest.mark.parametrize(
-    'stem',
-    ['python-dependency-audit', 'python-sbom'],
-)
 def test_dependency_inspection_isolation(
-    repo_root: Path,
-    stem: str,
+    inspection_workflow: dict[str, Any],
 ) -> None:
-    """Keep tools out of inspected environments and preserve failure evidence."""
-    workflow = yaml.load(
-        (repo_root / f'.github/workflows/{stem}.yml').read_text(),
-        Loader=yaml.BaseLoader,
-    )
+    """Keep tools separate and report target dependencies before inspection.
+
+    Declaration checks preserve environment-report ordering without changing
+    installation defaults or claiming hosted advisory/artifact success.
+    """
+    workflow = inspection_workflow
     inputs = workflow['on']['workflow_call']['inputs']
     assert inputs['install-command']['default'] == 'python -m pip install .'
     steps = workflow['jobs']['inspect']['steps']
@@ -410,7 +389,12 @@ def test_dependency_inspection_isolation(
     upload = next(step for step in steps if step.get('id') == 'upload')
     inspection = next(step for step in steps if step.get('id') == 'inspection')
     assert upload['with']['archive'] == 'true'
-    if stem.endswith('audit'):
+    report = next(
+        step for step in steps if step['name'] == 'Report inspected environment'
+    )
+    assert steps.index(prepare) < steps.index(report) < steps.index(inspection)
+    assert '"$TARGET_ENV/bin/python" -m pip list --format=json' in report['run']
+    if 'project-distribution' in workflow['on']['workflow_call']['inputs']:
         audit = inspection
         assert '--no-deps --disable-pip --strict' in audit['run']
         assert '--exclude "$PROJECT_DISTRIBUTION" --exclude pip' in audit['run']
@@ -426,7 +410,7 @@ def test_dependency_inspection_isolation(
     ['valid-project', '', 'pkg; touch injected', '-pkg'],
 )
 def test_inspection_input_preflight(
-    inspection_steps: dict[str, Any],
+    inspection_steps: dict[str, dict[str, Any]],
     tmp_path: Path,
     name: str,
 ) -> None:
@@ -461,7 +445,7 @@ def test_inspection_input_preflight(
     ids=['success', 'install-failure'],
 )
 def test_inspection_install_isolation(
-    inspection_steps: dict[str, Any],
+    inspection_steps: dict[str, dict[str, Any]],
     tmp_path: Path,
     resolution: str,
     status: int,
@@ -493,7 +477,15 @@ def test_inspection_install_isolation(
         f'exit {status}'
     )
     result = subprocess.run(
-        ['bash', '-euo', 'pipefail', '-c', step['run']],
+        [
+            'bash',
+            '-euo',
+            'pipefail',
+            '-c',
+            step['run']
+            + '\n'
+            + inspection_steps['Report inspected environment']['run'],
+        ],
         cwd=tmp_path,
         env=dict(
             os.environ,
@@ -526,6 +518,8 @@ def test_inspection_install_isolation(
         invocations = log.read_text()
         assert f'{target}/bin/python -m pip check' in invocations
         assert f'{tools}/bin/python -m pip check' in invocations
+        assert f'{target}/bin/python --version' in invocations
+        assert f'{target}/bin/python -m pip list --format=json' in invocations
         if resolution != 'default':
             assert f'--resolution {resolution}' in invocations
             assert f'--python {tools}/bin/python' in invocations
@@ -546,7 +540,7 @@ def test_inspection_install_isolation(
     ],
 )
 def test_inspection_summary_evidence(
-    inspection_steps: dict[str, Any],
+    inspection_steps: dict[str, dict[str, Any]],
     tmp_path: Path,
     outcome: str,
     data: dict[str, Any] | None,
