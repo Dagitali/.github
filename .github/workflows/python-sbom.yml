@@ -6,6 +6,7 @@
 # - Inspect caller-selected Python dependencies in an isolated environment.
 # - Keep inspection tooling separate and retain machine-readable evidence.
 # - Report resolved target dependencies separately from inspection tools.
+# - Retain evidence when best-effort tool version reporting is unavailable.
 #
 # Maintainer Notes
 # - Installs execute caller code; use trusted code without credentials.
@@ -167,6 +168,22 @@ jobs:
           import pathlib
           import subprocess
 
+          def read_tool_versions(tool_python: pathlib.Path) -> str:
+              """Return installed-tool JSON or an explicit unavailable message.
+
+              Runs only the supplied environment's pip list; never installs
+              packages or queries advisories. A missing interpreter or nonzero
+              exit retains the fallback so version reporting cannot hide
+              inspection evidence. Process-launch errors still propagate.
+              """
+              if not tool_python.is_file():
+                  return 'Tool environment unavailable'
+              result: subprocess.CompletedProcess[str] = subprocess.run(
+                  [str(tool_python), '-m', 'pip', 'list', '--format=json'],
+                  capture_output=True, text=True, check=False,
+              )
+              return result.stdout if result.returncode == 0 else 'Tool environment unavailable'
+
           report_path = pathlib.Path(os.environ.get('REPORT_PATH', '__missing_report__'))
           outcome = os.environ['INSPECTION_OUTCOME']
           status = 'Missing report'
@@ -179,12 +196,7 @@ jobs:
           if outcome != 'success':
               status += f'; inspection outcome: {outcome or "not run"}'
           tool_python = pathlib.Path(os.environ.get('TOOL_ENV', '__missing_tools__')) / 'bin/python'
-          versions = 'Tool environment unavailable'
-          if tool_python.is_file():
-              result = subprocess.run([str(tool_python), '-m', 'pip', 'list', '--format=json'],
-                                      capture_output=True, text=True, check=False)
-              if result.returncode == 0:
-                  versions = result.stdout
+          versions: str = read_tool_versions(tool_python)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
               summary.write(f"## Python inventory: {status}\n\n")
               summary.write(f"SHA: {os.environ['CANDIDATE_SHA']}\n\n")
