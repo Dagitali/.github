@@ -5,6 +5,7 @@
 # Responsibilities
 # - Expand fixture validation through manual candidate runs.
 # - Validate the library itself across supported Python runtimes.
+# - Append candidate evidence before rejecting incomplete validation.
 #
 # Maintainer Notes
 # - Retain unique artifact names and a non-publishing release boundary.
@@ -204,28 +205,48 @@ jobs:
           python3 - <<'PY'
           import json
           import os
+          from collections.abc import Mapping
+          from typing import Any
 
-          results = json.loads(os.environ['RESULTS'])
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as report:
-              report.write(f"## Candidate `{os.environ['CANDIDATE_SHA']}`\n\n")
-              report.write('Library/package: Python 3.13/3.14; Python CI: Ubuntu 24.04/macOS 15; '
-                           'CDK: locked/unlocked Node and Python; Swift: macOS 15/latest.\n\n')
-              report.write('| Job | Outcome |\n| --- | --- |\n')
-              for name, job in results.items():
-                  report.write(f"| {name} | {job['result']} |\n")
-              for name in ('package', 'package-python314'):
-                  outputs = results[name].get('outputs', {})
-                  url = outputs.get('artifact-url', '')
-                  report.write(f"\n{name}: {url or 'No artifact evidence available'}\n")
-              report.write('\nMatrix outcomes are aggregate; inspect job legs for individual '
-                           'results. Skipped/cancelled checks are missing evidence, not passes.\n')
-              report.write(f"\nInspection evidence: {os.environ['RUN_URL']}#artifacts\n")
-              for name in ('dependency-audit', 'dependency-inventory'):
-                  outputs = results.get(name, {}).get('outputs', {})
-                  report.write(f"\n{name}: {outputs.get('artifact-url') or 'No returned artifact link; inspect run artifacts'}\n")
-              report.write('Audit/inventory jobs include default, lowest, and highest tool '
-                           'dependency resolution. Inspect their summaries and named artifacts; '
-                           'a run link alone does not prove that any report exists.\n')
+          def write_summary(
+              results: Mapping[str, Mapping[str, Any]],
+              candidate_sha: str,
+              run_url: str,
+              report_path: str,
+          ) -> None:
+              """Append aggregate candidate evidence without querying hosted state.
+
+              The supplied path is GitHub's summary file; existing content is
+              retained. Missing artifact links remain explicit. Mapping fields
+              follow GitHub's needs payload; annotations do not validate it.
+              File errors and malformed payloads propagate to fail the job.
+              """
+              with open(report_path, 'a', encoding='utf-8') as report:
+                  report.write(f"## Candidate `{candidate_sha}`\n\n")
+                  report.write('Library/package: Python 3.13/3.14; Python CI: Ubuntu 24.04/macOS 15; '
+                               'CDK: locked/unlocked Node and Python; Swift: macOS 15/latest.\n\n')
+                  report.write('| Job | Outcome |\n| --- | --- |\n')
+                  for name, job in results.items():
+                      report.write(f"| {name} | {job['result']} |\n")
+                  for name in ('package', 'package-python314'):
+                      outputs = results[name].get('outputs', {})
+                      url = outputs.get('artifact-url', '')
+                      report.write(f"\n{name}: {url or 'No artifact evidence available'}\n")
+                  report.write('\nMatrix outcomes are aggregate; inspect job legs for individual '
+                               'results. Skipped/cancelled checks are missing evidence, not passes.\n')
+                  report.write(f"\nInspection evidence: {run_url}#artifacts\n")
+                  for name in ('dependency-audit', 'dependency-inventory'):
+                      outputs = results.get(name, {}).get('outputs', {})
+                      report.write(f"\n{name}: {outputs.get('artifact-url') or 'No returned artifact link; inspect run artifacts'}\n")
+                  report.write('Audit/inventory jobs include default, lowest, and highest tool '
+                               'dependency resolution. Inspect their summaries and named artifacts; '
+                               'a run link alone does not prove that any report exists.\n')
+
+          results: dict[str, dict[str, Any]] = json.loads(os.environ['RESULTS'])
+          write_summary(
+              results, os.environ['CANDIDATE_SHA'], os.environ['RUN_URL'],
+              os.environ['GITHUB_STEP_SUMMARY'],
+          )
           if any(job['result'] != 'success' for job in results.values()):
               raise SystemExit('Candidate validation is incomplete or failed')
           PY
