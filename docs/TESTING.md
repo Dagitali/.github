@@ -1,5 +1,20 @@
 # Testing
 
+Inspection installation tests execute the real shell with isolated venv/pip shims, checking target
+PATH/interpreter routing, pip versus optional boundary resolution, and failure before tool setup.
+Audit preflight tests reject malformed distribution names; identity tests use real importlib
+metadata to cover normalized matches, wrong project names, and missing installations. Summary
+behavior tests cover findings, tool failures, skipped checks, and absent artifact links. Hosted
+transfer and advisory service failures remain distinct from local shim coverage.
+
+Manual candidates add lowest/highest tool-transitive matrices alongside the original default pip
+jobs. Direct tool versions remain pinned; uv 0.12.3 and checked-in compatibility constraints define
+wheel-only resolution experiments. Local Python 3.14 smokes established successful
+constrained-lowest/highest audit and validated SBOM commands after unconstrained legacy dependencies
+failed. This is not hosted Python 3.13 evidence, an exhaustive compatibility claim, or a
+vulnerability-free tool attestation. Library policy tests ensure the expanded matrices remain
+manual-only and the broader dependency-review scope does not change the reusable default.
+
 Candidate checks now consume package outputs in a downstream job for both Python versions, verify
 the downloaded archive digest, and check distribution contents. Local parameterized tests execute
 the real guard with valid, mismatched-digest, extra-file, and missing-sdist archives. Summary tests
