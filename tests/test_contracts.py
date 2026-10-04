@@ -19,6 +19,7 @@ import io
 import json
 import os
 import subprocess
+import sys
 import tarfile
 import zipfile
 from pathlib import Path
@@ -47,6 +48,16 @@ def candidate_fixture(
     )
 
 
+@pytest.fixture(params=['python-dependency-audit', 'python-sbom'])
+def inspection_steps(request: pytest.FixtureRequest, repo_root: Path) -> dict[str, Any]:
+    """Return named inspection steps for both reusable consumer interfaces."""
+    workflow = yaml.load(
+        (repo_root / f'.github/workflows/{request.param}.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    return {step['name']: step for step in workflow['jobs']['inspect']['steps']}
+
+
 # !SECTION
 
 
@@ -54,10 +65,59 @@ def candidate_fixture(
 
 
 @pytest.mark.parametrize(
+    'state',
+    ['normalized-match', 'wrong-project', 'not-installed'],
+)
+def test_audit_project_identity(
+    repo_root: Path,
+    tmp_path: Path,
+    state: str,
+) -> None:
+    """Validate declared and installed identity using real importlib metadata."""
+    workflow = yaml.load(
+        (repo_root / '.github/workflows/python-dependency-audit.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    step = next(
+        step
+        for step in workflow['jobs']['inspect']['steps']
+        if step.get('id') == 'inspection'
+    )
+    script = step['run'].split('"$TARGET_ENV/bin/python" -m pip freeze')[0]
+    target_bin = tmp_path / 'target/bin'
+    target_bin.mkdir(parents=True)
+    (target_bin / 'python').symlink_to(sys.executable)
+    (tmp_path / 'pyproject.toml').write_text('[project]\nname = "example-project"\n')
+    if state != 'not-installed':
+        metadata = tmp_path / 'example_project-1.0.dist-info'
+        metadata.mkdir()
+        (metadata / 'METADATA').write_text('Name: example-project\nVersion: 1.0\n')
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', script],
+        cwd=tmp_path,
+        env=dict(
+            os.environ,
+            TARGET_ENV=str(tmp_path / 'target'),
+            PYTHONPATH=str(tmp_path),
+            PROJECT_DISTRIBUTION='other-project'
+            if state == 'wrong-project'
+            else 'Example_Project',
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert (result.returncode == 0) == (state == 'normalized-match'), result.stderr
+
+
+@pytest.mark.parametrize(
     'state', ['valid', 'wrong-digest', 'extra-file', 'missing-sdist']
 )
 def test_candidate_download_validation(
-    candidate: dict[str, Any], tmp_path: Path, state: str
+    candidate: dict[str, Any],
+    tmp_path: Path,
+    state: str,
 ) -> None:
     """Execute the downloaded-archive guard against local synthetic distributions."""
     downloaded = tmp_path / 'downloaded'
@@ -94,7 +154,8 @@ def test_candidate_download_validation(
 
 
 def test_candidate_evidence_contract(
-    candidate: dict[str, Any], repo_root: Path
+    candidate: dict[str, Any],
+    repo_root: Path,
 ) -> None:
     """Retain deterministic outputs, locked fixtures, and honest result aggregation."""
     jobs = candidate['jobs']
@@ -118,7 +179,9 @@ def test_candidate_evidence_contract(
     assert summary['if'] == '${{ always() }}'
 
 
-def test_candidate_library_validation_parity(repo_root: Path) -> None:
+def test_candidate_library_validation_parity(
+    repo_root: Path,
+) -> None:
     """
     Compare the actual candidate gate with regular CI, except runtime
     selection.
@@ -183,6 +246,7 @@ def test_candidate_summary_outcomes(
                 }
             ),
             CANDIDATE_SHA='a' * 40,
+            RUN_URL='https://github.com/Dagitali/.github/actions/runs/123',
             GITHUB_STEP_SUMMARY=str(report),
         ),
         capture_output=True,
@@ -282,7 +346,11 @@ def test_dependency_inspection_failure_propagation(
             )
         )
         interpreter.chmod(0o755)
-    step = workflow['jobs']['inspect']['steps'][-2]
+    step = next(
+        step
+        for step in workflow['jobs']['inspect']['steps']
+        if step.get('id') == 'inspection'
+    )
     report = tmp_path / 'report.json'
     result = subprocess.run(
         ['bash', '-euo', 'pipefail', '-c', step['run'] + '\ntouch next-step'],
@@ -339,17 +407,213 @@ def test_dependency_inspection_isolation(
     assert '"$TARGET_ENV/bin/python" -m pip check' in prepare['run']
     assert 'PATH="$TARGET_ENV/bin:$PATH"' in prepare['run']
     assert '"$TOOL_ENV/bin/python" -m pip install' in prepare['run']
-    upload = steps[-1]
+    upload = next(step for step in steps if step.get('id') == 'upload')
+    inspection = next(step for step in steps if step.get('id') == 'inspection')
     assert upload['with']['archive'] == 'true'
     if stem.endswith('audit'):
-        audit = steps[-2]
+        audit = inspection
         assert '--no-deps --disable-pip --strict' in audit['run']
         assert '--exclude "$PROJECT_DISTRIBUTION" --exclude pip' in audit['run']
         assert '--fix' not in audit['run']
         assert upload['if'] == '${{ always() && !cancelled() }}'
     else:
-        assert '--output-format JSON --validate' in steps[-2]['run']
+        assert '--output-format JSON --validate' in inspection['run']
         assert 'if' not in upload
+
+
+@pytest.mark.parametrize(
+    'name',
+    ['valid-project', '', 'pkg; touch injected', '-pkg'],
+)
+def test_inspection_input_preflight(
+    inspection_steps: dict[str, Any],
+    tmp_path: Path,
+    name: str,
+) -> None:
+    """Check audit-name rejection before installation and without shell injection."""
+    step = inspection_steps['Validate inspection inputs']
+    audit = 'PROJECT_DISTRIBUTION' in step['env']
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run']],
+        cwd=tmp_path,
+        env=dict(
+            os.environ,
+            INSTALL_COMMAND='true',
+            RESOLUTION='default',
+            PROJECT_DISTRIBUTION=name,
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert (result.returncode == 0) == (not audit or name == 'valid-project')
+    assert not (tmp_path / 'injected').exists()
+
+
+@pytest.mark.parametrize(
+    'resolution',
+    ['default', 'lowest', 'highest'],
+)
+@pytest.mark.parametrize(
+    'status',
+    [0, 17],
+    ids=['success', 'install-failure'],
+)
+def test_inspection_install_isolation(
+    inspection_steps: dict[str, Any],
+    tmp_path: Path,
+    resolution: str,
+    status: int,
+) -> None:
+    """
+    Execute installation shells with venv/pip shims and real environment routing.
+
+    Installation failures must stop tool setup, including boundary resolution.
+    No package installation or public service request occurs in this test.
+    """
+    bootstrap = tmp_path / 'python'
+    shim = tmp_path / 'shim'
+    bootstrap.write_text(
+        '#!/bin/bash\nmkdir -p "$3/bin"\n'
+        'cp "$SHIM" "$3/bin/python"\ncp "$SHIM" "$3/bin/uv"\n'
+    )
+    shim.write_text('#!/bin/bash\nprintf "%s %s\\n" "$0" "$*" >> "$TOOL_LOG"\n')
+    bootstrap.chmod(0o755)
+    shim.chmod(0o755)
+    target = tmp_path / 'target'
+    tools = tmp_path / 'tools'
+    resolver = tmp_path / 'resolver'
+    log = tmp_path / 'tool.log'
+    constraints = tmp_path / 'tool constraints.txt'
+    constraints.write_text('urllib3>=2\n')
+    step = inspection_steps['Prepare isolated inspection environments']
+    command = (
+        'printf "%s\\n" "$VIRTUAL_ENV" "$PYTHON" "$(command -v python)" > install-env; '
+        f'exit {status}'
+    )
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run']],
+        cwd=tmp_path,
+        env=dict(
+            os.environ,
+            PATH=str(tmp_path) + os.pathsep + os.environ['PATH'],
+            SHIM=str(shim),
+            TOOL_LOG=str(log),
+            INSTALL_COMMAND=command,
+            TARGET_ENV=str(target),
+            TOOL_ENV=str(tools),
+            RESOLVER_ENV=str(resolver),
+            RESOLUTION=resolution,
+            TOOL_CONSTRAINTS_PATH='' if resolution == 'default' else constraints.name,
+            GITHUB_WORKSPACE=str(tmp_path),
+            RESOLVER_VERSION='0.12.3',
+            TOOL_VERSION='1.2.3',
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert result.returncode == status, result.stderr
+    assert (tmp_path / 'install-env').read_text().splitlines() == [
+        str(target),
+        str(target / 'bin/python'),
+        str(target / 'bin/python'),
+    ]
+    assert log.exists() == (status == 0)
+    if status == 0:
+        invocations = log.read_text()
+        assert f'{target}/bin/python -m pip check' in invocations
+        assert f'{tools}/bin/python -m pip check' in invocations
+        if resolution != 'default':
+            assert f'--resolution {resolution}' in invocations
+            assert f'--python {tools}/bin/python' in invocations
+            assert 'uv==0.12.3' in invocations
+            assert f'--constraint {constraints}' in invocations
+            assert '--only-binary :all:' in invocations
+        else:
+            assert 'uv==' not in invocations
+
+
+@pytest.mark.parametrize(
+    'outcome,data,expected',
+    [
+        ('success', {'dependencies': [], 'bomFormat': 'CycloneDX'}, 'success'),
+        ('failure', {'dependencies': [{'vulns': [{}]}]}, 'failure'),
+        ('failure', {'dependencies': []}, 'failure'),
+        ('skipped', None, 'Missing report'),
+    ],
+)
+def test_inspection_summary_evidence(
+    inspection_steps: dict[str, Any],
+    tmp_path: Path,
+    outcome: str,
+    data: dict[str, Any] | None,
+    expected: str,
+) -> None:
+    """Render actual evidence summaries without claiming failed reports are clean."""
+    report = tmp_path / 'report.json'
+    if data is not None:
+        report.write_text(json.dumps(data))
+    summary = tmp_path / 'summary.md'
+    step = inspection_steps['Report inspection evidence']
+    result = subprocess.run(
+        ['bash', '-euo', 'pipefail', '-c', step['run']],
+        env=dict(
+            os.environ,
+            REPORT_PATH=str(report),
+            TOOL_ENV=str(tmp_path / 'tools'),
+            INSPECTION_OUTCOME=outcome,
+            ARTIFACT_URL='',
+            CANDIDATE_SHA='a' * 40,
+            PROJECT_DIRECTORY='fixture',
+            RESOLUTION='default',
+            TOOL_VERSION='1.2.3',
+            GITHUB_STEP_SUMMARY=str(summary),
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stderr
+    rendered = summary.read_text()
+    assert 'a' * 40 in rendered
+    assert 'No artifact available' in rendered
+    if outcome != 'success':
+        assert expected in rendered
+        assert 'Validated inventory' not in rendered
+
+
+def test_library_review_and_candidate_policy(
+    repo_root: Path,
+    candidate: dict[str, Any],
+) -> None:
+    """Keep stronger library policy local and expanded boundaries manual-only."""
+    regular = yaml.load(
+        (repo_root / '.github/workflows/ci.yml').read_text(), Loader=yaml.BaseLoader
+    )
+    assert regular['jobs']['dependency-review']['with']['fail-on-scopes'] == (
+        'runtime,development,unknown'
+    )
+    for name in ('audit-boundaries', 'inventory-boundaries'):
+        assert name not in regular['jobs']
+        job = candidate['jobs'][name]
+        assert job['strategy']['matrix']['resolution'] == ['lowest', 'highest']
+        assert (
+            job['with']['tool-constraints-path']
+            == 'requirements/inspection-constraints.txt'
+        )
+        assert job['with']['artifact-name'].endswith('${{ matrix.resolution }}')
+    reusable = yaml.load(
+        (repo_root / '.github/workflows/dependency-review.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    assert (
+        reusable['on']['workflow_call']['inputs']['fail-on-scopes']['default']
+        == 'runtime'
+    )
 
 
 def test_publishing_stays_in_consumer_job(
