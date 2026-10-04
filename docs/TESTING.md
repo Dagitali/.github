@@ -11,6 +11,12 @@ Maintainer Notes
 -->
 # Testing
 
+Candidate-summary cases execute the workflow's typed renderer for all aggregate outcomes and verify
+that existing summary content survives appends. Refactoring the renderer does not change dependency
+selection, missing-artifact warnings, or the final failure gate; hosted behavior remains separately
+verified. Issue-form/chooser header alignment preserves the parsed YAML bodies rather than changing
+community defaults to match an individual sibling project.
+
 Inspection declarations are session-scoped, parameterized fixtures in `conftest.py`, parsed through
 the existing typed YAML loader. Named step mappings are read-only views of those declarations; tests
 reuse them rather than maintaining separate loaders or fixture copies. Environment-report ordering
