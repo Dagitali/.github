@@ -42,6 +42,10 @@
 
 ### Validation and Tests
 
+- Align inspection environment reporting with sibling setup/CI conventions; retain separate target
+  and tool evidence. Share session-scoped, typed inspection declarations and named steps through
+  `conftest.py`, extending existing behavior/ordering checks without another suite or default
+  changes.
 - Extend manual candidates with deterministic per-runtime package callers and downstream artifact
   ID/digest/content checks, both Node CDK installation paths, optional dependency inspection, and
   failure-aware SHA/runtime/result summaries. Add focused archive and summary behavior tests without
