@@ -11,6 +11,10 @@
 
 ### Shared Automation
 
+- Harden optional inspection with fail-fast input guards and declared/installed audit-project
+  identity checks. Add opt-in constrained lowest/highest tool resolution, keeping default pip
+  behavior, direct pins, and target/tool separation; report SHA/runtime/tool scope and failure-aware
+  evidence links with additive successful artifact URL outputs.
 - Upgrade pinned checkout/upload/download actions to v7.0.1/v7.0.1/v8.0.1, retaining package
   archives, artifact outputs, and non-publishing permissions. Add optional isolated Python
   dependency auditing and validated CycloneDX inventories with configurable tool pins and retention.
@@ -80,6 +84,9 @@
 
 ### Documentation and Maintenance
 
+- Add repository-specific review ownership, broaden only library dependency review to development
+  and unknown scopes, and separate validation-tool/runtime/development update groups. Document
+  hosted enforcement limits and checked-in inspection compatibility floors for manual candidates.
 - Add contributor, testing, migration, branch-protection, artifact/cancellation, support,
   compatibility, and release-evidence guidance. Provide a release-notes template for consumer
   interfaces, hosted evidence, artifact contracts, and rollback without enabling publication or
