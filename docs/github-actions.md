@@ -1,3 +1,14 @@
+<!--
+docs/github-actions.md
+Dagitali shared automation library
+
+Responsibilities
+- Describe consumer-owned adoption and reusable automation contracts.
+
+Maintainer Notes
+- Preserve defaults and distinguish reporting from security attestations.
+- Deployment and publishing remain outside library validation workflows.
+-->
 # Shared GitHub Actions
 
 Dagitali maintains reusable workflows, composite actions, and starter templates here. Caller
@@ -358,13 +369,17 @@ compatible ranges. Lowest-mode environments are compatibility experiments, not r
 production locks or a claim that the tools' own dependencies are vulnerability-free. Review local
 smokes and hosted matrix results when changing these floors; other platforms remain unverified.
 
-Installation runs in a fresh target virtual environment; inspection tools use a separate environment.
-The default installs runtime dependencies only. Overrides can install requirements files or extras,
-but then reports cover that selected environment, not necessarily a production runtime. Use `python`
-or `$PYTHON` from the supplied environment, not an absolute interpreter or another virtualenv.
-Installation executes project/build code and may access package indexes: do not pass secrets or
-run privileged untrusted code. No deployment, publishing, automatic fixes, or cached environments
-are involved.
+Installation runs in a fresh target virtual environment; inspection tools use a separate
+environment. After successful setup, both inspection workflows log the target Python/pip versions
+and resolved dependency list, following sibling environment-reporting conventions. These
+target-environment logs are separate from the tool-version evidence in inspection summaries.
+Reporting does not audit the tools themselves, change installation policy, or establish
+vulnerability-free dependencies. The default installs runtime dependencies only. Overrides can
+install requirements files or extras, but then reports cover that selected environment, not
+necessarily a production runtime. Use `python` or `$PYTHON` from the supplied environment, not an
+absolute interpreter or another virtualenv. Installation executes project/build code and may access
+package indexes: do not pass secrets or run privileged untrusted code. No deployment, publishing,
+automatic fixes, or cached environments are involved.
 
 The audit freezes resolved dependencies, excluding the named project and pip, then queries public
 advisories with `--no-deps --disable-pip --strict`. Unpublished/VCS/editable dependencies that cannot
