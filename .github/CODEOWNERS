@@ -1,0 +1,28 @@
+# .github/CODEOWNERS
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Route shared automation and governance changes to maintainer review.
+#
+# Maintainer Notes
+# - Owners need repository write access; branch rules enable enforcement.
+# - Applies here only, not automatically to consuming repositories.
+
+/.github/                 @djrlj694
+/actions/                 @djrlj694
+/workflow-templates/      @djrlj694
+/tests/                   @djrlj694
+/docs/                    @djrlj694
+/Makefile                 @djrlj694
+/pyproject.toml           @djrlj694
+/requirements-dev.txt     @djrlj694
+/requirements/            @djrlj694
+/.pre-commit-config.yaml  @djrlj694
+/AGENTS.md                @djrlj694
+/README.md                @djrlj694
+/CHANGELOG.md             @djrlj694
+/CONTRIBUTING.md          @djrlj694
+/RELEASE-POLICY.md        @djrlj694
+/SECURITY.md              @djrlj694
+/SUPPORT.md               @djrlj694
+/CODE_OF_CONDUCT.md       @djrlj694
