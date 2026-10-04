@@ -223,8 +223,15 @@ def test_candidate_summary_outcomes(
     tmp_path: Path,
     outcome: str,
 ) -> None:
-    """Render actual summary code; missing evidence must never produce a pass."""
+    """
+    Execute the typed summary renderer and retain pre-existing report content.
+
+    The real workflow shell renders evidence before enforcing aggregate
+    success. Failed, skipped, or cancelled dependencies still fail the job;
+    these local cases do not emulate GitHub scheduling or artifact access.
+    """
     report = tmp_path / 'summary.md'
+    report.write_text('Existing report\n')
     step = candidate['jobs']['summary']['steps'][0]
     result = subprocess.run(
         ['bash', '-euo', 'pipefail', '-c', step['run']],
@@ -247,6 +254,7 @@ def test_candidate_summary_outcomes(
     )
     assert (result.returncode == 0) == (outcome == 'success'), result.stderr
     assert f'| package | {outcome} |' in report.read_text()
+    assert report.read_text().startswith('Existing report\n')
     assert 'No artifact evidence available' in report.read_text()
 
 
