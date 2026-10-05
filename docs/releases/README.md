@@ -34,8 +34,9 @@ record, and the [release policy] for validation and publication safeguards.
 Historical records describe the tagged revision; planned records describe intended candidates, not
 an existing release. Neither establishes today's automation contracts or support commitments. Use
 each record's version-specific changelog entry for concise scope and the [current release
-policy][release policy] for current procedures. Compact scaffold records and fuller automation
-records may use different sections when that reflects their actual scope.
+policy][release policy] for current procedures. Records use the common section names and order in
+the [release-notes template]. Keep scaffold and documentation-only sections brief, stating what is
+not applicable without inventing historical evidence.
 
 Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
 not establish historical validation; local tag metadata does not establish remote publication. Use
