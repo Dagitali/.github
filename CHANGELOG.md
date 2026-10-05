@@ -1,6 +1,13 @@
 # Changelog
 
 - [Unreleased](#unreleased)
+  - [Breaking Changes](#breaking-changes)
+  - [Shared Automation](#shared-automation)
+  - [Validation and Tests](#validation-and-tests)
+  - [Contributor Tooling](#contributor-tooling)
+  - [Documentation and Maintenance](#documentation-and-maintenance)
+- [\[0.1.0\] - 2026-09-29](#010---2026-09-29)
+- [\[0.0.0\] - 2026-09-28](#000---2026-09-28)
 
 ## Unreleased
 
@@ -105,6 +112,11 @@
 
 ### Documentation and Maintenance
 
+- Backfill retrospective records for local v0.0.0/v0.1.0 tags and matching historical summaries,
+  preserving tag identities and separating reconstructed scope from unverified outcomes.
+- Add an optional release-record archive index with sibling-aligned naming, candidate/publication,
+  retrospective-evidence, and maintenance conventions, without inventing historical records or
+  introducing another release gate.
 - Align organization issue-form prompts with sibling reproduction, compatibility, public-evidence,
   accessibility, and privacy guidance while preserving existing field IDs, labels, requiredness,
   titles, and chooser/reporting policy.
@@ -141,3 +153,23 @@
   caller-owned artifact policy while preserving public paths and generic inputs.
 - Add PR dependency review and stagger dependency maintenance in UTC, covering external actions,
   both Python fixtures, and pre-commit. Include maintenance YAML in Popo validation.
+
+## [0.1.0] - 2026-09-29
+
+Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
+recorded date, not verified publication. See the [release record](docs/releases/v0.1.0.md).
+
+- Add community-health defaults, issue/PR templates, and organization-profile documentation.
+- Add reusable Python, CDK, Swift, package, publish, and dependency-review workflows; shared
+  Python/CDK actions; and matching Python/CDK/Swift starters.
+- Add repository conventions, pre-commit configuration, and Actions usage documentation.
+- Historical validation, artifacts, remote publication, and adoption are not established here. Later
+  feature-branch hardening remains under `Unreleased`.
+
+## [0.0.0] - 2026-09-28
+
+Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
+recorded date, not verified publication. See the [release record](docs/releases/v0.0.0.md).
+
+- Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
+- No workflows, actions, templates, or executable validation exist in this scaffold.
