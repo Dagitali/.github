@@ -7,6 +7,7 @@
 # - Keep inspection tooling separate and retain machine-readable evidence.
 # - Report resolved target dependencies separately from inspection tools.
 # - Retain evidence when best-effort tool version reporting is unavailable.
+# - Document interpreter selection separately from target dependency scope.
 #
 # Maintainer Notes
 # - Installs execute caller code; use trusted code without credentials.
@@ -204,7 +205,8 @@ jobs:
           import subprocess
 
           def read_tool_versions(tool_python: pathlib.Path) -> str:
-              """Return installed-tool JSON or an explicit unavailable message.
+              """
+              Return installed-tool JSON or an explicit unavailable message.
 
               Runs only the supplied environment's pip list; never installs
               packages or queries advisories. A missing interpreter or nonzero

@@ -10,6 +10,7 @@
 # - Keep hosted evidence distinct from local lint; never publish or deploy.
 # - Preserve job identifiers and names used by required branch checks.
 # - Keep make check authoritative for local and hosted library validation.
+# - Use explicit Bash so failed pipeline stages cannot hide gate failures.
 
 name: Automation library CI
 
@@ -38,6 +39,9 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -128,6 +132,9 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
