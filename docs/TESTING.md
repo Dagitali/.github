@@ -11,6 +11,17 @@ Maintainer Notes
 -->
 # Testing
 
+Use the [setup instructions] for the local environment and the [documentation index] to find related
+consumer and maintainer guidance. The sections below distinguish local regression evidence from
+hosted validation; neither authorizes publishing or deployment.
+
+- [Contract Coverage](#contract-coverage)
+- [Local Quality Gate](#local-quality-gate)
+- [Test Design and Focused Checks](#test-design-and-focused-checks)
+- [Hosted Consumer Evidence](#hosted-consumer-evidence)
+
+## Contract Coverage
+
 The existing parameterized inspection-summary cases also exercise successful, nonzero, and absent
 tool-version queries. Executable shims capture the actual pip-list arguments; failed queries retain
 the explicit unavailable message and the original report status. This coverage uses the same
@@ -102,6 +113,8 @@ coverage disables caching explicitly. CDK dependency-check tests execute the rea
 with controlled Python/npm shims, covering successful checks and propagation of failures before a
 subsequent stage. These tests do not replace actual dependency resolution or hosted cache evidence.
 
+## Local Quality Gate
+
 `make check` runs Ruff lint/format checks, strict mypy on root helpers, actionlint over
 workflows and starter templates, automation contract validation, Popo CLI checks, and pytest
 regression tests. Python validation tools and YAML stubs are pinned in `requirements-dev.txt`; CI
@@ -121,6 +134,8 @@ discovery globs, local repository aliases, and template placeholders. Popo valid
 keys, local call inputs, required inputs, composite run-step shells, reference pins, and matching
 template metadata. It is a focused contract checker, not a complete replacement for GitHub's action
 metadata schema or runner validation.
+
+## Test Design and Focused Checks
 
 Generic parser and input-validation tests live in Popo. `tests/test_contracts.py` retains
 workflow/action parity, shell failure propagation, and publishing isolation. Parity tests use a
@@ -168,12 +183,14 @@ temporary directory, then checks that a Dagitali template placeholder passes and
 third-party mutable reference fails. Generic pin, broken-link, and placeholder edge-case tests
 belong to Popo; the Make gate still validates this repository's real automation and documentation.
 
-Follow the [setup instructions](CONTRIBUTING.md) to install the published Popo commit pinned in
+Follow the [setup instructions] to install the published Popo commit pinned in
 `requirements-dev.txt`. Validation does not require a sibling Popo checkout.
 
 `tests/test_makefile.py` exercises interpreter precedence, generic overrides, the default gate,
 compatibility aliases, and preservation of existing environments. `make check-pre-push` runs the
 same gate as `make check`; `make self-check` runs the pin and documentation policies only.
+
+## Hosted Consumer Evidence
 
 The library CI also executes these fixtures:
 
@@ -202,9 +219,9 @@ artifact transfer, permissions, and macOS behavior. Local lint and unit tests do
 hosted success. PyPI publication requires a separately authorized consumer release; library CI does
 not publish or mint PyPI credentials.
 
-Run the manual [candidate workflow](../.github/workflows/release-candidate.yml) on the candidate ref
-before release to expand the runtime matrix without expanding each PR run. Review normal CI as well.
-This workflow never publishes or deploys; local success is not hosted candidate evidence.
+Run the manual [candidate workflow] on the candidate ref before release to expand the runtime matrix
+without expanding each PR run. Review normal CI as well. This workflow never publishes or deploys;
+local success is not hosted candidate evidence.
 
 The Python CDK fixture pins CDK/constructs and test tools in its own `pyproject.toml`. Its
 environment-agnostic SQS stack performs no context lookups and needs no AWS credentials or
@@ -223,3 +240,7 @@ artifact uploads succeed.
 Package directory tests cover absent/empty output, stale/hidden files, symlinks, and a non-directory
 path, including preservation on rejection. Diagnostic upload conditions, actual report retention,
 dependency-review API availability, and merge-group check emission still need hosted evidence.
+
+[candidate workflow]: ../.github/workflows/release-candidate.yml
+[setup instructions]: CONTRIBUTING.md
+[documentation index]: README.md

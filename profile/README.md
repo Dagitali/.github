@@ -14,7 +14,8 @@ Maintainer Notes
 
 🙋‍♀️ A short introduction - what is your organization all about?
 🌈 Contribution guidelines - how can the community get involved?
-👩‍💻 Useful resources - where can the community find your docs? Is there anything else the community should know?
+👩‍💻 Useful resources - where can the community find your docs?
+Is there anything else the community should know?
 🍿 Fun facts - what does your team eat for breakfast?
 🧙 Remember, you can do mighty things with the power of
 [Markdown][markdown-guide]
@@ -27,6 +28,7 @@ and maintainable technology.
 
 - [What We Build](#what-we-build)
 - [Featured Projects](#featured-projects)
+- [Get Involved](#get-involved)
 
 ## What We Build
 
@@ -38,9 +40,25 @@ and maintainable technology.
 
 ## Featured Projects
 
-- ETLPlus
-- Waytally
-- Dagitali.com
-- AWS CDK utilities
+- [ETLPlus] — Python tools for practical ETL operations.
+- [Popo] — Read-only repository policy checks.
+- [AWS CDK Static Site] — A Python CDK construct
+  for static-site infrastructure.
+- Waytally — Apple-platform applications for recording places, routes, and trips.
+- [Dagitali.com] — Our company website.
 
-[markdown-guide]: https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+## Get Involved
+
+Start with a public project's README, contribution guide, and support instructions. Documentation
+improvements, reproducible bug reports, and focused proposals are welcome; discuss significant
+changes with the project's maintainers before implementation. Use that project's issue tracker or
+published help channel rather than this organization profile for project-specific questions.
+
+Report suspected vulnerabilities privately through the affected project's security policy, not in
+public issues. Repository access, contribution terms, and support channels vary by project.
+
+[ETLPlus]: https://github.com/Dagitali/ETLPlus
+[AWS CDK Static Site]: https://github.com/Dagitali/aws-cdk-static-site
+[Popo]: https://github.com/Dagitali/popo
+[Dagitali.com]: https://www.dagitali.com
+[markdown-guide]: https://www.markdownguide.org/

@@ -13,61 +13,93 @@ Maintainer Notes
 
 # Release Notes Archive
 
-This directory provides an optional home for reviewed, version-specific release records. Use the
-[changelog] for concise change history and the [release policy] for validation and publication
-safeguards. A committed record is not proof that its tag, GitHub Release, or consumer rollout
-exists.
+This archive indexes Dagitali's shared-automation release-aligned records, newest first. These
+optional documents preserve change scope, compatibility, support, validation, publication, adoption,
+rollback, and follow-up details where applicable. A committed record or local tag does not establish
+that a GitHub Release or consumer rollout exists.
+
+Use the [changelog] for concise change history, the [release-notes template] when preparing a
+record, and the [release policy] for validation and publication safeguards.
 
 - [Reading the Archive](#reading-the-archive)
-- [Records](#records)
+- [0.4 Series](#04-series)
+- [0.3 Series](#03-series)
+- [0.2 Series](#02-series)
+- [0.1 Series](#01-series)
+- [Initial Scaffold](#initial-scaffold)
 - [Maintaining the Archive](#maintaining-the-archive)
 
 ## Reading the Archive
 
-Records describe the tagged revision, not today's automation contracts or support commitments. Use
+Historical records describe the tagged revision; planned records describe intended candidates, not
+an existing release. Neither establishes today's automation contracts or support commitments. Use
 each record's version-specific changelog entry for concise scope and the [current release
-policy][release policy] for current procedures. Compact scaffold records and fuller
-automation records may use different sections when that reflects their actual scope.
+policy][release policy] for current procedures. Records use the common section names and order in
+the [release-notes template]. Keep scaffold and documentation-only sections brief, stating what is
+not applicable without inventing historical evidence.
 
 Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
 not establish historical validation; local tag metadata does not establish remote publication. Use
 the [release-notes template] for new records rather than copying obsolete runtime defaults or
 operational instructions from an older release.
 
-## Records
+## 0.4 Series
 
-- [v0.3.0] — planned/unreleased draft prepared 2026-10-05; feature integration and final candidate
-  validation are pending. This is not an existing tag or confirmed publication.
-- [v0.2.0] — locally tagged 2026-10-05: Shared-Actions hardening, inspection workflows,
-  consumer-owned publishing, and validation tooling; retrospective record prepared 2026-10-05.
-- [v0.1.0] — locally tagged 2026-09-29: Initial defaults, shared automation, and
-  Python/CDK/Swift starters; retrospective record prepared 2026-10-04.
-- [v0.0.0] — locally tagged 2026-09-28: License and README scaffold;
+- [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
+  release-history corrections are integrated into `release/0.4.0`. Tagging, hosted validation, and
+  publication remain pending; see the record for local validation evidence.
+
+## 0.3 Series
+
+- [v0.3.1] — 2026-10-05: Additional annotated tag at the same commit as v0.3.0; no source changes.
+  Retrospective record prepared 2026-10-05; the synchronization annotation is not a source fix.
+- [v0.3.0] — 2026-10-05: Release-documentation backfills and historical corrections; corrected
+  retrospective record prepared 2026-10-05. Its annotated feature scope was not shipped.
+
+## 0.2 Series
+
+- [v0.2.0] — 2026-10-05: Shared-Actions hardening, inspection workflows, consumer-owned publishing,
+  and validation tooling; retrospective record prepared 2026-10-05.
+
+## 0.1 Series
+
+- [v0.1.0] — 2026-09-29: Initial defaults, shared automation, and CDK/Python/Swift starters;
   retrospective record prepared 2026-10-04.
 
-Dates come from local annotated-tag metadata, not verified remote publication. Historical validation
-gaps are explicit. Draft entries are labeled separately from existing local tags; neither establishes
-remote publication.
+## Initial Scaffold
+
+- [v0.0.0] — 2026-09-28: License and README scaffold; retrospective record prepared 2026-10-04.
+
+Tagged-entry dates come from local annotated-tag metadata, not verified remote publication. Draft
+dates identify preparation only. Historical validation gaps are explicit; neither a draft nor a
+local tag establishes remote publication.
 
 ## Maintaining the Archive
 
-- When a maintainer chooses to archive a release record, use `vMAJOR.MINOR.PATCH.md` and list it
-  here, newest version first. Identify planned candidates separately from verified releases.
-- Start from the [release-notes template], preserving consumer compatibility, support, validation,
-  artifact, adoption, and rollback sections.
-- Identify the intended version and exact candidate commit. Record dates and results only when
-  supported by evidence; distinguish local checks from hosted validation and publication.
-- Keep missing checks explicit with `Not run: reason`. Link public evidence without credentials,
-  private identifiers, or confidential operational information.
-- Reconcile records with the changelog and release policy. Do not duplicate those policies or
-  introduce another required check merely to maintain this index.
-- Mark retrospective records as retrospective, separating original release evidence from later
-  reconstruction or validation. Correct errors through reviewed changes without rewriting tags.
-- Preserve file-header comments within 79 characters per line.
-- Keep descriptive reference definitions together at the bottom, sorted case-sensitively by
-  destination exactly as written, then by label. Preserve URLs, fragments, and contents anchors.
-- Run `make docs-markdown` and review reference-label resolution separately. Passing local link
-  validation does not establish external availability, release publication, or historical evidence.
+1. When choosing to archive a release record, create `docs/releases/vMAJOR.MINOR.PATCH.md` using the
+   [release-notes template]. Preserve applicable compatibility, support, validation, artifact,
+   publication, adoption, rollback, and follow-up sections. Mark untagged candidates as planned,
+   including candidates whose changelog entry is already dated.
+2. Reconcile scope with the candidate's changes, changelog, and release policy. Identify the
+   intended version tag without embedding a commit SHA. Identify the reviewed tree through linked
+   validation or review evidence; distinguish local checks from hosted validation and publication.
+   Do not duplicate policy or add a required check solely for this index.
+3. Record supported dates and results, keeping missing checks explicit with `Not run: reason`. Link
+   public evidence without credentials, private identifiers, or confidential information. Mark
+   retrospective records as retrospective; never transfer current-checkout results to a historical
+   tag. Correct errors through reviewed changes without rewriting tags. Verify tag targets and
+   differences from the preceding version; describe duplicate-commit tags explicitly rather than
+   treating their annotations as evidence of new source changes.
+4. List records newest first within their version series, using `version — YYYY-MM-DD: summary` with
+   an evidence-backed date. Label local tag dates explicitly when publication is unverified. For
+   untagged candidates, use `version — planned, prepared YYYY-MM-DD: summary`; use `undated` when no
+   date is established rather than inventing one.
+5. Preserve header comments within 79 characters per line. Keep descriptive reference definitions
+   together at the bottom, sorted case-sensitively by destination exactly as written, then label.
+   Preserve URLs, fragments, and contents anchors.
+6. Run `make docs-markdown` and review reference-label resolution separately. Before release,
+   complete the separate gates in the [release policy]. Local link validation does not establish
+   external availability, publication, or historical evidence.
 
 Archiving notes is optional, not a new release gate. Adding a record does not authorize tagging,
 publication, deployment, or consumer reference updates.
@@ -79,3 +111,5 @@ publication, deployment, or consumer reference updates.
 [v0.1.0]: v0.1.0.md
 [v0.2.0]: v0.2.0.md
 [v0.3.0]: v0.3.0.md
+[v0.3.1]: v0.3.1.md
+[v0.4.0]: v0.4.0.md
