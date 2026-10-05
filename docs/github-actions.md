@@ -200,7 +200,7 @@ Check out the consumer before using a remote composite action:
 
 ```yaml
 steps:
-  - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+  - uses: actions/checkout@REPLACE_WITH_REVIEWED_CHECKOUT_SHA # v6
     with:
       persist-credentials: false
   - uses: Dagitali/.github/actions/setup-python-project@REPLACE_WITH_RELEASE_SHA
@@ -476,6 +476,5 @@ configured hosted review requirements.
 [download]: https://github.com/actions/download-artifact
 [setup-python caching]: https://github.com/actions/setup-python/tree/v6#caching-packages-dependencies
 [upload]: https://github.com/actions/upload-artifact
-[pinned upload action's metadata]: https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml
 [PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
 [pip-audit's security model]: https://github.com/pypa/pip-audit
