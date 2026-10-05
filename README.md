@@ -70,6 +70,11 @@ Keep consumer-specific support contacts and contribution terms in consumer docum
 [GitHub's default-file rules][default-files] and the [security policy](SECURITY.md) for reporting
 configuration. This repository's license does not license other Dagitali projects.
 
+Use the manual [consumer adoption checklist](docs/ADOPTION.md) to record verified defaults,
+overrides, caller revisions, and separate hosted evidence. See [maintenance
+guidance](docs/MAINTENANCE.md) for ownership, exception records, inactive consumers, and interface
+migrations.
+
 ## Shared Automation
 
 Dagitali repositories can also reuse the centrally maintained automation in this repository:

@@ -32,6 +32,9 @@ Maintainer Notes
 
 ### Shared Automation
 
+- Add PR-only dependency-review and manual Python audit/inventory starters with matching chooser
+  metadata, retaining read-only tokens, SHA placeholders, and consumer-owned adoption.
+
 - Align internal checkout, setup, and quality-gate step labels with sibling conventions for clearer
   failure logs, preserving job/check identities, command behavior, and regular/candidate gate
   parity.
@@ -124,6 +127,8 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
+  missing settings from unverified hosted evidence without automatic enforcement or consumer writes.
 - Clarify first-time contribution and coordinated security-report handling without imposing
   project-specific commands, response deadlines, or publication commitments. Remove obsolete
   profile prompts and link stale dependency-audit guidance to the implemented inspection workflows.
