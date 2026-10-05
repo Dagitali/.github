@@ -105,6 +105,9 @@
 
 ### Documentation and Maintenance
 
+- Add repository-local Copilot guidance that links authoritative maintenance, contract, testing,
+  and release policies, matching sibling discovery conventions without duplicating policy or
+  imposing library instructions on consumers.
 - Align Markdown review/release guidance with sibling risk, documentation, missing-evidence, and
   hosted-protection conventions, preserving the generic organization PR default and library-specific
   consumer compatibility and rollback evidence.
