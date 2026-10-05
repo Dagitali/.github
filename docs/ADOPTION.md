@@ -18,6 +18,7 @@ details in a public record. See the [adoption boundaries] and [Actions guide] fo
 examples.
 
 - [Record](#record)
+- [Completed Reviews](#completed-reviews)
 - [Review Boundaries](#review-boundaries)
 
 ## Record
@@ -40,6 +41,12 @@ applicable**, with a reason. An inaccessible setting is not verified, not eviden
 | Hosted required checks, review rules, merge queue, and bypass access are separately verified | Not verified | |
 | Overrides/exceptions and the previous known-good SHA have a responsible maintainer | Not verified | |
 
+## Completed Reviews
+
+- [2026-10-05 hosted review]: Library and representative consumer `aws-cdk-static-site`; observed
+  reporting, workflow, ownership, and branch-rule results, with missing and inaccessible evidence
+  explicitly recorded. This is not an adoption sign-off.
+
 ## Review Boundaries
 
 Review repository files and hosted settings separately. Local checks cannot prove effective default
@@ -60,4 +67,5 @@ deprecated interfaces. An unchecked checklist does not block adoption automatica
 [branch protection guidance]: ../.github/BRANCH-PROTECTION.md
 [adoption boundaries]: ../README.md#adoption-and-overrides
 [maintenance guidance]: MAINTENANCE.md
+[2026-10-05 hosted review]: adoption/2026-10-05-hosted-review.md
 [Actions guide]: github-actions.md
