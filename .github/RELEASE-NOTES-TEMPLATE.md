@@ -24,16 +24,25 @@ If retaining a committed record, follow the optional [release notes
 archive] conventions. Label retrospective records explicitly; later
 checks do not establish the original release's validation or publication results.
 
-## Release Identity and Highlights
+Record release identity in the introduction, before the section navigation:
 
 - Version and status: planned, validated candidate, or confirmed published release.
 - Exact candidate commit SHA and intended version tag; verify both refer to the reviewed tree.
+
+Use the following section names and order for archived records. Keep non-applicable sections concise
+and explicit rather than inventing contracts or historical evidence.
+
+## Highlights
+
 - Summarize the important consumer-visible reliability, security, or maintenance outcomes.
 
-## Change Scope and Compatibility
+## Change Scope
 
 - Link relevant pull requests, issues, and architectural decisions where applicable.
 - Affected workflow/action paths and starter templates; important areas intentionally unchanged.
+
+## Compatibility and Configuration
+
 - Changed input names, types, defaults, requiredness, outputs, and command behavior.
 - Breaking changes and deprecations: give each its own explicit migration instructions.
 - Required consumer edits, including small caller workflows and release-SHA substitutions.
@@ -48,7 +57,7 @@ checks do not establish the original release's validation or publication results
 - State application-specific exclusions, including Xcode signing and AWS deployment when relevant.
 - Link the applicable [workflow contracts].
 
-## Validation Evidence
+## Validation
 
 - Local commands, results, environment versions, and the exact tree tested.
 - Normal library CI run and manual release-candidate run links for the intended candidate SHA.
