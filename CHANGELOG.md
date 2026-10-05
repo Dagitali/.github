@@ -105,6 +105,9 @@
 
 ### Documentation and Maintenance
 
+- Align organization issue-form prompts with sibling reproduction, compatibility, public-evidence,
+  accessibility, and privacy guidance while preserving existing field IDs, labels, requiredness,
+  titles, and chooser/reporting policy.
 - Add repository-local Copilot guidance that links authoritative maintenance, contract, testing,
   and release policies, matching sibling discovery conventions without duplicating policy or
   imposing library instructions on consumers.
