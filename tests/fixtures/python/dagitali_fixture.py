@@ -14,5 +14,24 @@ def add(
     left: int,
     right: int,
 ) -> int:
-    """Return the sum used to verify that the installed fixture module is importable."""
+    """
+    Return a deterministic sum for installation smoke checks.
+
+    Parameters
+    ----------
+    left : int
+        First integer operand.
+    right : int
+        Second integer operand.
+
+    Returns
+    -------
+    int
+        Sum of the operands, with no file, network, or environment effects.
+
+    Notes
+    -----
+    This typed fixture interface exercises importing and calling an installed
+    module; it is not a production API or an automation-contract validator.
+    """
     return left + right
