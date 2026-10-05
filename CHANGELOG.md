@@ -13,9 +13,11 @@ Maintainer Notes
 # Changelog
 
 - [Unreleased](#unreleased)
-- [\[0.3.0\] - Unreleased](#030---unreleased)
-  - [Present in the Release Worktree](#present-in-the-release-worktree)
-  - [Pending Feature Integration](#pending-feature-integration)
+- [\[0.4.0\] - Unreleased](#040---unreleased)
+  - [Community Defaults and Adoption](#community-defaults-and-adoption)
+  - [Dependency-Security Starters](#dependency-security-starters)
+  - [Documentation Corrections and Conventions](#documentation-corrections-and-conventions)
+- [\[0.3.0\] - 2026-10-05](#030---2026-10-05)
 - [\[0.2.0\] - 2026-10-05](#020---2026-10-05)
   - [Breaking Changes](#breaking-changes)
   - [Shared Automation](#shared-automation)
@@ -27,39 +29,72 @@ Maintainer Notes
 
 ## Unreleased
 
-No additional changes are recorded outside the planned `0.3.0` scope below.
+No additional changes are recorded outside the planned `0.4.0` scope below.
 
-## [0.3.0] - Unreleased
+## [0.4.0] - Unreleased
 
-Draft prepared 2026-10-05; this is not a release or publication date. See the [v0.3.0 release draft].
-The `release/0.3.0` branch has not integrated `feature/improve-community-defaults-and-adoption`.
-Items marked pending below describe intended scope, not changes present in this release checkout.
+Planned minor release; draft prepared 2026-10-05, not a publication date. The feature is now
+integrated into `develop` but absent from the v0.3.0 tag. Final candidate selection and local/hosted
+validation remain pending. See the [v0.4.0 release draft].
 
-### Present in the Release Worktree
+### Community Defaults and Adoption
 
-- Align versioned release-note introductions and bottom-of-document changelog/archive references
-  with sibling conventions while preserving local-tag evidence, retrospective dates, and the planned
-  v0.3.0 integration/validation status.
-- Align release-archive reference links, navigation, and maintenance conventions with sibling
-  records while preserving historical scope, draft status, and unverified evidence boundaries.
-- Backfill the retrospective v0.2.0 release record and archive entry; reconcile existing hardening
-  history with the local tag without changing tagged content or asserting remote publication.
-
-### Pending Feature Integration
-
-- Add PR-only dependency-review and manual Python audit/inventory starters with matching metadata,
-  immutable-reference placeholders, and read-only permissions.
 - Add affected-project security/support routing and a default private vulnerability form without
   enabling hosted reporting or inventing a central contact.
 - Improve organization project discovery, contribution onboarding, coordinated report handling,
   and documentation of inheritance, local overrides, required labels, and consumer-owned settings.
-- Add adoption/maintenance guides and a documentation index; align reference links, headers,
-  workflow selection, and maintainer navigation with sibling conventions.
-- Add focused community-routing/starter regression coverage and expand Python fixture documentation
-  without changing runtime behavior.
+- Add adoption/maintenance guides and a documentation index.
+- Add focused community-routing/starter regression coverage and expand NumPy-format Python fixture
+  documentation without changing runtime behavior.
 
-No reusable workflow/action interface changes are planned relative to `0.2.0`. Confirm scope and
-compatibility after integration; finalize the release date and candidate SHA only after review.
+### Dependency-Security Starters
+
+- Add PR-only dependency-review and manual Python audit/inventory starters with matching chooser
+  metadata, retaining read-only tokens, SHA placeholders, and consumer-owned adoption.
+
+### Documentation Corrections and Conventions
+
+- Align the release archive with sibling version-series navigation, entry formatting, and numbered
+  maintenance guidance while preserving optional records, draft status, and historical evidence.
+- Match Popo's case-sensitive reference-definition ordering and add navigation to long maintainer
+  guides, with a source-of-truth table for focused documentation synchronization.
+- Align Markdown reference definitions by destination, clarify starter labels and versioned records,
+  add a canonical documentation index and missing guide/fixture headers, and preserve standalone
+  fixture scope and historical evidence boundaries.
+- Mirror sibling Markdown conventions with descriptive bottom-of-document reference definitions,
+  reusing repeated destinations while preserving link targets, inline contents anchors, and
+  examples.
+- Add affected-project support routing to the issue chooser, remove hidden profile starter prompts,
+  and organize reusable workflows by purpose, matching starter, triggers, and adoption boundaries.
+- Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
+  missing settings from unverified hosted evidence without automatic enforcement or consumer writes.
+- Clarify first-time contribution and coordinated security-report handling without imposing
+  project-specific commands, response deadlines, or publication commitments. Remove obsolete
+  profile prompts and link stale dependency-audit guidance to the implemented inspection workflows.
+- Route inherited security links to affected-repository instructions and add a default private
+  vulnerability form, without enabling hosted reporting or inventing a central contact.
+- Add public project discovery and participation links to the organization profile, and document
+  adoption/override boundaries, required labels, and consumer-owned settings in the README.
+- Correct the maintained v0.3.0 record, archive, and changelog to reflect its documentation-only
+  tagged contents; move unshipped feature scope and misplaced v0.2.0 entries into this release.
+- Preserve the v0.3.0 tag and record its inaccurate feature-scope annotation without rewriting it.
+
+The integrated feature does not change reusable workflow/action declarations relative to v0.3.0.
+Confirm compatibility and record the exact candidate and release date only after review.
+
+## [0.3.0] - 2026-10-05
+
+Retrospective correction prepared 2026-10-05 from annotated tag `v0.3.0` at
+`00cc6dfd3be569dfd50f015012916648f54da120`. The date is the tag's recorded date, not verified
+GitHub Release publication. See the [v0.3.0 release record].
+
+- Backfill the retrospective v0.2.0 record and reconcile hardening history with that tag.
+- Correct release-policy wording that described already-tagged v0.2.0 changes as unreleased.
+- Align release-archive navigation, historical introductions, and bottom-of-document references.
+- Add the original v0.3.0 draft, which incorrectly described features absent from the tagged tree.
+- No workflows, actions, starters, community defaults, dependencies, or tests change from v0.2.0.
+- The tag annotation describes intended feature scope that was not included; that scope is now
+  tracked under planned v0.4.0. Existing tags and their contents remain unchanged.
 
 ## [0.2.0] - 2026-10-05
 
@@ -75,9 +110,6 @@ they were previously grouped under `Unreleased`. See the [v0.2.0 release record]
   PyPI trusted publishing. Shared validation workflows do not receive publishing identity.
 
 ### Shared Automation
-
-- Add PR-only dependency-review and manual Python audit/inventory starters with matching chooser
-  metadata, retaining read-only tokens, SHA placeholders, and consumer-owned adoption.
 
 - Align internal checkout, setup, and quality-gate step labels with sibling conventions for clearer
   failure logs, preserving job/check identities, command behavior, and regular/candidate gate
@@ -171,25 +203,6 @@ they were previously grouped under `Unreleased`. See the [v0.2.0 release record]
 
 ### Documentation and Maintenance
 
-- Match Popo's case-sensitive reference-definition ordering and add navigation to long maintainer
-  guides, with a source-of-truth table for focused documentation synchronization.
-- Align Markdown reference definitions by destination, clarify starter labels and versioned records,
-  add a canonical documentation index and missing guide/fixture headers, and preserve standalone
-  fixture scope and historical evidence boundaries.
-- Mirror sibling Markdown conventions with descriptive bottom-of-document reference definitions,
-  reusing repeated destinations while preserving link targets, inline contents anchors, and
-  examples.
-- Add affected-project support routing to the issue chooser, remove hidden profile starter prompts,
-  and organize reusable workflows by purpose, matching starter, triggers, and adoption boundaries.
-- Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
-  missing settings from unverified hosted evidence without automatic enforcement or consumer writes.
-- Clarify first-time contribution and coordinated security-report handling without imposing
-  project-specific commands, response deadlines, or publication commitments. Remove obsolete
-  profile prompts and link stale dependency-audit guidance to the implemented inspection workflows.
-- Route inherited security links to affected-repository instructions and add a default private
-  vulnerability form, without enabling hosted reporting or inventing a central contact.
-- Add public project discovery and participation links to the organization profile, and document
-  adoption/override boundaries, required labels, and consumer-owned settings in the README.
 - Align temporary-tree, Make, and package-runner fixture contracts with sibling NumPy-style
   documentation, clarifying side effects, trusted-code boundaries, and subprocess failures.
 - Align root/fixture pytest configuration with sibling native TOML conventions, preserving test
@@ -265,5 +278,8 @@ recorded date, not verified publication. See the [release record][v0.0.0 release
 - Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
 - No workflows, actions, templates, or executable validation exist in this scaffold.
 
+[v0.0.0 release record]: docs/releases/v0.0.0.md
+[v0.1.0 release record]: docs/releases/v0.1.0.md
 [v0.2.0 release record]: docs/releases/v0.2.0.md
-[v0.3.0 release draft]: docs/releases/v0.3.0.md
+[v0.3.0 release record]: docs/releases/v0.3.0.md
+[v0.4.0 release draft]: docs/releases/v0.4.0.md
