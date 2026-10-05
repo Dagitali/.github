@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.4.1 - 2026-10-05](#041---2026-10-05)
 - [0.4.0 - 2026-10-05](#040---2026-10-05)
 - [0.3.1 - 2026-10-05](#031---2026-10-05)
 - [0.3.0 - 2026-10-05](#030---2026-10-05)
@@ -29,15 +30,24 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+No additional changes are recorded outside the prepared `0.4.1` scope below.
+
+## [0.4.1] - 2026-10-05
+
+Planned documentation-only patch; prepared 2026-10-05, not a tag or publication date. See the
+[v0.4.1 release candidate][0.4.1].
+
 - Record a read-only hosted adoption audit for the library and `aws-cdk-static-site`, separating
   verified settings and runs from reporting, notification, caller, and protection gaps.
+- Link the checklist to the evidence record and prepare the patch release record and archive entry.
+- Acknowledge the existing v0.4.0 tag without rewriting it or treating unresolved audit findings as
+  fixes. No automation interfaces, dependencies, or hosted settings change.
 
 ## [0.4.0] - 2026-10-05
 
-Minor release candidate prepared 2026-10-05 on `release/0.4.0`, following the merge of
-`feature/reconcile-release-documentation` into `develop`, plus the release-documentation updates.
-The date records candidate preparation, not tagging or publication. Hosted validation and final
-release approval remain pending. See the [v0.4.0 release candidate][0.4.0].
+Minor release with an existing local `v0.4.0` tag recorded on 2026-10-05. The [release
+record][0.4.0] preserves preparation-time scope and validation wording; the tag's existence does not
+establish publication or complete consumer adoption.
 
 - Add private vulnerability-reporting defaults, affected-project routing, public project discovery,
   contribution onboarding, and consumer-owned adoption/maintenance guidance.
@@ -51,7 +61,8 @@ release approval remain pending. See the [v0.4.0 release candidate][0.4.0].
 - Move detailed change categories into the matching release records and keep this changelog concise.
 
 Full change details, compatibility boundaries, and local/hosted validation status are preserved in
-the [v0.4.0 release candidate][0.4.0]. The final tagged SHA is not established.
+the [v0.4.0 release record][0.4.0]. Later hosted inspection belongs to the v0.4.1 audit follow-up,
+not a rewrite of the immutable v0.4.0 tree.
 
 ## [0.3.1] - 2026-10-05
 
@@ -125,3 +136,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.3.0]: docs/releases/v0.3.0.md
 [0.3.1]: docs/releases/v0.3.1.md
 [0.4.0]: docs/releases/v0.4.0.md
+[0.4.1]: docs/releases/v0.4.1.md
