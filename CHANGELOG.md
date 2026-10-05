@@ -124,6 +124,9 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Align root/fixture pytest configuration with sibling native TOML conventions, preserving test
+  discovery and strictness. Expand typed collection/YAML helper contracts in NumPy-format
+  docstrings.
 - Add sibling-aligned README getting-started and design-boundary guidance, clarifying caller-owned
   adoption, publication, runtime scope, and platform compatibility without duplicating setup guides.
 - Align organization contribution/support guidance with sibling validation and reproduction
