@@ -48,3 +48,6 @@ requirements, and versioning policy.
 For changes to this automation library, see [contributor instructions](docs/CONTRIBUTING.md),
 [testing](docs/TESTING.md), [release policy](RELEASE-POLICY.md), and [changelog](CHANGELOG.md).
 Templates contain a release-SHA placeholder that must be replaced before use.
+
+The optional [release notes archive](docs/releases/README.md) records version-specific scope and
+evidence boundaries. Historical records do not establish current support or hosted validation.

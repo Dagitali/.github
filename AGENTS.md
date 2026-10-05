@@ -1,3 +1,15 @@
+<!--
+AGENTS.md
+Dagitali shared automation library
+
+Responsibilities
+- Define repository-local maintenance and validation safeguards.
+
+Maintainer Notes
+- Keep consumer policy separate from instructions for this checkout.
+- Preserve user changes and require authorization for external operations.
+-->
+
 # Automation Library Instructions
 
 - Read docs/CONTRIBUTING.md and inspect git status before edits.

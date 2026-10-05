@@ -1,3 +1,15 @@
+<!--
+SECURITY.md
+Dagitali organization default
+
+Responsibilities
+- Explain private vulnerability reporting and useful assessment details.
+
+Maintainer Notes
+- Preserve private reporting routes and project-specific response boundaries.
+- Never solicit exploit details or confidential evidence in public issues.
+-->
+
 # Security Policy
 
 - [Reporting a Vulnerability](#reporting-a-vulnerability)

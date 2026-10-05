@@ -1,3 +1,15 @@
+<!--
+CONTRIBUTING.md
+Dagitali organization default
+
+Responsibilities
+- Explain generic contribution and pull-request expectations.
+
+Maintainer Notes
+- Keep project-specific tooling and policies in repository-local guides.
+- Preserve security reporting routes and consumer overrides.
+-->
+
 # Contributing
 
 Thank you for contributing to a Dagitali project.

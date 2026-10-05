@@ -1,3 +1,15 @@
+<!--
+SUPPORT.md
+Dagitali organization default
+
+Responsibilities
+- Route usage questions, defect reports, and private disclosures.
+
+Maintainer Notes
+- Do not assume Discussions or other channels exist in every repository.
+- Keep support expectations generic; do not invent response commitments.
+-->
+
 # Support
 
 For help using a Dagitali project:

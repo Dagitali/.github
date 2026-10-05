@@ -1,3 +1,15 @@
+<!--
+RELEASE-POLICY.md
+Dagitali shared automation library
+
+Responsibilities
+- Define public-interface versioning, release evidence, and safe rollback.
+
+Maintainer Notes
+- Keep local validation separate from hosted evidence and publication.
+- Preserve immutable tags and explicit authorization for release operations.
+-->
+
 # Release Policy
 
 Workflow paths, action paths, input names/types/defaults, output contracts, runner requirements, and

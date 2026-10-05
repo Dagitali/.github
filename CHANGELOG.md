@@ -1,3 +1,15 @@
+<!--
+CHANGELOG.md
+Dagitali shared automation library
+
+Responsibilities
+- Preserve concise change history and links to version-specific records.
+
+Maintainer Notes
+- Keep unreleased work separate from dated historical summaries.
+- Do not infer publication or validation success from a dated entry.
+-->
+
 # Changelog
 
 - [Unreleased](#unreleased)
@@ -112,6 +124,8 @@
 
 ### Documentation and Maintenance
 
+- Add root Markdown scope/maintenance headers and README release-archive navigation, preserving
+  organization-wide policy text, reporting channels, conduct attribution, and library boundaries.
 - Align release-archive reading guidance and version-specific changelog navigation with sibling
   records while preserving historical facts, compact scaffold scope, and validation boundaries.
 - Backfill retrospective records for local v0.0.0/v0.1.0 tags and matching historical summaries,
