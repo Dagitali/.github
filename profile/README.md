@@ -27,6 +27,7 @@ and maintainable technology.
 
 - [What We Build](#what-we-build)
 - [Featured Projects](#featured-projects)
+- [Get Involved](#get-involved)
 
 ## What We Build
 
@@ -38,9 +39,19 @@ and maintainable technology.
 
 ## Featured Projects
 
-- ETLPlus
-- Waytally
-- Dagitali.com
-- AWS CDK utilities
+- [ETLPlus](https://github.com/Dagitali/ETLPlus) — Python tools for practical ETL operations.
+- [Popo](https://github.com/Dagitali/popo) — Read-only repository policy checks.
+- [AWS CDK Static Site](https://github.com/Dagitali/aws-cdk-static-site) — A Python CDK construct
+  for static-site infrastructure.
+- Waytally — Apple-platform applications for recording places, routes, and trips.
+- [Dagitali.com](https://www.dagitali.com) — Our company website.
 
-[markdown-guide]: https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+## Get Involved
+
+Start with a public project's README, contribution guide, and support instructions. Documentation
+improvements, reproducible bug reports, and focused proposals are welcome; discuss significant
+changes with the project's maintainers before implementation. Use that project's issue tracker or
+published help channel rather than this organization profile for project-specific questions.
+
+Report suspected vulnerabilities privately through the affected project's security policy, not in
+public issues. Repository access, contribution terms, and support channels vary by project.
