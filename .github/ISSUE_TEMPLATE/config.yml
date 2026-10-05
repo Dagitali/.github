@@ -2,13 +2,16 @@
 # Dagitali organization default
 #
 # Responsibilities
-# - Route issue reports and private security disclosures.
+# - Route issue reports, usage questions, and private security disclosures.
 #
 # Maintainer Notes
 # - Preserve blank-issue policy and verify channels before changing links.
 
 blank_issues_enabled: false
 contact_links:
+  - name: Usage questions and support
+    url: https://github.com/Dagitali/.github/blob/main/SUPPORT.md
+    about: Follow the affected project's support instructions and available channels.
   - name: Security vulnerability
     url: https://github.com/Dagitali/.github/blob/main/SECURITY.md
     about: Follow the private reporting instructions for the affected repository.
