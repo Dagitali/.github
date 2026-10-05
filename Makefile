@@ -160,7 +160,7 @@ typecheck: ## Check root Python helper types using pyproject.toml
 	$(MYPY)
 
 workflow-lint: ## Check workflow and starter-template syntax with actionlint
-	$(ACTIONLINT) $(WORKFLOW_PATHS)
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-actionlint --actionlint '$(ACTIONLINT)' $(WORKFLOW_PATHS)
 
 automation-contracts: ## Check local automation interfaces and template metadata
 	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)"
