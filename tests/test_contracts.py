@@ -9,6 +9,7 @@
 # - Check inspection reporting without installing tools or querying services.
 # - Preserve evidence when optional tool-version queries fail.
 # - Keep internal run steps on explicit Bash without changing consumer shells.
+# - Compare named gate steps across ordinary and candidate validation.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -41,7 +42,24 @@ import yaml
 def candidate_fixture(
     repo_root: Path,
 ) -> dict[str, Any]:
-    """Load candidate declarations once; callers must treat them as read-only."""
+    """
+    Load candidate declarations once for read-only contract checks.
+
+    Parameters
+    ----------
+    repo_root : Path
+        Checkout containing the manual candidate workflow.
+
+    Returns
+    -------
+    dict[str, Any]
+        Shared YAML mapping with scalar values preserved as strings.
+
+    Notes
+    -----
+    Reads the declaration without executing jobs. Callers must not mutate the
+    session-scoped mapping; Popo owns generic schema validation.
+    """
     return cast(
         dict[str, Any],
         yaml.load(
@@ -176,9 +194,15 @@ def test_candidate_library_validation_parity(
     repo_root: Path,
 ) -> None:
     """
-    Compare the actual candidate gate with regular CI, except runtime
-    selection.
+    Compare the candidate gate with regular CI, except runtime selection.
 
+    Parameters
+    ----------
+    repo_root : Path
+        Checkout containing regular and manual candidate workflow declarations.
+
+    Notes
+    -----
     A manual candidate checks both supported Python minors without changing PR
     check names or requiring consumer fixture success to start library checks.
     Declaration parity verifies configuration, not hosted execution or
@@ -194,8 +218,8 @@ def test_candidate_library_validation_parity(
         ),
         Loader=yaml.BaseLoader,
     )
-    regular = baseline['jobs']['validate']
-    expanded = candidate['jobs']['validate']
+    regular: dict[str, Any] = baseline['jobs']['validate']
+    expanded: dict[str, Any] = candidate['jobs']['validate']
     assert candidate['on'] == {'workflow_dispatch': ''}
     assert expanded['strategy'] == {
         'fail-fast': 'false',
