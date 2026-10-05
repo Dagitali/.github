@@ -17,7 +17,7 @@
 #
 # Maintainer Notes
 # - Keep ignore rules focused on this project's generated and local-only files.
-# - Prefer narrow project-specific ignore rules when adding new local artifacts.
+# - Prefer narrow project-specific rules for new local artifacts.
 # - Do not ignore release artifacts that CI needs to build, audit, or publish
 #   from tracked source files.
 #
@@ -198,3 +198,15 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+
+# Automation validation and fixture outputs
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+cdk.out/
+.build/
+build/

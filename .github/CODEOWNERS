@@ -1,0 +1,42 @@
+# .github/CODEOWNERS
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Route shared automation and governance changes to maintainer review.
+# - Cover new repository paths without requiring an immediate routing update.
+#
+# Maintainer Notes
+# - Owners need repository write access; branch rules enable enforcement.
+# - GitHub uses the last matching pattern; keep the default owner first.
+# - Retain explicit surface rules for future ownership specialization.
+# - Applies here only, not automatically to consuming repositories.
+
+# Default ownership until a Dagitali maintainers team is established.
+*                        @djrlj694
+
+# Shared automation and repository governance
+/.github/                 @djrlj694
+/actions/                 @djrlj694
+/workflow-templates/      @djrlj694
+
+# Validation, documentation, and organization profile
+/tests/                   @djrlj694
+/docs/                    @djrlj694
+/profile/                 @djrlj694
+
+# Development policy
+/Makefile                 @djrlj694
+/pyproject.toml           @djrlj694
+/requirements-dev.txt     @djrlj694
+/requirements/            @djrlj694
+/.pre-commit-config.yaml  @djrlj694
+
+# Community health and agent guidance
+/AGENTS.md                @djrlj694
+/README.md                @djrlj694
+/CHANGELOG.md             @djrlj694
+/CONTRIBUTING.md          @djrlj694
+/RELEASE-POLICY.md        @djrlj694
+/SECURITY.md              @djrlj694
+/SUPPORT.md               @djrlj694
+/CODE_OF_CONDUCT.md       @djrlj694

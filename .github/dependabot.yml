@@ -1,0 +1,74 @@
+# .github/dependabot.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Propose reviewable dependency and hook updates.
+#
+# Maintainer Notes
+# - Follow the default branch; retain immutable Actions pins after updates.
+
+# Follow the repository default branch and Dependabot's automatic labels.
+# UTC avoids maintainer-specific schedules; keep ecosystem updates staggered.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:30'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      github-actions:
+        patterns: ['*']
+  - package-ecosystem: pip
+    directories:
+      - /
+      - /tests/fixtures/python
+      - /tests/fixtures/python-cdk
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      python-validation-tools:
+        patterns: [popo, pytest, ruff, mypy, PyYAML, pyyaml, types-*]
+      python-runtime-dependencies:
+        dependency-type: production
+      python-development-dependencies:
+        dependency-type: development
+  - package-ecosystem: npm
+    directories:
+      - /tests/fixtures/node-cdk
+      - /tests/fixtures/node-cdk-locked
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:15'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      fixture-dependencies:
+        patterns: ['*']
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '10:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      pre-commit-hooks:
+        patterns: ['*']

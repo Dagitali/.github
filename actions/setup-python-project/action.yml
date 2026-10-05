@@ -1,5 +1,21 @@
+# $schema: https://json.schemastore.org/github-action.json
+# actions/setup-python-project/action.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Set up Python and optionally run a trusted installation command.
+# - Reject unsupported cache selectors before runtime setup.
+# - Verify installed dependency compatibility and report Python/pip versions.
+#
+# Maintainer Notes
+# - Check out first; preserve setup parity and empty-command behavior.
+# - Keep remote action references pinned to full commit SHAs.
+# - Cache paths are checkout-relative, not relative to working-directory.
+# - An empty install command skips installation and pip check, not reporting.
+# - Install commands execute trusted caller code; this is not a sandbox.
+
 name: Set up Python project
-description: Install Python, enable pip caching, and install a project with one command.
+description: Set up cached Python and optionally install dependencies with a caller-owned command.
 
 inputs:
   python-version:
@@ -11,27 +27,58 @@ inputs:
     required: false
     default: .
   cache-dependency-path:
-    description: Dependency file used to invalidate the pip cache.
+    description: Dependency path relative to checkout; empty uses working-directory/pyproject.toml.
     required: false
-    default: pyproject.toml
+    default: ''
+  cache:
+    description: setup-python cache manager; pip, pipenv, poetry, or empty to disable caching.
+    required: false
+    default: pip
   install-command:
-    description: Command that installs the project and development dependencies.
+    description: Trusted installation command; empty sets up Python without installing dependencies.
     required: false
     default: python -m pip install -e '.[dev]'
 
 runs:
   using: composite
   steps:
+    - name: Validate Python cache
+      shell: bash
+      env:
+        PYTHON_CACHE: ${{ inputs.cache }}
+      run: |
+        case "$PYTHON_CACHE" in
+          ''|pip|pipenv|poetry) ;;
+          *)
+            echo 'Python cache must be pip, pipenv, poetry, or empty.' >&2
+            exit 2
+            ;;
+        esac
+
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: ${{ inputs.python-version }}
-        cache: pip
-        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+        cache: ${{ inputs.cache }}
+        cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
     - name: Install project
+      if: inputs.install-command != ''
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       env:
         COMMAND: ${{ inputs.install-command }}
       run: bash -euo pipefail -c "$COMMAND"
+
+    - name: Verify dependency compatibility
+      if: inputs.install-command != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: python -m pip check
+
+    - name: Report Python environment
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        python --version
+        python -m pip --version

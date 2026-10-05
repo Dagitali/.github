@@ -1,3 +1,17 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/aws-cdk-ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Validate Python or Node CDK projects through offline synthesis.
+# - Validate constrained inputs before running caller preparation commands.
+#
+# Maintainer Notes
+# - Preserve lockfile-aware caching; never obtain credentials or deploy.
+# - Compose same-revision quality checks; self references require GitHub.com.
+# - Caller workflows own triggers and cancellation, not this shared workflow.
+# - Offline synthesis executes caller code; it is not a sandbox boundary.
+
 name: Reusable AWS CDK CI
 
 on:
@@ -23,8 +37,20 @@ on:
         description: Directory containing cdk.json.
         type: string
         default: .
+      cache-dependency-path:
+        description: Python dependency path relative to checkout; empty uses working-directory/pyproject.toml.
+        type: string
+        default: ''
+      python-cache:
+        description: Python setup cache manager; pip, pipenv, poetry, or empty to disable caching.
+        type: string
+        default: pip
       install-command:
         description: Custom dependency install command; empty uses a language-specific default.
+        type: string
+        default: ''
+      prepare-command:
+        description: Optional command after checkout, before runtime setup; runs from the checkout root.
         type: string
         default: ''
       format-command:
@@ -43,12 +69,25 @@ on:
         description: CDK synthesis command.
         type: string
         default: cdk synth --quiet
+      diagnostics-path:
+        description: Optional report/log paths relative to checkout; empty disables upload.
+        type: string
+        default: ''
+      diagnostics-name:
+        description: Unique diagnostic artifact name for this caller job.
+        type: string
+        default: cdk-diagnostics
+      diagnostics-retention-days:
+        description: Diagnostic retention in days, subject to repository limits.
+        type: number
+        default: 7
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   quality:
+    permissions:
+      contents: read
     name: CDK quality and synth
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -57,36 +96,66 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.working-directory }}
     steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
       - name: Validate language
         if: inputs.language != 'python' && inputs.language != 'node'
+        working-directory: .
         env:
           LANGUAGE: ${{ inputs.language }}
         run: |
           echo "Unsupported language: ${LANGUAGE}. Use python or node." >&2
           exit 2
 
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - name: Validate Python cache
+        if: inputs.language == 'python'
+        working-directory: .
+        env:
+          PYTHON_CACHE: ${{ inputs.python-cache }}
+        run: |
+          case "$PYTHON_CACHE" in
+            ''|pip|pipenv|poetry) ;;
+            *)
+              echo 'Python cache must be pip, pipenv, poetry, or empty.' >&2
+              exit 2
+              ;;
+          esac
+
+      - name: Prepare project
+        if: inputs.prepare-command != ''
+        working-directory: .
+        env:
+          COMMAND: ${{ inputs.prepare-command }}
+        run: bash -euo pipefail -c "$COMMAND"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38  # v6
         with:
           node-version: ${{ inputs.node-version }}
-          cache: ${{ inputs.language == 'node' && 'npm' || '' }}
+          package-manager-cache: false
+          cache: ${{ inputs.language == 'node' && hashFiles(format('{0}/package-lock.json', inputs.working-directory)) != '' && 'npm' || '' }}
           cache-dependency-path: ${{ inputs.language == 'node' && format('{0}/package-lock.json', inputs.working-directory) || '' }}
 
       - name: Set up Python
         if: inputs.language == 'python'
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
         with:
           python-version: ${{ inputs.python-version }}
-          cache: pip
-          cache-dependency-path: ${{ format('{0}/pyproject.toml', inputs.working-directory) }}
+          cache: ${{ inputs.python-cache }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install AWS CDK CLI
         env:
           CDK_VERSION: ${{ inputs.cdk-version }}
-        run: npm install --global "aws-cdk@${CDK_VERSION}"
+        run: |
+          npm install --global "aws-cdk@${CDK_VERSION}"
+          node --version
+          npm --version
+          cdk --version
 
       - name: Install dependencies with custom command
         if: inputs.install-command != ''
@@ -107,25 +176,34 @@ jobs:
             npm install
           fi
 
-      - name: Check formatting
-        if: inputs.format-command != ''
-        env:
-          COMMAND: ${{ inputs.format-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Verify Python dependency compatibility
+        if: inputs.install-command == '' && inputs.language == 'python'
+        run: python -m pip check
 
-      - name: Lint
-        if: inputs.lint-command != ''
-        env:
-          COMMAND: ${{ inputs.lint-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Verify Node.js dependency compatibility
+        if: inputs.install-command == '' && inputs.language == 'node'
+        run: npm ls --depth=0
 
-      - name: Test
-        if: inputs.test-command != ''
-        env:
-          COMMAND: ${{ inputs.test-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Report Python environment
+        if: inputs.language == 'python'
+        run: |
+          python --version
+          python -m pip --version
 
-      - name: Synthesize CloudFormation
-        env:
-          COMMAND: ${{ inputs.synth-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Run CDK quality checks
+        uses: $/actions/cdk-quality
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          format-command: ${{ inputs.format-command }}
+          lint-command: ${{ inputs.lint-command }}
+          test-command: ${{ inputs.test-command }}
+          synth-command: ${{ inputs.synth-command }}
+
+      - name: Upload diagnostics
+        if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: ${{ inputs.diagnostics-name }}
+          path: ${{ inputs.diagnostics-path }}
+          if-no-files-found: warn
+          retention-days: ${{ inputs.diagnostics-retention-days }}

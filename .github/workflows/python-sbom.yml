@@ -1,0 +1,232 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/python-sbom.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Inspect caller-selected Python dependencies in an isolated environment.
+# - Keep inspection tooling separate and retain machine-readable evidence.
+# - Report resolved target dependencies separately from inspection tools.
+# - Retain evidence when best-effort tool version reporting is unavailable.
+# - Document interpreter selection separately from target dependency scope.
+# - Use NumPy-style docstrings for typed inline Python helper contracts.
+#
+# Maintainer Notes
+# - Installs execute caller code; use trusted code without credentials.
+# - Never publish, deploy, or automatically repair dependencies.
+# - Inventory the installed target, not repository sources or tooling.
+# - Inventory validation is not a vulnerability audit or health verdict.
+
+name: Reusable Python Dependency Inventory
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python runtime for the inspected environment.
+        type: string
+        default: '3.13'
+      working-directory:
+        description: Caller project directory.
+        type: string
+        default: .
+      install-command:
+        description: Installation command in the isolated target environment; no dev extras by default.
+        type: string
+        default: python -m pip install .
+      tool-version:
+        description: Exact cyclonedx-bom version; transitive tools remain resolver-selected.
+        type: string
+        default: '7.2.2'
+      tool-dependency-resolution:
+        description: default uses pip; lowest or highest uses isolated uv for tool transitives.
+        type: string
+        default: default
+      resolver-version:
+        description: Exact uv version used only for optional tool dependency boundaries.
+        type: string
+        default: '0.12.3'
+      tool-constraints-path:
+        description: Optional checkout-relative tool dependency constraints file.
+        type: string
+        default: ''
+      artifact-name:
+        description: Unique evidence artifact name.
+        type: string
+        default: python-sbom
+      artifact-retention-days:
+        description: Evidence retention in days, subject to repository limits.
+        type: number
+        default: 14
+    outputs:
+      artifact-url:
+        description: Authenticated evidence URL on successful completion; failures may omit outputs.
+        value: ${{ jobs.inspect.outputs.artifact-url }}
+
+permissions: {}
+
+jobs:
+  inspect:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Validate inspection inputs
+        working-directory: .
+        env:
+          INSTALL_COMMAND: ${{ inputs.install-command }}
+          RESOLUTION: ${{ inputs.tool-dependency-resolution }}
+        run: |
+          [[ -n "$INSTALL_COMMAND" ]]
+          case "$RESOLUTION" in
+            default|lowest|highest) ;;
+            *) echo 'Tool dependency resolution must be default, lowest, or highest.' >&2; exit 2 ;;
+          esac
+      - name: Initialize inspection paths
+        working-directory: .
+        run: |
+          {
+            echo "TARGET_ENV=$RUNNER_TEMP/inspection-target"
+            echo "TOOL_ENV=$RUNNER_TEMP/inspection-tools"
+            echo "RESOLVER_ENV=$RUNNER_TEMP/inspection-resolver"
+            echo "REPORT_PATH=$RUNNER_TEMP/python-sbom.json"
+          } >> "$GITHUB_ENV"
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
+        with:
+          python-version: ${{ inputs.python-version }}
+      - name: Prepare isolated inspection environments
+        env:
+          INSTALL_COMMAND: ${{ inputs.install-command }}
+          TOOL_VERSION: ${{ inputs.tool-version }}
+          RESOLUTION: ${{ inputs.tool-dependency-resolution }}
+          RESOLVER_VERSION: ${{ inputs.resolver-version }}
+          TOOL_CONSTRAINTS_PATH: ${{ inputs.tool-constraints-path }}
+        run: |
+          [[ -n "$INSTALL_COMMAND" ]]
+          python -m venv "$TARGET_ENV"
+          python -m venv "$TOOL_ENV"
+          env -u PYTHONPATH -u PYTHONHOME VIRTUAL_ENV="$TARGET_ENV" \
+            PATH="$TARGET_ENV/bin:$PATH" PYTHON="$TARGET_ENV/bin/python" \
+            bash -euo pipefail -c "$INSTALL_COMMAND"
+          "$TARGET_ENV/bin/python" -m pip check
+          constraints=()
+          if [[ -n "$TOOL_CONSTRAINTS_PATH" ]]; then
+            [[ -f "$GITHUB_WORKSPACE/$TOOL_CONSTRAINTS_PATH" ]]
+            constraints=(--constraint "$GITHUB_WORKSPACE/$TOOL_CONSTRAINTS_PATH")
+          fi
+          if [[ "$RESOLUTION" == default ]]; then
+            "$TOOL_ENV/bin/python" -m pip install "${constraints[@]}" "cyclonedx-bom==$TOOL_VERSION"
+          else
+            python -m venv "$RESOLVER_ENV"
+            "$RESOLVER_ENV/bin/python" -m pip install "uv==$RESOLVER_VERSION"
+            "$RESOLVER_ENV/bin/uv" pip install --python "$TOOL_ENV/bin/python" \
+              --only-binary :all: --resolution "$RESOLUTION" \
+              "${constraints[@]}" "cyclonedx-bom==$TOOL_VERSION"
+          fi
+          "$TOOL_ENV/bin/python" -m pip check
+      - name: Report inspected environment
+        run: |
+          "$TARGET_ENV/bin/python" --version
+          "$TARGET_ENV/bin/python" -m pip --version
+          "$TARGET_ENV/bin/python" -m pip list --format=json
+      - name: Generate validated dependency inventory
+        id: inspection
+        run: |
+          "$TOOL_ENV/bin/python" -m cyclonedx_py environment \
+            "$TARGET_ENV/bin/python" --output-format JSON --validate \
+            --output-file "$REPORT_PATH"
+      - name: Upload inventory
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ env.REPORT_PATH }}
+          archive: true
+          if-no-files-found: error
+          retention-days: ${{ inputs.artifact-retention-days }}
+      - name: Report inspection evidence
+        if: ${{ always() && !cancelled() }}
+        working-directory: .
+        env:
+          INSPECTION_OUTCOME: ${{ steps.inspection.outcome }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+          CANDIDATE_SHA: ${{ github.sha }}
+          PROJECT_DIRECTORY: ${{ inputs.working-directory }}
+          RESOLUTION: ${{ inputs.tool-dependency-resolution }}
+          TOOL_VERSION: ${{ inputs.tool-version }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import pathlib
+          import subprocess
+
+          def read_tool_versions(tool_python: pathlib.Path) -> str:
+              """
+              Return installed-tool JSON or an explicit unavailable message.
+
+              Parameters
+              ----------
+              tool_python : pathlib.Path
+                  Interpreter path for the isolated inventory tools.
+
+              Returns
+              -------
+              str
+                  Captured pip-list stdout on success, otherwise the fallback.
+                  Output is returned as text without parsing or JSON validation.
+
+              Raises
+              ------
+              OSError
+                  The interpreter exists but cannot be launched.
+
+              Notes
+              -----
+              Runs only the supplied environment's pip list; never installs
+              packages or queries advisories. A missing interpreter or nonzero
+              exit retains the fallback so version reporting cannot hide
+              inspection evidence. Process-launch errors still propagate.
+              """
+              if not tool_python.is_file():
+                  return 'Tool environment unavailable'
+              result: subprocess.CompletedProcess[str] = subprocess.run(
+                  [str(tool_python), '-m', 'pip', 'list', '--format=json'],
+                  capture_output=True, text=True, check=False,
+              )
+              return result.stdout if result.returncode == 0 else 'Tool environment unavailable'
+
+          report_path: pathlib.Path = pathlib.Path(os.environ.get('REPORT_PATH', '__missing_report__'))
+          outcome: str = os.environ['INSPECTION_OUTCOME']
+          status: str = 'Missing report'
+          if report_path.is_file():
+              try:
+                  data = json.loads(report_path.read_text())
+                  status = 'Validated inventory' if outcome == 'success' else 'Inventory/tool failure'
+              except (ValueError, KeyError, TypeError):
+                  status = 'Invalid report; inspect tool failure'
+          if outcome != 'success':
+              status += f'; inspection outcome: {outcome or "not run"}'
+          tool_python: pathlib.Path = pathlib.Path(os.environ.get('TOOL_ENV', '__missing_tools__')) / 'bin/python'
+          versions: str = read_tool_versions(tool_python)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+              summary.write(f"## Python inventory: {status}\n\n")
+              summary.write(f"SHA: {os.environ['CANDIDATE_SHA']}\n\n")
+              summary.write(f"Scope: installed environment for {os.environ['PROJECT_DIRECTORY']}; "
+                            f"tool resolution: {os.environ['RESOLUTION']}; "
+                            f"requested cyclonedx-bom: {os.environ['TOOL_VERSION']}\n\n")
+              summary.write(f"Python: {subprocess.check_output(['python3', '--version'], text=True).strip()}\n\n")
+              summary.write(f"Evidence: {os.environ['ARTIFACT_URL'] or 'No artifact available'}\n\n")
+              summary.write(f"Resolved inspection tools:\n\n```json\n{versions}\n```\n")
+          PY

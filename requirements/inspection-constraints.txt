@@ -1,0 +1,15 @@
+# requirements/inspection-constraints.txt
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Bound candidate inspection tools to modern Python-compatible transitives.
+#
+# Maintainer Notes
+# - These are supported floors, not claims about upstream's absolute minima.
+# - Keep direct pip-audit/CycloneDX pins in the reusable workflow defaults.
+# - Refresh deliberately and validate lowest/highest candidate environments.
+
+cyclonedx-python-lib>=11.12.0
+pip-api>=0.0.35
+pyparsing>=3.3.3
+urllib3>=2.8.0

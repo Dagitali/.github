@@ -1,3 +1,17 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# workflow-templates/swift-ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Provide a minimal consumer-owned workflow starter.
+# - Cancel stale CI runs for the same workflow and ref, not other callers.
+#
+# Maintainer Notes
+# - Replace the release-SHA placeholder before use; preserve caller
+#   permissions.
+
+# Replace REPLACE_WITH_RELEASE_SHA with a tested Dagitali/.github commit before
+# use.
 name: Swift CI
 
 on:
@@ -5,10 +19,16 @@ on:
     branches: [$default-branch]
   pull_request:
     branches: [$default-branch]
+  merge_group:
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: consumer-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   swift-ci:
-    uses: Dagitali/.github/.github/workflows/swift-ci.yml@v1
+    permissions:
+      contents: read
+    uses: Dagitali/.github/.github/workflows/swift-ci.yml@REPLACE_WITH_RELEASE_SHA

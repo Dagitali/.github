@@ -1,0 +1,178 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Validate the automation library and credential-free consumer fixtures.
+# - Preserve independent results from every validation matrix leg.
+#
+# Maintainer Notes
+# - Keep hosted evidence distinct from local lint; never publish or deploy.
+# - Preserve job identifiers and names used by required branch checks.
+# - Keep make check authoritative for local and hosted library validation.
+# - Use explicit Bash so failed pipeline stages cannot hide gate failures.
+# - Name setup and gate steps for useful logs without renaming required jobs.
+
+name: Automation library CI
+
+run-name: >-
+  ${{ github.event_name == 'pull_request' &&
+      format('CI: {0} -> {1}', github.head_ref, github.base_ref) ||
+      github.event_name == 'merge_group' &&
+      format('CI: merge queue for {0}', github.ref_name) ||
+      format('CI: {0} on {1}', github.event_name, github.ref_name) }}
+
+on:
+  pull_request:
+  merge_group:
+  push:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: library-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up project
+        uses: ./actions/setup-python-project
+        with:
+          python-version: '3.13'
+          cache-dependency-path: requirements-dev.txt
+          install-command: python -m pip install -r requirements-dev.txt
+      - name: Install validation tools
+        run: |
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          command -v shellcheck
+      - name: Run the repository quality gate
+        run: make check
+
+  python:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/python-ci.yml
+    with:
+      working-directory: tests/fixtures/python
+      test-command: pytest --junitxml=test-results.xml
+      diagnostics-path: tests/fixtures/python/test-results.xml
+
+  dependency-review:
+    permissions:
+      contents: read
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/dependency-review.yml
+    with:
+      fail-on-scopes: runtime,development,unknown
+
+  package:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/python-package.yml
+    with:
+      working-directory: tests/fixtures/python
+      smoke-command: python -c 'import dagitali_fixture; assert dagitali_fixture.add(2, 3) == 5'
+
+  cdk:
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture: [node-cdk, node-cdk-locked]
+    uses: ./.github/workflows/aws-cdk-ci.yml
+    with:
+      language: node
+      cdk-version: '2.1144.0'
+      working-directory: tests/fixtures/${{ matrix.fixture }}
+      prepare-command: ${{ matrix.fixture == 'node-cdk-locked' && 'cp tests/fixtures/node-cdk/{app.js,app.test.js,package.json,cdk.json} tests/fixtures/node-cdk-locked/' || '' }}
+      test-command: npm test
+
+  swift:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/swift-ci.yml
+    with:
+      working-directory: tests/fixtures/swift
+      build-command: swift build --build-tests > build.log 2>&1
+      test-command: swift test --parallel > test.log 2>&1
+      diagnostics-path: |
+        tests/fixtures/swift/build.log
+        tests/fixtures/swift/test.log
+
+  python-cdk:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/aws-cdk-ci.yml
+    with:
+      language: python
+      cdk-version: '2.1144.0'
+      working-directory: tests/fixtures/python-cdk
+      format-command: ruff format --check .
+      lint-command: ruff check .
+      test-command: pytest --junitxml=test-results.xml
+      synth-command: cdk synth --quiet > synth.log 2>&1
+      diagnostics-name: python-cdk-diagnostics
+      diagnostics-path: |
+        tests/fixtures/python-cdk/test-results.xml
+        tests/fixtures/python-cdk/synth.log
+
+  composites:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python without installing the project
+        uses: ./actions/setup-python-project
+        with:
+          working-directory: tests/fixtures/python
+          install-command: ''
+          cache: ''
+      - name: Verify setup-only mode
+        run: python -c 'import importlib.util; assert importlib.util.find_spec("dagitali_fixture") is None'
+      - name: Set up Python fixture
+        uses: ./actions/setup-python-project
+        with:
+          working-directory: tests/fixtures/python
+      - name: Run Python fixture quality checks
+        uses: ./actions/python-quality
+        with:
+          working-directory: tests/fixtures/python
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Install CDK tooling
+        working-directory: tests/fixtures/node-cdk
+        run: |
+          npm install
+          npm install --global aws-cdk@2.1144.0
+          cdk --version
+      - name: Run CDK fixture quality checks
+        uses: ./actions/cdk-quality
+        with:
+          working-directory: tests/fixtures/node-cdk
+          test-command: npm test

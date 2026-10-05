@@ -1,3 +1,17 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/python-ci.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Run caller-configured Python installation and quality checks.
+# - Reject unsupported cache selectors before runtime setup.
+#
+# Maintainer Notes
+# - Compose same-revision setup/quality actions and propagate failures.
+# - Self-repository action references require GitHub.com, not GHES.
+# - Caller workflows own triggers and cancellation, not this shared workflow.
+# - Command inputs execute caller code; they are not a sandbox boundary.
+
 name: Reusable Python CI
 
 on:
@@ -6,7 +20,7 @@ on:
       python-versions:
         description: JSON array of Python versions to test.
         type: string
-        default: '["3.12", "3.13"]'
+        default: '["3.13", "3.14"]'
       runs-on:
         description: GitHub-hosted runner label.
         type: string
@@ -16,11 +30,15 @@ on:
         type: string
         default: .
       cache-dependency-path:
-        description: Dependency file used to invalidate the pip cache.
+        description: Dependency path relative to checkout; empty uses working-directory/pyproject.toml.
         type: string
-        default: pyproject.toml
+        default: ''
+      cache:
+        description: setup-python cache manager; pip, pipenv, poetry, or empty to disable caching.
+        type: string
+        default: pip
       install-command:
-        description: Command that installs the project and CI dependencies.
+        description: Trusted installation command; empty skips installation and its compatibility check.
         type: string
         default: python -m pip install -e '.[dev]'
       format-command:
@@ -39,12 +57,25 @@ on:
         description: Test command; set to an empty string to skip.
         type: string
         default: pytest
+      diagnostics-path:
+        description: Optional report/log paths relative to checkout; empty disables upload.
+        type: string
+        default: ''
+      diagnostics-name:
+        description: Diagnostic artifact prefix; runner and Python version are appended.
+        type: string
+        default: python-diagnostics
+      diagnostics-retention-days:
+        description: Diagnostic retention in days, subject to repository limits.
+        type: number
+        default: 7
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   quality:
+    permissions:
+      contents: read
     name: Python ${{ matrix.python-version }}
     runs-on: ${{ inputs.runs-on }}
     timeout-minutes: 30
@@ -58,40 +89,34 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python project
+        uses: $/actions/setup-python-project
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
+          working-directory: ${{ inputs.working-directory }}
+          cache: ${{ inputs.cache }}
           cache-dependency-path: ${{ inputs.cache-dependency-path }}
+          install-command: ${{ inputs.install-command }}
 
-      - name: Install project
-        env:
-          COMMAND: ${{ inputs.install-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Run Python quality checks
+        uses: $/actions/python-quality
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          format-command: ${{ inputs.format-command }}
+          lint-command: ${{ inputs.lint-command }}
+          typecheck-command: ${{ inputs.typecheck-command }}
+          test-command: ${{ inputs.test-command }}
 
-      - name: Check formatting
-        if: inputs.format-command != ''
-        env:
-          COMMAND: ${{ inputs.format-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Lint
-        if: inputs.lint-command != ''
-        env:
-          COMMAND: ${{ inputs.lint-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Type-check
-        if: inputs.typecheck-command != ''
-        env:
-          COMMAND: ${{ inputs.typecheck-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Test
-        if: inputs.test-command != ''
-        env:
-          COMMAND: ${{ inputs.test-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Upload diagnostics
+        if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.diagnostics-name }}-${{ inputs.runs-on }}-${{ matrix.python-version }}
+          path: ${{ inputs.diagnostics-path }}
+          if-no-files-found: warn
+          retention-days: ${{ inputs.diagnostics-retention-days }}

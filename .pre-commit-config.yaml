@@ -20,10 +20,8 @@
 #   practical.
 #
 # Maintainer Notes
-# - Keep hook revisions compatible with the Python versions supported by
-#   `pyproject.toml`.
-# - Local system hooks delegate interpreter selection to Make; install
-#   development tools before using them, as documented in CONTRIBUTING.md.
+# - Install validation tools using docs/CONTRIBUTING.md; make check is the
+# shared gate.
 # - Keep branch and commit-message hooks aligned with repository policy;
 #   hosted PR routing is configurable rather than implicitly GitFlow.
 # - Prefer targeted hook exclusions over broad disables when generated or
@@ -83,14 +81,14 @@ repos:
       # - id: check-ast
       # - id: check-builtin-literals
       - id: check-case-conflict
-      # - id: check-docstring-first
+      - id: check-docstring-first
       # - id: check-executables-have-shebangs
       #   exclude_types: [batch]
-      # - id: check-json
+      - id: check-json
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       # - id: check-symlinks
-      # - id: check-toml
+      - id: check-toml
       - id: check-vcs-permalinks
       # - id: check-xml
       - id: check-yaml
@@ -98,7 +96,7 @@ repos:
       - id: destroyed-symlinks
       - id: detect-aws-credentials
       - id: detect-private-key
-      # - id: double-quote-string-fixer
+      - id: double-quote-string-fixer
       - id: end-of-file-fixer
       # - id: file-contents-sorter
       - id: fix-byte-order-marker
@@ -111,11 +109,22 @@ repos:
         args: [--branch, develop, --branch, main]
       # - id: pretty-format-json
       #   args: [--autofix, --no-sort-keys]
-      # - id: requirements-txt-fixer
+      - id: requirements-txt-fixer
       # - id: sort-simple-yaml
       - id: trailing-whitespace
 
   ### Markdown ###
+
+  # Reuse the authoritative local gate without duplicating its checks.
+  - repo: local
+    hooks:
+      - id: make-check-pre-push
+        name: Run pre-push checks
+        entry: make check-pre-push
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
 
   # Markdown: Table of Contents updates
   - repo: https://github.com/frnmst/md-toc
