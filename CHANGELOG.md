@@ -112,6 +112,8 @@
 
 ### Documentation and Maintenance
 
+- Align release-archive reading guidance and version-specific changelog navigation with sibling
+  records while preserving historical facts, compact scaffold scope, and validation boundaries.
 - Backfill retrospective records for local v0.0.0/v0.1.0 tags and matching historical summaries,
   preserving tag identities and separating reconstructed scope from unverified outcomes.
 - Add an optional release-record archive index with sibling-aligned naming, candidate/publication,
