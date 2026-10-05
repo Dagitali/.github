@@ -41,8 +41,9 @@ validation remain pending. See the [v0.4.0 release draft][0.4.0].
   contribution onboarding, and consumer-owned adoption/maintenance guidance.
 - Add read-only dependency-review and Python audit/inventory starters with immutable-reference
   placeholders, plus focused routing/starter regression coverage.
-- Align documentation links, navigation, headers, fixture contracts, and release records; correct
-  historical scope without rewriting existing tags.
+- Align documentation links, navigation, headers, fixture contracts, release records, and
+  present-tense highlights; clarify archive draft dates and correct historical scope without
+  rewriting existing tags.
 - Move detailed change categories into the matching release records and keep this changelog concise.
 
 Full change details and candidate compatibility boundaries are preserved in the [v0.4.0 release
