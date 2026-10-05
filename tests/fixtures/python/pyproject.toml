@@ -24,10 +24,10 @@ dev = ["ruff==0.16.10", "mypy==1.15.0", "pytest==9.1.1"]
 [tool.mypy]
 strict = true
 
-[tool.pytest.ini_options]
+[tool.pytest]
 minversion = "9.1.1"
 testpaths = ["."]
-addopts = "--strict-config --strict-markers"
+addopts = ["--strict-config", "--strict-markers"]
 
 # Keep standalone fixture formatting aligned when copied outside the checkout.
 [tool.ruff]

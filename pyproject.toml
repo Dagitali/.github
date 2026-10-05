@@ -24,11 +24,11 @@ yaml-globs = [".github/ISSUE_TEMPLATE/*.yml", ".github/dependabot.yml", ".pre-co
 local-repositories = ["Dagitali/.github"]
 template-placeholder-refs = ["REPLACE_WITH_RELEASE_SHA"]
 
-[tool.pytest.ini_options]
+[tool.pytest]
 minversion = "9.1.1"
 testpaths = ["tests"]
 norecursedirs = ["fixtures", ".git", ".venv"]
-addopts = "--import-mode=importlib --strict-config --strict-markers -ra"
+addopts = ["--import-mode=importlib", "--strict-config", "--strict-markers", "-ra"]
 empty_parameter_set_mark = "fail_at_collect"
 
 [tool.ruff]
