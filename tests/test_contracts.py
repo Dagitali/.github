@@ -8,6 +8,7 @@
 # - Preserve independent evidence from all validation matrix legs.
 # - Check inspection reporting without installing tools or querying services.
 # - Preserve evidence when optional tool-version queries fail.
+# - Keep internal run steps on explicit Bash without changing consumer shells.
 #
 # Maintainer Notes
 # - Keep fixture/test effects isolated; do not duplicate Popo policy logic.
@@ -612,6 +613,32 @@ def test_inspection_summary_evidence(
     if outcome != 'success':
         assert expected in rendered
         assert 'Validated inventory' not in rendered
+
+
+@pytest.mark.parametrize(
+    'workflow',
+    ['ci.yml', 'release-candidate.yml'],
+)
+def test_internal_workflow_shell_policy(
+    repo_root: Path,
+    workflow: str,
+) -> None:
+    """
+    Retain Bash pipeline failures in every library-owned executable job.
+
+    Reusable-workflow calls have no local steps and own their shell settings.
+    This declaration check does not execute GitHub's runner shell wrapper.
+    """
+    declaration = yaml.load(
+        (repo_root / '.github/workflows' / workflow).read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    for job in declaration['jobs'].values():
+        if 'steps' in job:
+            assert job['defaults']['run']['shell'] == 'bash'
+            for step in job['steps']:
+                if 'run' in step:
+                    assert step.get('shell', 'bash') == 'bash'
 
 
 def test_library_review_and_candidate_policy(
