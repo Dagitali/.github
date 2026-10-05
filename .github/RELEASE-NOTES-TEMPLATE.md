@@ -4,6 +4,7 @@ Dagitali shared automation library
 
 Responsibilities
 - Record consumer compatibility, validation evidence, and safe rollback.
+- Link public review decisions without exposing confidential evidence.
 
 Maintainer Notes
 - Follow RELEASE-POLICY.md; this document does not authorize publication.
@@ -27,12 +28,14 @@ published until its availability has been verified.
 
 ## Change Scope and Compatibility
 
+- Link relevant pull requests, issues, and architectural decisions where applicable.
 - Affected workflow/action paths and starter templates; important areas intentionally unchanged.
 - Changed input names, types, defaults, requiredness, outputs, and command behavior.
 - Breaking changes and deprecations: give each its own explicit migration instructions.
 - Required consumer edits, including small caller workflows and release-SHA substitutions.
 - Permission, credential, environment, concurrency, and required-check name changes.
 - State whether existing consumers need to update their copied starters separately from SHA pins.
+- Write `No compatibility changes.` when none apply; do not leave migration status ambiguous.
 
 ## Support Boundary
 

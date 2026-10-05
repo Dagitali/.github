@@ -4,6 +4,7 @@ Dagitali shared automation library
 
 Responsibilities
 - Explain review ownership and safe required-check transitions.
+- Separate local feedback, hosted enforcement, and recovery exceptions.
 
 Maintainer Notes
 - This guidance does not configure hosted rules or prove enforcement.
@@ -12,6 +13,12 @@ Maintainer Notes
 # Branch Protection Guidance
 
 This is a proposed maintainer baseline, not evidence of active hosted settings.
+
+- [Shared Protection Baseline](#shared-protection-baseline)
+- [Required Checks and Merge Queue](#required-checks-and-merge-queue)
+- [Updating Required Checks](#updating-required-checks)
+
+## Shared Protection Baseline
 
 The repository-specific [CODEOWNERS](CODEOWNERS) routes automation, tests, dependency policy, and
 governance changes to the sibling projects' maintainer, @djrlj694. Write/admin access was verified
@@ -23,14 +30,32 @@ Require reviewed pull requests, resolved conversations, and successful validatio
 branches. Restrict force pushes, deletion, and bypass access. Choose approval requirements that
 match available independent reviewers; authors cannot independently approve their own changes.
 
+Local hooks provide early feedback, not server-side enforcement. Successful CI after a direct push
+cannot retroactively prevent that push. Configure active hosted rulesets or equivalent branch
+protection for the chosen integration/release branches; review overlapping rules and bypass actors,
+including administrator and automation access. Document narrow recovery exceptions and periodically
+recheck them. No fixed branch names or source prefixes are required by this guidance.
+
+## Required Checks and Merge Queue
+
 Select exact required-check names from successful hosted runs, including matrix expansions. Library
 CI handles pull requests and `merge_group`; the Python, CDK, and Swift starters do too. Manual
 candidate checks and PR-only dependency review are not merge-queue required-check candidates. Do not
 add path filters that prevent required results from being reported.
 
+Keep job names unique across workflows; step labels are not required-check names. Select required
+results only after verifying that they report for every applicable PR and queued merge group.
+Advisory/manual evidence must not become a merge prerequisite unless its trigger coverage changes.
+
+## Updating Required Checks
+
 When changing a required check, first add and validate its replacement, then coordinate the hosted
 ruleset transition and verify failure blocks a representative PR and merge group. Only then remove
 the old result. Restore the previous configuration if results remain missing or pending. Committing
 these workflows does not enable a merge queue or configure any branch rules.
+
+Revisit this guidance after changes to jobs, matrices, triggers, ownership, or protected branches.
+Record hosted verification separately from local validation and do not claim enforcement from
+committed configuration alone.
 
 See [release policy](../RELEASE-POLICY.md) and [shared Actions guidance](../docs/github-actions.md).
