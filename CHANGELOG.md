@@ -37,6 +37,9 @@ Items marked pending below describe intended scope, not changes present in this 
 
 ### Present in the Release Worktree
 
+- Align versioned release-note introductions and bottom-of-document changelog/archive references
+  with sibling conventions while preserving local-tag evidence, retrospective dates, and the planned
+  v0.3.0 integration/validation status.
 - Align release-archive reference links, navigation, and maintenance conventions with sibling
   records while preserving historical scope, draft status, and unverified evidence boundaries.
 - Backfill the retrospective v0.2.0 release record and archive entry; reconcile existing hardening
