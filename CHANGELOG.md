@@ -13,6 +13,9 @@
 
 ### Shared Automation
 
+- Align internal CI/candidate jobs with explicit Bash pipeline-failure handling while preserving
+  public workflow inputs and required-check names. Expand isolated inspection helper documentation
+  and retain focused shell-policy regression coverage.
 - Compose Python CI setup/quality and CDK CI quality from shared actions at the workflow's running
   revision. Preserve inputs, matrices, installation guards, permissions, and diagnostic uploads.
   Validate contracts natively with Popo and adapt actionlint through Popo's disposable normalized
