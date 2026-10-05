@@ -188,6 +188,10 @@ def automation_copy_fixture(
     shutil.copy2(
         repo_root / '.github/dependabot.yml', tmp_path / '.github/dependabot.yml'
     )
+    shutil.copy2(
+        repo_root / '.github/VULNERABILITY_REPORT.yml',
+        tmp_path / '.github/VULNERABILITY_REPORT.yml',
+    )
     for location in (
         '.github/workflows',
         '.github/ISSUE_TEMPLATE',
