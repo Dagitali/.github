@@ -3,6 +3,7 @@
 #
 # Responsibilities
 # - Gather documentation locations, concerns, and suggested corrections.
+# - Invite public supporting evidence and accessibility concerns.
 #
 # Maintainer Notes
 # - Keep requests actionable without requiring project-specific tooling.
@@ -13,11 +14,16 @@ title: "[Docs]: "
 labels:
   - documentation
 body:
+  - type: markdown
+    attributes:
+      value: >-
+        Identify a public documentation problem without including credentials,
+        private data, confidential evidence, or suspected vulnerability details.
   - type: input
     id: location
     attributes:
       label: Documentation location
-      description: Link to the page or identify the file and section.
+      description: Provide the public URL or repository path, heading, or line reference.
       placeholder: https://github.com/Dagitali/...
     validations:
       required: true
@@ -25,14 +31,16 @@ body:
     id: issue
     attributes:
       label: What needs improvement?
-      description: Explain what is missing, unclear, outdated, or incorrect.
+      description: Explain what is missing, unclear, outdated, incorrect, unsupported, or inaccessible.
     validations:
       required: true
   - type: textarea
     id: suggestion
     attributes:
       label: Suggested change
-      description: Describe the wording, example, or structure that would help.
+      description: >-
+        Describe the wording, example, or structure that would help. Link public
+        implementation, test, release, or primary-source evidence when available.
   - type: checkboxes
     id: checks
     attributes:
