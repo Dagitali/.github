@@ -124,6 +124,10 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Route inherited security links to affected-repository instructions and add a default private
+  vulnerability form, without enabling hosted reporting or inventing a central contact.
+- Add public project discovery and participation links to the organization profile, and document
+  adoption/override boundaries, required labels, and consumer-owned settings in the README.
 - Align temporary-tree, Make, and package-runner fixture contracts with sibling NumPy-style
   documentation, clarifying side effects, trusted-code boundaries, and subprocess failures.
 - Align root/fixture pytest configuration with sibling native TOML conventions, preserving test

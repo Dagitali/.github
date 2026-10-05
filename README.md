@@ -22,6 +22,7 @@ referenced explicitly, while workflow templates must be selected when creating a
 
 - [Getting Started](#getting-started)
 - [Included Defaults](#included-defaults)
+- [Adoption and Overrides](#adoption-and-overrides)
 - [Shared Automation](#shared-automation)
 - [Design Boundaries](#design-boundaries)
 
@@ -46,6 +47,28 @@ referenced explicitly, while workflow templates must be selected when creating a
 - Code of conduct
 - Security policy
 - Support guidance
+- Private vulnerability report form (requires hosted enablement)
+
+## Adoption and Overrides
+
+| Surface | Adoption | Consumer responsibility |
+| --- | --- | --- |
+| Community policies and PR template | GitHub defaults when no local equivalent exists | Review applicability and supply project-specific overrides |
+| Issue forms and chooser configuration | Default set when no valid local template/configuration exists | Create required labels; local configuration replaces the entire inherited set |
+| Private vulnerability form | Default when no local form exists | Enable private reporting and verify notifications separately |
+| Reusable workflows and composite actions | Explicit caller references | Select a reviewed revision, inputs, triggers, and permissions |
+| Workflow templates | Copy or choose a starter | Replace SHA placeholders and maintain the resulting caller file |
+| CODEOWNERS, licenses, and hosted settings | Not inherited from this repository | Maintain consumer ownership/licenses and configure hosted rules independently |
+
+The community-default mechanism requires this `.github` repository to be public for ordinary
+accounts. Defaults are displayed by GitHub, not copied into consumer clones or packages. Defining a
+valid local issue template or `config.yml` replaces the whole inherited issue-template directory,
+not just the matching form. Create `bug`, `enhancement`, and `documentation` labels in this
+repository and every consumer using these forms; committing a form does not create labels.
+
+Keep consumer-specific support contacts and contribution terms in consumer documentation. See
+[GitHub's default-file rules][default-files] and the [security policy](SECURITY.md) for reporting
+configuration. This repository's license does not license other Dagitali projects.
 
 ## Shared Automation
 
@@ -76,3 +99,5 @@ code.
 The refactored Python/CDK workflows require GitHub.com because their same-revision action references
 are not supported on GitHub Enterprise Server. Review the [workflow contracts and platform
 limitations](docs/github-actions.md) before adopting a revision.
+
+[default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
