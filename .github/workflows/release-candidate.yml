@@ -11,6 +11,7 @@
 # - Retain unique artifact names and a non-publishing release boundary.
 # - Expanded matrices stay manual; do not replace ordinary required checks.
 # - Use explicit Bash for gates, archive verification, and evidence rendering.
+# - Use NumPy-style docstrings for typed evidence-rendering contracts.
 
 name: Release candidate validation
 run-name: Release candidate validation on ${{ github.ref_name }}
@@ -225,8 +226,29 @@ jobs:
               run_url: str,
               report_path: str,
           ) -> None:
-              """Append aggregate candidate evidence without querying hosted state.
+              """
+              Append aggregate candidate evidence without querying hosted state.
 
+              Parameters
+              ----------
+              results : Mapping[str, Mapping[str, Any]]
+                  GitHub needs payload with job outcomes and artifact outputs.
+              candidate_sha : str
+                  Exact source commit associated with the candidate run.
+              run_url : str
+                  Hosted run URL used to locate inspection artifacts.
+              report_path : str
+                  Summary file to open in UTF-8 append mode.
+
+              Raises
+              ------
+              OSError
+                  The summary file cannot be opened or written.
+              KeyError
+                  Required package jobs or job result fields are absent.
+
+              Notes
+              -----
               The supplied path is GitHub's summary file; existing content is
               retained. Missing artifact links remain explicit. Mapping fields
               follow GitHub's needs payload; annotations do not validate it.
@@ -240,7 +262,7 @@ jobs:
                   for name, job in results.items():
                       report.write(f"| {name} | {job['result']} |\n")
                   for name in ('package', 'package-python314'):
-                      outputs = results[name].get('outputs', {})
+                      outputs: Mapping[str, Any] = results[name].get('outputs', {})
                       url = outputs.get('artifact-url', '')
                       report.write(f"\n{name}: {url or 'No artifact evidence available'}\n")
                   report.write('\nMatrix outcomes are aggregate; inspect job legs for individual '

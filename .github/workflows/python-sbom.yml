@@ -8,6 +8,7 @@
 # - Report resolved target dependencies separately from inspection tools.
 # - Retain evidence when best-effort tool version reporting is unavailable.
 # - Document interpreter selection separately from target dependency scope.
+# - Use NumPy-style docstrings for typed inline Python helper contracts.
 #
 # Maintainer Notes
 # - Installs execute caller code; use trusted code without credentials.
@@ -175,6 +176,24 @@ jobs:
               """
               Return installed-tool JSON or an explicit unavailable message.
 
+              Parameters
+              ----------
+              tool_python : pathlib.Path
+                  Interpreter path for the isolated inventory tools.
+
+              Returns
+              -------
+              str
+                  Captured pip-list stdout on success, otherwise the fallback.
+                  Output is returned as text without parsing or JSON validation.
+
+              Raises
+              ------
+              OSError
+                  The interpreter exists but cannot be launched.
+
+              Notes
+              -----
               Runs only the supplied environment's pip list; never installs
               packages or queries advisories. A missing interpreter or nonzero
               exit retains the fallback so version reporting cannot hide
