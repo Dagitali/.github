@@ -59,8 +59,8 @@ operational instructions from an older release.
 
 ## 0.1 Series
 
-- [v0.1.0] — tagged 2026-09-29: Initial defaults, shared automation, and Python/CDK/Swift
-  starters; retrospective record prepared 2026-10-04.
+- [v0.1.0] — 2026-09-29: Initial defaults, shared automation, and CDK/Python/Swift starters;
+  retrospective record prepared 2026-10-04.
 
 ## Initial Scaffold
 
