@@ -37,6 +37,7 @@ referenced explicitly, while workflow templates must be selected when creating a
   required interfaces. See the [release policy] for SHA and tag guidance.
 - To maintain this library rather than adopt it, use the [contributor
   instructions] and [testing guide].
+- Use the [documentation index] to find consumer, maintainer, and historical guides.
 
 ## Included Defaults
 
@@ -107,10 +108,11 @@ limitations][Shared GitHub Actions] before adopting a revision.
 [changelog]: CHANGELOG.md
 [consumer adoption checklist]: docs/ADOPTION.md
 [contributor instructions]: docs/CONTRIBUTING.md
-[default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
+[Shared GitHub Actions]: docs/github-actions.md
 [maintenance guidance]: docs/MAINTENANCE.md
+[documentation index]: docs/README.md
 [release notes archive]: docs/releases/README.md
+[testing guide]: docs/TESTING.md
+[default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
 [release policy]: RELEASE-POLICY.md
 [security policy]: SECURITY.md
-[Shared GitHub Actions]: docs/github-actions.md
-[testing guide]: docs/TESTING.md

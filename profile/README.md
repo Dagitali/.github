@@ -57,6 +57,7 @@ Report suspected vulnerabilities privately through the affected project's securi
 public issues. Repository access, contribution terms, and support channels vary by project.
 
 [AWS CDK Static Site]: https://github.com/Dagitali/aws-cdk-static-site
-[Dagitali.com]: https://www.dagitali.com
 [ETLPlus]: https://github.com/Dagitali/ETLPlus
 [Popo]: https://github.com/Dagitali/popo
+[Dagitali.com]: https://www.dagitali.com
+[markdown-guide]: https://www.markdownguide.org/

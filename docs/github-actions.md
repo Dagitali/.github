@@ -36,10 +36,10 @@ caller files and reviewed SHA references; choosing a starter does not enable hos
 | [Python CI] | Formatting, lint, typing, tests; installable project and configured tools | [Python CI][Python CI starter] | Push, PR, merge group | Consumer selects supported Python versions and commands |
 | [AWS CDK CI] | Python/Node app synthesis and optional checks; `cdk.json` and offline context | [AWS CDK CI][AWS CDK CI starter] | Push, PR, merge group | No deployment, AWS credentials, or account lookups |
 | [Swift CI] | Builds/tests with `Package.swift` and runner-supplied Swift | [Swift CI][Swift CI starter] | Push, PR, merge group | Swift Package Manager, not signed Xcode application releases |
-| [Python Package] | Build, metadata, clean wheel/sdist installation; buildable `pyproject.toml` | [Python Release] | Release-tag push | Only the consumer-owned publishing job receives publishing identity |
+| [Python Package] | Build, metadata, clean wheel/sdist installation; buildable `pyproject.toml` | [Python Release][Python release starter] | Release-tag push | Only the consumer-owned publishing job receives publishing identity |
 | [Dependency Review] | Review dependency changes; consumer dependency graph/API availability | [Dependency Review][Dependency Review starter] | PR only | Not a merge-queue prerequisite or resolved-runtime audit |
-| [Python Dependency Audit] | Audit resolved dependencies; trusted installation, distribution name, public advisory access | [Python Inspection] | Manual | Optional evidence; selected runtime dependencies, not inspection tools |
-| [Python SBOM] | Validated CycloneDX inventory; trusted runtime installation | [Python Inspection] | Manual | Installed environment, not source inventory or vulnerability verdict |
+| [Python Dependency Audit] | Audit resolved dependencies; trusted installation, distribution name, public advisory access | [Python Inspection][Python inspection starter] | Manual | Optional evidence; selected runtime dependencies, not inspection tools |
+| [Python SBOM] | Validated CycloneDX inventory; trusted runtime installation | [Python Inspection][Python inspection starter] | Manual | Installed environment, not source inventory or vulnerability verdict |
 
 The inspection starter calls both audit and inventory. Python release publication requires explicit
 consumer setup described in [Python Releases](#python-releases); package validation alone never
@@ -152,8 +152,8 @@ have been migrated or that hosted integration has passed.
 
 ## Python Releases
 
-Use the [Python release template][Python Release]. It calls the reusable package builder, then
-downloads the tested distributions and publishes in a consumer-owned job. Configure a protected
+Use the [Python release template][Python release starter]. It calls the reusable package builder,
+then downloads the tested distributions and publishes in a consumer-owned job. Configure a protected
 `pypi` environment with reviewers and allowed release tags, and register the consumer repository,
 actual workflow filename, and environment with PyPI.
 
@@ -278,7 +278,7 @@ dependency. Use the existing [optional dependency inspection](#optional-dependen
 workflows for resolved Python dependency auditing and inventories. They preserve findings and
 failures without applying automatic fixes; consumers own adoption and scheduling.
 
-Library CI and Python/CDK/Swift starters handle `merge_group`. See [branch-protection guidance] for
+Library CI and Python/CDK/Swift starters handle `merge_group`. See [branch protection guidance] for
 selecting verified hosted check names and coordinating transitions. PR-only review and manual
 candidate jobs are not required merge-queue gates. No hosted setting is changed by these files.
 
@@ -347,12 +347,12 @@ in manual candidate validation, using its credential-free Python CDK fixture; or
 and their required-check names are unchanged. Python support and installation commands remain
 consumer-owned. Neither workflow gives the root automation library a fictitious runtime package.
 
-For opt-in adoption, copy the [Python inspection starter][Python Inspection]. It runs both workflows
-manually with a required distribution-name input matching the consumer's `pyproject.toml` project
-name. Replace both SHA placeholders and review runtime, directory, and installation defaults before
-use. Select a trusted revision; no secrets are passed. Optional scheduling requires consumer review
-and a configured distribution name instead of the manual input. This manual starter does not provide
-an ordinary PR or merge-queue prerequisite.
+For opt-in adoption, copy the [Python inspection starter]. It runs both workflows manually with a
+required distribution-name input matching the consumer's `pyproject.toml` project name. Replace both
+SHA placeholders and review runtime, directory, and installation defaults before use. Select a
+trusted revision; no secrets are passed. Optional scheduling requires consumer review and a
+configured distribution name instead of the manual input. This manual starter does not provide an
+ordinary PR or merge-queue prerequisite.
 
 ```yaml
 name: Inspect Python dependencies
@@ -443,39 +443,39 @@ development fixture groups follow supported package-manager classification; sche
 
 Repository-specific [CODEOWNERS] covers automation, fixtures, dependency policy, and governance
 using the sibling maintainer account. It does not establish organization-wide ownership or enable
-review enforcement. See [branch protection guidance][branch-protection guidance] for the separately
+review enforcement. See [branch protection guidance] for the separately
 configured hosted review requirements.
 
-[AWS CDK CI]: ../.github/workflows/aws-cdk-ci.yml
-[AWS CDK CI starter]: ../workflow-templates/aws-cdk-ci.yml
-[branch-protection guidance]: ../.github/BRANCH-PROTECTION.md
-[checkout]: https://github.com/actions/checkout
+[branch protection guidance]: ../.github/BRANCH-PROTECTION.md
 [CODEOWNERS]: ../.github/CODEOWNERS
+[AWS CDK CI]: ../.github/workflows/aws-cdk-ci.yml
+[Dependency Review]: ../.github/workflows/dependency-review.yml
+[Python CI]: ../.github/workflows/python-ci.yml
+[Python Dependency Audit]: ../.github/workflows/python-dependency-audit.yml
+[Python Package]: ../.github/workflows/python-package.yml
+[Python SBOM]: ../.github/workflows/python-sbom.yml
+[release-candidate workflow]: ../.github/workflows/release-candidate.yml
+[Swift CI]: ../.github/workflows/swift-ci.yml
+[release policy]: ../RELEASE-POLICY.md
+[inspection constraints]: ../requirements/inspection-constraints.txt
+[AWS CDK CI starter]: ../workflow-templates/aws-cdk-ci.yml
+[Dependency Review starter]: ../workflow-templates/dependency-review.yml
+[Python CI starter]: ../workflow-templates/python-ci.yml
+[Python inspection starter]: ../workflow-templates/python-dependency-inspection.yml
+[Python release starter]: ../workflow-templates/python-release.yml
+[Swift CI starter]: ../workflow-templates/swift-ci.yml
 [consumer adoption checklist]: ADOPTION.md
 [contributor instructions]: CONTRIBUTING.md
 [CycloneDX environment usage]: https://cyclonedx-bom-tool.readthedocs.io/en/latest/usage.html
-[Dependency Review]: ../.github/workflows/dependency-review.yml
-[Dependency Review starter]: ../workflow-templates/dependency-review.yml
-[download]: https://github.com/actions/download-artifact
 [GitHub's reusable workflow guidance]: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows
-[inspection constraints]: ../requirements/inspection-constraints.txt
-[maintenance guidance]: MAINTENANCE.md
-[pinned upload action's metadata]: https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml
-[pip-audit's security model]: https://github.com/pypa/pip-audit
-[PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
-[Python CI]: ../.github/workflows/python-ci.yml
-[Python CI starter]: ../workflow-templates/python-ci.yml
-[Python Dependency Audit]: ../.github/workflows/python-dependency-audit.yml
-[Python Inspection]: ../workflow-templates/python-dependency-inspection.yml
-[Python Package]: ../.github/workflows/python-package.yml
-[Python Release]: ../workflow-templates/python-release.yml
-[Python SBOM]: ../.github/workflows/python-sbom.yml
-[release policy]: ../RELEASE-POLICY.md
-[release-candidate workflow]: ../.github/workflows/release-candidate.yml
 [self-repository reference syntax]: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-using-an-action-in-the-same-repository-as-the-workflow-at-the-running-commit-recommended
-[setup-python caching]: https://github.com/actions/setup-python/tree/v6#caching-packages-dependencies
 [supported ecosystems]: https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories
-[Swift CI]: ../.github/workflows/swift-ci.yml
-[Swift CI starter]: ../workflow-templates/swift-ci.yml
-[testing]: TESTING.md
+[checkout]: https://github.com/actions/checkout
+[download]: https://github.com/actions/download-artifact
+[setup-python caching]: https://github.com/actions/setup-python/tree/v6#caching-packages-dependencies
 [upload]: https://github.com/actions/upload-artifact
+[pinned upload action's metadata]: https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml
+[PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
+[pip-audit's security model]: https://github.com/pypa/pip-audit
+[maintenance guidance]: MAINTENANCE.md
+[testing]: TESTING.md

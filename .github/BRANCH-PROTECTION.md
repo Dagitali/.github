@@ -60,6 +60,6 @@ committed configuration alone.
 
 See [release policy] and [shared Actions guidance].
 
-[CODEOWNERS]: CODEOWNERS
-[release policy]: ../RELEASE-POLICY.md
 [shared Actions guidance]: ../docs/github-actions.md
+[release policy]: ../RELEASE-POLICY.md
+[CODEOWNERS]: CODEOWNERS

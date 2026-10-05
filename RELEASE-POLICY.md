@@ -63,5 +63,5 @@ Deprecate interfaces in documentation before removal where feasible, provide a m
 keep existing released commits available. The unsupported PyPI reusable-publishing path is removed
 with an explicit consumer-owned release-template replacement.
 
-[release notes archive]: docs/releases/README.md
 [release-notes template]: .github/RELEASE-NOTES-TEMPLATE.md
+[release notes archive]: docs/releases/README.md

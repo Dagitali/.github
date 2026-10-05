@@ -1,9 +1,27 @@
+<!--
+docs/CONTRIBUTING.md
+Dagitali shared automation library
+
+Responsibilities
+- Describe checkout maintenance, documentation, and validation conventions.
+
+Maintainer Notes
+- Keep consumer defaults separate from this library's engineering policy.
+- Preserve public contracts and distinguish local from hosted evidence.
+-->
+
 # Contributing to the Automation Library
 
 Use descriptive Markdown reference labels for document and external-resource links, with definitions
-grouped at the bottom of each document. Reuse a definition for repeated destinations; distinguish
-workflow declarations from starters when labels would collide. Keep table-of-contents anchors inline
-and preserve literal link syntax in fenced examples, following the sibling projects' conventions.
+grouped at the bottom of each document and sorted by destination, as in Popo. Reuse a definition for
+repeated destinations; distinguish workflow declarations from starters when labels would collide.
+Keep table-of-contents anchors inline and preserve literal link syntax in fenced examples, following
+the sibling projects' conventions.
+
+Use the [documentation index] to find canonical guides rather than duplicating their policies.
+Review reference-label resolution separately from `make docs-markdown`: Popo checks destinations and
+anchors, not undefined labels. Preserve community-policy attribution and standalone fixture scope;
+do not add links to this checkout that would break when a fixture is copied into a consumer.
 
 File-header comment lines must not exceed 79 characters, including comment markers and indentation.
 Use responsibility/maintainer headings with wrapped bullets, following the sibling projects. Do not
@@ -206,12 +224,13 @@ The local pre-commit configuration supplies hygiene and commit-message checks. I
 check`; hooks alone do not validate GitHub expressions or hosted runner behavior. Review hook
 updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only audit.
 
-[adoption checklist]: ADOPTION.md
-[consumer maintenance guidance]: MAINTENANCE.md
 [Copilot instructions]: ../.github/copilot-instructions.md
-[editable profile selection]: https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows
-[generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
-[release policy]: ../RELEASE-POLICY.md
 [release-notes template]: ../.github/RELEASE-NOTES-TEMPLATE.md
-[testing]: TESTING.md
+[release policy]: ../RELEASE-POLICY.md
+[adoption checklist]: ADOPTION.md
 [YAML language server's modeline parser]: https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts
+[generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+[editable profile selection]: https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+[consumer maintenance guidance]: MAINTENANCE.md
+[documentation index]: README.md
+[testing]: TESTING.md

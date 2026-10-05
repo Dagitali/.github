@@ -63,8 +63,8 @@ gaps are explicit. Current feature-branch changes remain unreleased; this index 
 Archiving notes is optional, not a new release gate. Adding a record does not authorize tagging,
 publication, deployment, or consumer reference updates.
 
+[release-notes template]: ../../.github/RELEASE-NOTES-TEMPLATE.md
 [changelog]: ../../CHANGELOG.md
 [release policy]: ../../RELEASE-POLICY.md
-[release-notes template]: ../../.github/RELEASE-NOTES-TEMPLATE.md
 [v0.0.0]: v0.0.0.md
 [v0.1.0]: v0.1.0.md

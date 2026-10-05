@@ -61,6 +61,6 @@ authorization. Do not retarget immutable tags, silently rewrite consumers, or tr
 starter as updating already-copied caller workflows. Retired or migrated consumers should retain a
 dated decision record.
 
-[adoption checklist]: ADOPTION.md
 [branch protection guidance]: ../.github/BRANCH-PROTECTION.md
 [release policy]: ../RELEASE-POLICY.md
+[adoption checklist]: ADOPTION.md

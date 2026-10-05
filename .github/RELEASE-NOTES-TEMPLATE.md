@@ -84,7 +84,7 @@ Before finalizing, remove unused guidance, verify references, and obtain authori
 external release operations. Preserve previously released commits for reproducible consumers.
 
 [changelog]: ../CHANGELOG.md
-[release notes archive]: ../docs/releases/README.md
-[release policy]: ../RELEASE-POLICY.md
-[testing guide]: ../docs/TESTING.md
 [workflow contracts]: ../docs/github-actions.md
+[release notes archive]: ../docs/releases/README.md
+[testing guide]: ../docs/TESTING.md
+[release policy]: ../RELEASE-POLICY.md

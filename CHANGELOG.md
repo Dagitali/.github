@@ -127,6 +127,9 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Align Markdown reference definitions by destination, clarify starter labels and versioned records,
+  add a canonical documentation index and missing guide/fixture headers, and preserve standalone
+  fixture scope and historical evidence boundaries.
 - Mirror sibling Markdown conventions with descriptive bottom-of-document reference definitions,
   reusing repeated destinations while preserving link targets, inline contents anchors, and
   examples.
@@ -199,7 +202,7 @@ Maintainer Notes
 ## [0.1.0] - 2026-09-29
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record].
+recorded date, not verified publication. See the [release record][v0.1.0 release record].
 
 - Add community-health defaults, issue/PR templates, and organization-profile documentation.
 - Add reusable Python, CDK, Swift, package, publish, and dependency-review workflows; shared
@@ -211,10 +214,10 @@ recorded date, not verified publication. See the [release record].
 ## [0.0.0] - 2026-09-28
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record][release record v0.0.0].
+recorded date, not verified publication. See the [release record][v0.0.0 release record].
 
 - Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
 - No workflows, actions, templates, or executable validation exist in this scaffold.
 
-[release record]: docs/releases/v0.1.0.md
-[release record v0.0.0]: docs/releases/v0.0.0.md
+[v0.0.0 release record]: docs/releases/v0.0.0.md
+[v0.1.0 release record]: docs/releases/v0.1.0.md

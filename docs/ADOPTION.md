@@ -57,7 +57,7 @@ Revisit the record when defaults, overrides, maintainers, repository visibility,
 or hosted rules change. Follow [maintenance guidance] for exceptions, inactive consumers, and
 deprecated interfaces. An unchecked checklist does not block adoption automatically.
 
-[Actions guide]: github-actions.md
-[adoption boundaries]: ../README.md#adoption-and-overrides
 [branch protection guidance]: ../.github/BRANCH-PROTECTION.md
+[adoption boundaries]: ../README.md#adoption-and-overrides
+[Actions guide]: github-actions.md
 [maintenance guidance]: MAINTENANCE.md

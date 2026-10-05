@@ -32,6 +32,6 @@ calling a shared workflow does not make this document their policy.
 [agent instructions]: ../AGENTS.md
 [contributing guide]: ../docs/CONTRIBUTING.md
 [public automation contracts]: ../docs/github-actions.md
+[testing guide]: ../docs/TESTING.md
 [release policy]: ../RELEASE-POLICY.md
 [release-notes template]: RELEASE-NOTES-TEMPLATE.md
-[testing guide]: ../docs/TESTING.md
