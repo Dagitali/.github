@@ -2,13 +2,13 @@
 # Dagitali shared automation library
 #
 # Responsibilities
-# - Preserve affected-repository routing for inherited security defaults.
+# - Preserve affected-repository support and private reporting routes.
 #
 # Maintainer Notes
 # - Check local policy only; do not submit reports or query hosted settings.
 # - Leave generic YAML validation to Popo.
 
-"""Repository-specific private reporting boundaries for community defaults."""
+"""Repository-specific support and private reporting community boundaries."""
 
 from pathlib import Path
 from typing import Any
@@ -22,7 +22,7 @@ def test_private_report_routing(
     repo_root: Path,
 ) -> None:
     """
-    Keep private reporting separate from inherited public issue forms.
+    Preserve support routing and separate private reports from public forms.
 
     Parameters
     ----------
@@ -32,8 +32,8 @@ def test_private_report_routing(
     Notes
     -----
     Reads declarations without submitting reports or verifying hosted
-    enablement. Assertions protect Dagitali's routing and assessment fields,
-    not YAML syntax.
+    enablement. Assertions protect affected-project support routing and
+    private assessment fields, not YAML syntax or channel availability.
     """
     chooser: dict[str, Any] = yaml.load(
         (repo_root / '.github/ISSUE_TEMPLATE/config.yml').read_text(encoding='utf-8'),
@@ -53,6 +53,13 @@ def test_private_report_routing(
         security['url'] == 'https://github.com/Dagitali/.github/blob/main/SECURITY.md'
     )
     assert 'affected repository' in security['about']
+    support = next(
+        link
+        for link in chooser['contact_links']
+        if link['name'] == 'Usage questions and support'
+    )
+    assert support['url'] == 'https://github.com/Dagitali/.github/blob/main/SUPPORT.md'
+    assert "affected project's support instructions" in support['about']
     assert not (repo_root / '.github/ISSUE_TEMPLATE/VULNERABILITY_REPORT.yml').exists()
     required = {
         field['id']
