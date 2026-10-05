@@ -20,6 +20,10 @@ write `None.` or `Not run: reason` where appropriate rather than silently omitti
 Creating notes does not create a release, tag, or consumer rollout. Do not describe a candidate as
 published until its availability has been verified.
 
+If retaining a committed record, follow the optional [release notes
+archive](../docs/releases/README.md) conventions. Label retrospective records explicitly; later
+checks do not establish the original release's validation or publication results.
+
 ## Release Identity and Highlights
 
 - Version and status: planned, validated candidate, or confirmed published release.
