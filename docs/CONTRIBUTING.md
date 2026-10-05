@@ -52,6 +52,10 @@ gate.
 The root CONTRIBUTING.md is an organization-wide community default. This guide is specific
 to maintaining Dagitali/.github.
 
+The repository-local [Copilot instructions](../.github/copilot-instructions.md) route assistant
+contributions to `AGENTS.md` and these maintenance guides rather than duplicating policies or tool
+versions. They are not organization-wide community defaults or consumer engineering instructions.
+
 Install Python 3.13 or 3.14 (Popo's supported range), Git, Make, actionlint 1.7.12, and ShellCheck. On macOS,
 Homebrew supplies the validation tools; CI installs the pinned actionlint version with Go.
 Use `make dev PY=python3.13` (or `make setup`), then `make check`.
