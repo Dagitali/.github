@@ -105,6 +105,9 @@
 
 ### Documentation and Maintenance
 
+- Align Markdown review/release guidance with sibling risk, documentation, missing-evidence, and
+  hosted-protection conventions, preserving the generic organization PR default and library-specific
+  consumer compatibility and rollback evidence.
 - Standardize inline workflow helper docstrings on NumPy-style parameter, return, exception, and
   side-effect documentation while preserving existing type hints and runtime behavior.
 - Align CODEOWNERS with sibling default-owner and grouped-surface conventions, retaining all
