@@ -1,3 +1,15 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/dependency-review.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Review dependency changes with caller-configured severity and license
+#   policy.
+#
+# Maintainer Notes
+# - PR-only review is not a resolved-dependency audit or a merge-queue gate.
+# - Keep runtime-only defaults; broader library scopes belong in its caller.
+
 name: Reusable Dependency Review
 
 on:
@@ -16,21 +28,25 @@ on:
         type: string
         default: ''
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   dependency-review:
+    permissions:
+      contents: read
     name: Review dependency changes
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Review dependency changes
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48  # v4.9.0
         with:
           fail-on-severity: ${{ inputs.fail-on-severity }}
           fail-on-scopes: ${{ inputs.fail-on-scopes }}

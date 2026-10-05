@@ -1,3 +1,15 @@
+<!--
+CODE_OF_CONDUCT.md
+Dagitali organization default
+
+Responsibilities
+- Set community participation, reporting, and harm-repair expectations.
+
+Maintainer Notes
+- Preserve policy wording, attribution, and private reporting channels.
+- Do not substitute application-specific rules solely for symmetry.
+-->
+
 # Code of Conduct
 
 All project contributors and participants are expected to follow this Code of Conduct.

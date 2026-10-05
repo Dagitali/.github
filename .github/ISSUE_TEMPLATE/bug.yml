@@ -1,3 +1,13 @@
+# .github/ISSUE_TEMPLATE/bug.yml
+# Dagitali organization default
+#
+# Responsibilities
+# - Gather actionable reproduction, expectations, and environment details.
+# - Prompt public-safe evidence without requiring project-specific tooling.
+#
+# Maintainer Notes
+# - Keep organization defaults product-neutral and reports free of secrets.
+
 name: Bug report
 description: Report reproducible incorrect or unexpected behavior
 title: "[Bug]: "
@@ -6,19 +16,24 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: Thanks for taking the time to report a problem.
+      value: >-
+        Thanks for taking the time to report a problem. Do not include credentials,
+        private data, or confidential evidence. Report suspected vulnerabilities
+        privately through the repository's security policy, not in a public issue.
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Clearly describe what went wrong.
+      description: Describe what went wrong, its impact, and relevant output or exit codes.
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
       label: Steps to reproduce
-      description: Provide the smallest reliable set of steps that demonstrates the problem.
+      description: >-
+        Provide the smallest reliable reproduction, including exact commands,
+        configuration, and sample inputs where relevant. Remove sensitive values.
       placeholder: |
         1. Go to ...
         2. Run ...
@@ -36,11 +51,16 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Include relevant versions, operating system, browser, runtime, or deployment details.
+      description: >-
+        Include the version or commit, installation or invocation method, operating
+        system, and relevant tool, runtime, browser, or service versions. State
+        whether the failure occurred locally or in CI.
       placeholder: |
         Project version or commit:
         Operating system:
         Runtime or browser:
+        Installation or invocation method:
+        Local or CI execution:
   - type: textarea
     id: additional
     attributes:

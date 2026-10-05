@@ -1,3 +1,13 @@
+# .github/ISSUE_TEMPLATE/feature.yml
+# Dagitali organization default
+#
+# Responsibilities
+# - Gather problems, proposed outcomes, and considered alternatives.
+# - Invite observable outcomes and compatibility considerations.
+#
+# Maintainer Notes
+# - Preserve existing field IDs, labels, and requiredness for consumers.
+
 name: Feature request
 description: Propose an improvement or new capability
 title: "[Feature]: "
@@ -6,7 +16,10 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: Tell us about the problem you want to solve and the outcome you need.
+      value: >-
+        Tell us about the problem you want to solve and the outcome you need before
+        prescribing an implementation. Do not include credentials, private data,
+        confidential evidence, or suspected vulnerability details in public issues.
   - type: textarea
     id: problem
     attributes:
@@ -18,19 +31,22 @@ body:
     id: proposal
     attributes:
       label: Proposed solution
-      description: Describe the desired behavior or outcome.
+      description: Describe the desired behavior and observable outcomes that would make it complete.
     validations:
       required: true
   - type: textarea
     id: alternatives
     attributes:
       label: Alternatives considered
-      description: What workarounds or alternative approaches have you considered?
+      description: What workarounds or alternative approaches have you considered, and why are they insufficient?
   - type: textarea
     id: context
     attributes:
       label: Additional context
-      description: Add examples, sketches, links, or other relevant details.
+      description: >-
+        Add public examples, sketches, links, or other relevant details. Note
+        compatibility, migration, security, privacy, operational, or cost impacts
+        where applicable.
   - type: checkboxes
     id: checks
     attributes:

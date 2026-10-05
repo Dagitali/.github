@@ -1,0 +1,6 @@
+{
+  "name": "dagitali-cdk-ci-fixture",
+  "private": true,
+  "scripts": {"test": "node --test app.test.js"},
+  "dependencies": {"aws-cdk-lib": "2.271.0", "constructs": "10.8.1"}
+}

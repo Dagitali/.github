@@ -1,3 +1,17 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# .github/workflows/python-package.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Build and validate fresh wheel/source artifacts in isolated environments.
+# - Reject unsupported cache selectors before runtime setup.
+# - Expose validated upload metadata without adding publishing identity.
+#
+# Maintainer Notes
+# - Upload only validated distributions; publication belongs to the consumer.
+# - Build backends and smoke commands execute trusted caller code.
+# - Archive outputs describe the upload, not each distribution's checksum.
+
 name: Reusable Python Package CI
 
 on:
@@ -11,46 +25,148 @@ on:
         description: Directory containing pyproject.toml.
         type: string
         default: .
+      cache:
+        description: setup-python cache manager; pip, pipenv, poetry, or empty to disable caching.
+        type: string
+        default: pip
+      cache-dependency-path:
+        description: Dependency paths relative to checkout; empty uses working-directory/pyproject.toml.
+        type: string
+        default: ''
+      smoke-command:
+        description: Optional command run outside the source tree in each clean installed environment.
+        type: string
+        default: ''
       artifact-name:
         description: Name of the uploaded distribution artifact.
         type: string
         default: python-dist
+      artifact-retention-days:
+        description: Artifact retention in days, subject to repository limits.
+        type: number
+        default: 7
+      build-version:
+        description: Exact PyPA build version (transitive and backend dependencies remain project-owned).
+        type: string
+        default: '1.6.1'
+      twine-version:
+        description: Exact Twine version for metadata validation.
+        type: string
+        default: '7.0.0'
+    outputs:
+      artifact-id:
+        description: GitHub identifier of the validated distribution upload.
+        value: ${{ jobs.build.outputs.artifact-id }}
+      artifact-url:
+        description: Authenticated download URL, valid while the artifact exists.
+        value: ${{ jobs.build.outputs.artifact-url }}
+      artifact-digest:
+        description: SHA-256 digest of the uploaded artifact archive, not individual distributions.
+        value: ${{ jobs.build.outputs.artifact-digest }}
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build:
+    permissions:
+      contents: read
     name: Build and validate distribution
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
     defaults:
       run:
         shell: bash
         working-directory: ${{ inputs.working-directory }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate Python cache
+        working-directory: .
+        env:
+          PYTHON_CACHE: ${{ inputs.cache }}
+        run: |
+          case "$PYTHON_CACHE" in
+            ''|pip|pipenv|poetry) ;;
+            *)
+              echo 'Python cache must be pip, pipenv, poetry, or empty.' >&2
+              exit 2
+              ;;
+          esac
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
         with:
           python-version: ${{ inputs.python-version }}
-          cache: pip
-          cache-dependency-path: ${{ format('{0}/pyproject.toml', inputs.working-directory) }}
+          cache: ${{ inputs.cache }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
 
       - name: Install build tooling
-        run: python -m pip install --upgrade build twine
+        env:
+          BUILD_VERSION: ${{ inputs.build-version }}
+          TWINE_VERSION: ${{ inputs.twine-version }}
+        run: |
+          python -m pip install "build==$BUILD_VERSION" "twine==$TWINE_VERSION"
+          python --version
+          python -m pip show build twine
+
+      - name: Require clean distribution directory
+        run: |
+          if [[ -L dist || ( -e dist && ! -d dist ) ]]; then
+            echo 'dist must be an absent or empty real directory' >&2
+            exit 1
+          fi
+          if [[ -d dist ]] && [[ -n "$(find dist -mindepth 1 -print -quit)" ]]; then
+            echo 'dist must be empty before building; existing files were preserved' >&2
+            exit 1
+          fi
 
       - name: Build distribution
         run: python -m build
 
       - name: Validate distribution metadata
-        run: python -m twine check dist/*
+        run: |
+          shopt -s nullglob
+          wheels=(dist/*.whl)
+          sdists=(dist/*.tar.gz)
+          if (( ${#wheels[@]} == 0 || ${#sdists[@]} == 0 )); then
+            echo 'Both wheel and source distributions are required' >&2
+            exit 1
+          fi
+          python -m twine check "${wheels[@]}" "${sdists[@]}"
+
+      - name: Test wheel and source distribution installations
+        env:
+          SMOKE_COMMAND: ${{ inputs.smoke-command }}
+        run: |
+          for distribution in dist/*.whl dist/*.tar.gz; do
+            test -f "$distribution"
+            install_env="$(mktemp -d)"
+            python -m venv "$install_env/venv"
+            env -u PYTHONPATH -u PYTHONHOME "$install_env/venv/bin/python" -m pip install "$PWD/$distribution"
+            env -u PYTHONPATH -u PYTHONHOME "$install_env/venv/bin/python" -m pip check
+            if [[ -n "$SMOKE_COMMAND" ]]; then
+              (cd "$install_env" && env -u PYTHONPATH -u PYTHONHOME \
+                VIRTUAL_ENV="$install_env/venv" PATH="$install_env/venv/bin:$PATH" \
+                PYTHON="$install_env/venv/bin/python" bash -euo pipefail -c "$SMOKE_COMMAND")
+            fi
+          done
 
       - name: Upload distribution
-        uses: actions/upload-artifact@v4
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: ${{ inputs.artifact-name }}
-          path: ${{ format('{0}/dist/', inputs.working-directory) }}
+          archive: true
+          path: |
+            ${{ inputs.working-directory }}/dist/*.whl
+            ${{ inputs.working-directory }}/dist/*.tar.gz
           if-no-files-found: error
+          retention-days: ${{ inputs.artifact-retention-days }}
