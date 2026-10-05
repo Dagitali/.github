@@ -52,6 +52,9 @@ gate.
 The root CONTRIBUTING.md is an organization-wide community default. This guide is specific
 to maintaining Dagitali/.github.
 
+Use [consumer maintenance guidance](MAINTENANCE.md) for ownership, local exceptions, and interface
+lifecycle decisions, and the [adoption checklist](ADOPTION.md) for separate local/hosted evidence.
+
 The repository-local [Copilot instructions](../.github/copilot-instructions.md) route assistant
 contributions to `AGENTS.md` and these maintenance guides rather than duplicating policies or tool
 versions. They are not organization-wide community defaults or consumer engineering instructions.

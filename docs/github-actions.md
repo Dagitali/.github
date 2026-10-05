@@ -36,6 +36,15 @@ Replace GitHub's `$default-branch` placeholder manually when copying locally; th
 template chooser replaces it automatically. Select triggers appropriate to the consumer,
 including `merge_group` if it uses a merge queue.
 
+Use the [consumer adoption checklist](ADOPTION.md) to record the selected revision and separate
+hosted verification. Consumer-owned overrides and migration records follow [maintenance
+guidance](MAINTENANCE.md).
+
+The [dependency-review starter](../workflow-templates/dependency-review.yml) runs only on pull
+requests, with the reusable workflow's default severity/scope policy. Confirm dependency-review
+service availability for the consumer and customize policy explicitly. It is not a merge-queue
+required-check candidate or a resolved-runtime audit.
+
 ```yaml
 name: Python CI
 on:
@@ -335,6 +344,13 @@ Consumer repositories choose their own manual/scheduled triggers. The library ex
 in manual candidate validation, using its credential-free Python CDK fixture; ordinary PR checks
 and their required-check names are unchanged. Python support and installation commands remain
 consumer-owned. Neither workflow gives the root automation library a fictitious runtime package.
+
+For opt-in adoption, copy the [Python inspection starter](../workflow-templates/python-dependency-inspection.yml).
+It runs both workflows manually with a required distribution-name input matching the consumer's
+`pyproject.toml` project name. Replace both SHA placeholders and review runtime, directory, and
+installation defaults before use. Select a trusted revision; no secrets are passed. Optional
+scheduling requires consumer review and a configured distribution name instead of the manual input.
+This manual starter does not provide an ordinary PR or merge-queue prerequisite.
 
 ```yaml
 name: Inspect Python dependencies
