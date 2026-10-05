@@ -32,6 +32,16 @@ remain explicitly unreleased; corrections to maintained history do not rewrite e
 - [0.1.0 - 2026-09-29](#010---2026-09-29)
 - [0.0.0 - 2026-09-28](#000---2026-09-28)
 
+## Unreleased
+
+No additional changes are recorded outside the planned `0.4.0` scope below.
+
+## [0.4.0] - Unreleased
+
+Planned minor release; draft prepared 2026-10-05, not a publication date. The feature is now
+integrated into `develop` but absent from the v0.3.0 tag. Final candidate selection and local/hosted
+validation remain pending. See the [v0.4.0 release draft][0.4.0].
+
 ### Community Defaults and Adoption
 
 - Add affected-project security/support routing and a default private vulnerability form without
@@ -49,24 +59,22 @@ remain explicitly unreleased; corrections to maintained history do not rewrite e
 
 ### Documentation Corrections and Conventions
 
+- Group pending changes under their planned version and consolidate overlapping editorial entries
+  without changing released history, candidate status, or documented compatibility boundaries.
 - Align changelog introduction, archive/policy navigation, and version-heading reference links with
   sibling conventions while preserving all change history and explicit release-evidence boundaries.
 - Backfill the v0.3.1 record and dated history, documenting its identical source commit to v0.3.0;
   index it newest first and retain explicit planned status for v0.4.0 without rewriting tags.
-- Standardize the section names, existence, and order across release records and their template,
-  retaining concise non-applicable sections and library-specific artifact/adoption boundaries.
-- Separate change scope from compatibility guidance in detailed release records, link v0.1.0's later
-  publishing removal to v0.2.0, and make archive draft/tag status labels consistent.
-- Align the release archive with sibling version-series navigation, entry formatting, and numbered
-  maintenance guidance while preserving optional records, draft status, and historical evidence.
-- Match Popo's case-sensitive reference-definition ordering and add navigation to long maintainer
-  guides, with a source-of-truth table for focused documentation synchronization.
-- Align Markdown reference definitions by destination, clarify starter labels and versioned records,
-  add a canonical documentation index and missing guide/fixture headers, and preserve standalone
-  fixture scope and historical evidence boundaries.
-- Mirror sibling Markdown conventions with descriptive bottom-of-document reference definitions,
-  reusing repeated destinations while preserving link targets, inline contents anchors, and
-  examples.
+- Standardize release-record sections and their template, separate scope from compatibility, and
+  link v0.1.0's later publishing removal to v0.2.0. Align archive version-series navigation, entry
+  formatting, numbered maintenance guidance, and draft/tag labels while retaining concise
+  non-applicable sections, optional records, and library-specific artifact/adoption boundaries.
+- Standardize descriptive bottom-of-document reference definitions, sorted case-sensitively by
+  destination as in Popo and reused for repeated targets. Clarify starter labels and versioned
+  records, retain inline contents anchors and examples, and preserve standalone fixture scope.
+- Add the canonical documentation index and missing guide/fixture headers, navigation for long
+  maintainer guides, and a source-of-truth table for focused documentation synchronization while
+  preserving historical evidence boundaries.
 - Add affected-project support routing to the issue chooser, remove hidden profile starter prompts,
   and organize reusable workflows by purpose, matching starter, triggers, and adoption boundaries.
 - Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
@@ -84,16 +92,6 @@ remain explicitly unreleased; corrections to maintained history do not rewrite e
 
 The integrated feature does not change reusable workflow/action declarations relative to v0.3.0.
 Confirm compatibility and record the exact candidate and release date only after review.
-
-## Unreleased
-
-No additional changes are recorded outside the planned `0.4.0` scope below.
-
-## [0.4.0] - Unreleased
-
-Planned minor release; draft prepared 2026-10-05, not a publication date. The feature is now
-integrated into `develop` but absent from the v0.3.0 tag. Final candidate selection and local/hosted
-validation remain pending. See the [v0.4.0 release draft][0.4.0].
 
 ## [0.3.1] - 2026-10-05
 
