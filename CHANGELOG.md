@@ -16,11 +16,11 @@ All notable changes to this project are documented in this file. Detailed releas
 records are indexed in the [release notes archive]. Versioning, compatibility, and publication
 safeguards follow the [release policy].
 
-Dated historical entries preserve local tag dates, not verified publication dates. Planned entries
-remain explicitly unreleased; corrections to maintained history do not rewrite existing tags.
+Dated historical entries preserve local tag dates, not verified publication dates. Candidate dates
+record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
-- [0.4.0 - Unreleased](#040---unreleased)
+- [0.4.0 - 2026-10-05](#040---2026-10-05)
 - [0.3.1 - 2026-10-05](#031---2026-10-05)
 - [0.3.0 - 2026-10-05](#030---2026-10-05)
 - [0.2.0 - 2026-10-05](#020---2026-10-05)
@@ -29,13 +29,14 @@ remain explicitly unreleased; corrections to maintained history do not rewrite e
 
 ## Unreleased
 
-No additional changes are recorded outside the planned `0.4.0` scope below.
+No additional changes are recorded after the prepared `0.4.0` candidate below.
 
-## [0.4.0] - Unreleased
+## [0.4.0] - 2026-10-05
 
-Planned minor release; draft prepared 2026-10-05, not a publication date. The feature is now
-integrated into `develop` but absent from the v0.3.0 tag. Final candidate selection and local/hosted
-validation remain pending. See the [v0.4.0 release draft][0.4.0].
+Minor release candidate prepared 2026-10-05 on `release/0.4.0`, following the merge of
+`feature/reconcile-release-documentation` into `develop`, plus the release-documentation updates.
+The date records candidate preparation, not tagging or publication. Hosted validation and final
+release approval remain pending. See the [v0.4.0 release candidate][0.4.0].
 
 - Add private vulnerability-reporting defaults, affected-project routing, public project discovery,
   contribution onboarding, and consumer-owned adoption/maintenance guidance.
@@ -43,18 +44,20 @@ validation remain pending. See the [v0.4.0 release draft][0.4.0].
   placeholders, plus focused routing/starter regression coverage.
 - Align documentation links, navigation, headers, fixture contracts, release records, and
   present-tense highlights; clarify archive draft dates and correct historical scope without
-  rewriting existing tags.
+  rewriting existing tags. Replace hard-coded Markdown commit SHAs with descriptive release
+  references; align archive candidate labels, evidence guidance, and closing navigation with sibling
+  release records.
 - Move detailed change categories into the matching release records and keep this changelog concise.
 
-Full change details and candidate compatibility boundaries are preserved in the [v0.4.0 release
-draft][0.4.0]. Final release validation remains pending.
+Full change details, compatibility boundaries, and local/hosted validation status are preserved in
+the [v0.4.0 release candidate][0.4.0]. The final tagged SHA is not established.
 
 ## [0.3.1] - 2026-10-05
 
 Retrospective summary prepared 2026-10-05 from local annotated-tag metadata. The date is the tag's
 recorded date, not verified publication. See the [v0.3.1 release record][0.3.1].
 
-- Add the annotated v0.3.1 tag at `00cc6dfd3be569dfd50f015012916648f54da120`, identical to v0.3.0.
+- Add the annotated v0.3.1 tag at the same commit as v0.3.0.
 - No repository source changes from v0.3.0; its documentation-only scope remains unchanged.
 - The annotation describes synchronization intent, but the identical commit does not include a new
   source fix or the community/security feature planned for v0.4.0.
@@ -63,9 +66,8 @@ recorded date, not verified publication. See the [v0.3.1 release record][0.3.1].
 
 ## [0.3.0] - 2026-10-05
 
-Retrospective correction prepared 2026-10-05 from annotated tag `v0.3.0` at
-`00cc6dfd3be569dfd50f015012916648f54da120`. The date is the tag's recorded date, not verified
-GitHub Release publication. See the [v0.3.0 release record][0.3.0].
+Retrospective correction prepared 2026-10-05 from annotated tag `v0.3.0`. The date is the tag's
+recorded date, not verified GitHub Release publication. See the [v0.3.0 release record][0.3.0].
 
 - Backfill the retrospective v0.2.0 record and reconcile hardening history with that tag.
 - Correct release-policy wording that described already-tagged v0.2.0 changes as unreleased.

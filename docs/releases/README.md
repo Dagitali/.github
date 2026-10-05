@@ -13,8 +13,8 @@ Maintainer Notes
 
 # Release Notes Archive
 
-This archive indexes Dagitali's shared-automation release records, newest first. These optional
-documents preserve change scope, compatibility, support, validation, publication, adoption,
+This archive indexes Dagitali's shared-automation release-aligned records, newest first. These
+optional documents preserve change scope, compatibility, support, validation, publication, adoption,
 rollback, and follow-up details where applicable. A committed record or local tag does not establish
 that a GitHub Release or consumer rollout exists.
 
@@ -45,8 +45,9 @@ operational instructions from an older release.
 
 ## 0.4 Series
 
-- [v0.4.0] — 2026-10-05: Community defaults, security starters, and adoption guidance are integrated
-  into `develop`, but final candidate validation is pending.
+- [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
+  release-history corrections are integrated into `release/0.4.0`. Tagging, hosted validation, and
+  publication remain pending; see the record for local validation evidence.
 
 ## 0.3 Series
 
@@ -77,10 +78,12 @@ local tag establishes remote publication.
 
 1. When choosing to archive a release record, create `docs/releases/vMAJOR.MINOR.PATCH.md` using the
    [release-notes template]. Preserve applicable compatibility, support, validation, artifact,
-   publication, adoption, rollback, and follow-up sections. Mark untagged candidates as planned.
+   publication, adoption, rollback, and follow-up sections. Mark untagged candidates as planned,
+   including candidates whose changelog entry is already dated.
 2. Reconcile scope with the candidate's changes, changelog, and release policy. Identify the
-   intended version and exact candidate commit; distinguish local checks from hosted validation and
-   publication. Do not duplicate policy or add a required check solely for this index.
+   intended version tag without embedding a commit SHA. Identify the reviewed tree through linked
+   validation or review evidence; distinguish local checks from hosted validation and publication.
+   Do not duplicate policy or add a required check solely for this index.
 3. Record supported dates and results, keeping missing checks explicit with `Not run: reason`. Link
    public evidence without credentials, private identifiers, or confidential information. Mark
    retrospective records as retrospective; never transfer current-checkout results to a historical
