@@ -1,0 +1,35 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# workflow-templates/python-dependency-inspection.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Offer opt-in runtime dependency auditing and inventory evidence.
+#
+# Maintainer Notes
+# - Replace release-SHA placeholders before using this manual starter.
+# - Installation executes project code; run trusted revisions, no secrets.
+# - Reports cover the installed target, not sources or inspection tooling.
+
+name: Python Dependency Inspection
+
+on:
+  workflow_dispatch:
+    inputs:
+      project-distribution:
+        description: Installed distribution name matching pyproject.toml project.name.
+        type: string
+        required: true
+
+permissions: {}
+
+jobs:
+  audit:
+    permissions:
+      contents: read
+    uses: Dagitali/.github/.github/workflows/python-dependency-audit.yml@REPLACE_WITH_RELEASE_SHA
+    with:
+      project-distribution: ${{ inputs.project-distribution }}
+  inventory:
+    permissions:
+      contents: read
+    uses: Dagitali/.github/.github/workflows/python-sbom.yml@REPLACE_WITH_RELEASE_SHA
