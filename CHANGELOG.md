@@ -29,7 +29,8 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes are recorded after the prepared `0.4.0` candidate below.
+- Record a read-only hosted adoption audit for the library and `aws-cdk-static-site`, separating
+  verified settings and runs from reporting, notification, caller, and protection gaps.
 
 ## [0.4.0] - 2026-10-05
 
