@@ -36,10 +36,31 @@ def package_runner(
     """
     Return a Bash runner with controllable pip/venv boundaries.
 
-    Keyword arguments override environment variables, including the failure stage
-    and smoke command. The shim does not install distributions; hosted fixtures
-    supply that evidence. Nonzero exits are returned for assertions; subprocess
-    timeouts raise. Pytest cleans temporary files.
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Per-test directory containing the Python shim and distribution
+        directory.
+    monkeypatch : pytest.MonkeyPatch
+        Installs temporary PATH and Python startup environment overrides.
+
+    Returns
+    -------
+    Callable[..., subprocess.CompletedProcess[str]]
+        Runner accepting a shell script and string-valued environment
+        overrides.
+
+    Raises
+    ------
+    OSError
+        If temporary shim creation or permission changes fail.
+
+    Notes
+    -----
+    Keyword arguments override environment variables, including the failure
+    stage and smoke command. The shim does not install distributions; hosted
+    fixtures supply that evidence. Nonzero exits are returned for assertions;
+    subprocess timeouts raise. Pytest cleans temporary files.
     """
     bin_dir = tmp_path / 'bin'
     bin_dir.mkdir()
@@ -65,7 +86,38 @@ def package_runner(
     (tmp_path / 'dist').mkdir()
 
     def run(script: str, **environment: str) -> subprocess.CompletedProcess[str]:
-        """Run a trusted shell script in isolation and return captured output."""
+        """
+        Run a trusted shell script and return captured output.
+
+        Parameters
+        ----------
+        script : str
+            Maintainer-controlled Bash script; a next-step marker command is
+            appended.
+        **environment : str
+            Per-invocation environment overrides, without changing the parent
+            process.
+
+        Returns
+        -------
+        subprocess.CompletedProcess[str]
+            Exit status and captured standard output/error, including nonzero
+            exits.
+
+        Raises
+        ------
+        OSError
+            If Bash cannot be launched.
+        subprocess.TimeoutExpired
+            If the invocation exceeds 30 seconds.
+
+        Notes
+        -----
+        Bash uses fail-fast and pipeline-failure handling. The marker records
+        whether execution reached the appended command. Temporary paths isolate
+        test outputs, but scripts are trusted code and containment is not
+        enforced.
+        """
         return subprocess.run(
             ['bash', '-euo', 'pipefail', '-c', script + '\ntouch next-step'],
             cwd=tmp_path,

@@ -158,6 +158,25 @@ def automation_copy_fixture(
     Return an isolated copy of the real consumer policy and discovered
     automation.
 
+    Parameters
+    ----------
+    repo_root : pathlib.Path
+        Read-only checkout containing the consumer policy and automation.
+    tmp_path : pathlib.Path
+        Per-test temporary directory supplied by pytest.
+
+    Returns
+    -------
+    pathlib.Path
+        Temporary tree containing copied policy and automation declarations.
+
+    Raises
+    ------
+    OSError, shutil.Error
+        If directory creation or copying fails.
+
+    Notes
+    -----
     Tests may mutate this tree; pytest owns temporary-directory cleanup. Files
     in the checkout and user changes remain untouched.
     """
@@ -292,7 +311,14 @@ def parity_case_fixture(
     scope='session',
 )
 def repo_root_fixture() -> Path:
-    """Return the resolved checkout, which consumers must treat as read-only."""
+    """
+    Return the resolved checkout for repository-contract tests.
+
+    Returns
+    -------
+    pathlib.Path
+        Absolute checkout path, which consumers must treat as read-only.
+    """
     return ROOT
 
 
@@ -305,16 +331,56 @@ def run_make(
     """
     Return a runner for the real Makefile in a temporary working directory.
 
-    The callable accepts Make arguments and an optional active-environment flag.
-    It captures text output without raising for nonzero exits; timeouts still raise.
-    Monkeypatch restores removed interpreter/recursive-Make state after the test.
+    Parameters
+    ----------
+    repo_root : pathlib.Path
+        Checkout containing the Makefile under test.
+    tmp_path : pathlib.Path
+        Working directory for Make invocations and their temporary outputs.
+    monkeypatch : pytest.MonkeyPatch
+        Removes inherited interpreter and recursive-Make environment settings.
+
+    Returns
+    -------
+    Callable[..., subprocess.CompletedProcess[str]]
+        Runner accepting string Make arguments and keyword-only ``active``.
+        Captures output and returns nonzero exits without raising.
+
+    Notes
+    -----
+    Commands are trusted test inputs and may write within the temporary
+    directory. The runner does not enforce containment or sandbox Make recipes.
+    Launch errors and timeouts propagate when it is called. Monkeypatch
+    restores removed interpreter/recursive-Make state after the test.
     """
     for name in MAKE_ENVIRONMENT:
         monkeypatch.delenv(name, raising=False)
 
     def run(*args: str, active: bool = False) -> subprocess.CompletedProcess[str]:
-        """Run trusted Make arguments in isolation and return captured output."""
-        env = dict(os.environ)
+        """
+        Run trusted Make arguments and return captured output.
+
+        Parameters
+        ----------
+        *args : str
+            Targets, options, and variable assignments passed directly to Make.
+        active : bool, optional
+            Set a synthetic active-environment path without creating an
+            environment.
+
+        Returns
+        -------
+        subprocess.CompletedProcess[str]
+            Exit status and captured standard output/error for assertions.
+
+        Raises
+        ------
+        OSError
+            If Make cannot be launched.
+        subprocess.TimeoutExpired
+            If the invocation exceeds 60 seconds.
+        """
+        env: dict[str, str] = dict(os.environ)
         if active:
             env['VIRTUAL_ENV'] = str(tmp_path / 'active')
         return subprocess.run(
