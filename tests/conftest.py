@@ -50,11 +50,25 @@ def pytest_generate_tests(
     metafunc: pytest.Metafunc,
 ) -> None:
     """
-    Collect real declaration-backed cases with readable IDs and no duplicate
+    Collect declaration-backed cases with readable IDs and no duplicate
     scripts.
 
-    Empty required collections raise UsageError rather than silently removing
-    coverage. No workflow execution or network access occurs during collection.
+    Parameters
+    ----------
+    metafunc : pytest.Metafunc
+        Test collection context. Matching fixture names select shell implementations
+        or workflow paths to parametrize in place.
+
+    Raises
+    ------
+    pytest.UsageError
+        If a required declaration-backed collection is empty.
+
+    Notes
+    -----
+    Reads checkout declarations and modifies the collection context, but does not
+    execute workflows, access the network, or write repository files. Identical
+    shell implementations share a case; IDs retain the source and peer count.
     """
     if 'shell_implementation' in metafunc.fixturenames:
         implementations: dict[tuple[str, str], list[str]] = {}
@@ -92,13 +106,36 @@ def pytest_generate_tests(
 
 
 def read_yaml(path: Path) -> dict[str, Any]:
-    """Return a declaration mapping with YAML scalars preserved as strings.
+    """
+    Return a declaration mapping with YAML scalars preserved as strings.
 
+    Parameters
+    ----------
+    path : pathlib.Path
+        UTF-8 YAML declaration to read.
+
+    Returns
+    -------
+    dict[str, Any]
+        Parsed declaration, expected to have a mapping at its root.
+
+    Raises
+    ------
+    OSError
+        If the declaration cannot be read.
+    UnicodeDecodeError
+        If the declaration is not valid UTF-8.
+    yaml.YAMLError
+        If the declaration cannot be parsed as YAML.
+
+    Notes
+    -----
     BaseLoader keeps keys such as 'on' and scalar defaults from implicit
     boolean or numeric conversion, so declaration comparisons use their written
     values. Any is confined to heterogeneous YAML fields; Popo owns
     schema/policy validation. This cast is a typing aid, not runtime
-    validation. Read and parse errors propagate.
+    validation. The source file is not modified; read and parse errors
+    propagate.
     """
     return cast(
         dict[str, Any],
@@ -117,10 +154,12 @@ def automation_copy_fixture(
     repo_root: Path,
     tmp_path: Path,
 ) -> Path:
-    """Return an isolated copy of the real consumer policy and discovered automation.
+    """
+    Return an isolated copy of the real consumer policy and discovered
+    automation.
 
-    Tests may mutate this tree; pytest owns temporary-directory cleanup. Files in the
-    checkout and user changes remain untouched.
+    Tests may mutate this tree; pytest owns temporary-directory cleanup. Files
+    in the checkout and user changes remain untouched.
     """
     shutil.copy2(repo_root / 'pyproject.toml', tmp_path / 'pyproject.toml')
     shutil.copy2(
@@ -145,7 +184,8 @@ def automation_copy_fixture(
     scope='session',
 )
 def cache_validation_steps_fixture() -> dict[str, list[dict[str, Any]]]:
-    """Load Python setup declarations for input parity and shell behavior tests.
+    """
+    Load Python setup declarations for input parity and shell behavior tests.
 
     Values retain heterogeneous YAML fields, not executable GitHub expressions.
     Tests must treat these session-shared declarations as read-only.
@@ -170,7 +210,8 @@ def cache_validation_steps_fixture() -> dict[str, list[dict[str, Any]]]:
 def inspection_steps_fixture(
     inspection_workflow: dict[str, Any],
 ) -> dict[str, dict[str, Any]]:
-    """Index inspection steps by name without copying or mutating declarations.
+    """
+    Index inspection steps by name without copying or mutating declarations.
 
     Both workflows name their steps. Returned values reference the shared
     workflow fixture and must remain read-only; this helper does not validate
@@ -189,7 +230,8 @@ def inspection_workflow_fixture(
     request: pytest.FixtureRequest,
     repo_root: Path,
 ) -> dict[str, Any]:
-    """Load each real inspection workflow once without executing its commands.
+    """
+    Load each real inspection workflow once without executing its commands.
 
     Parameters are trusted workflow stems. Parsing errors propagate; callers
     must treat the session-shared declaration as read-only. Heterogeneous YAML
@@ -260,7 +302,8 @@ def run_make(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> Callable[..., subprocess.CompletedProcess[str]]:
-    """Return a runner for the real Makefile in a temporary working directory.
+    """
+    Return a runner for the real Makefile in a temporary working directory.
 
     The callable accepts Make arguments and an optional active-environment flag.
     It captures text output without raising for nonzero exits; timeouts still raise.
