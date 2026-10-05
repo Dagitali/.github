@@ -13,6 +13,10 @@ Maintainer Notes
 # Changelog
 
 - [Unreleased](#unreleased)
+- [\[0.3.0\] - Unreleased](#030---unreleased)
+  - [Present in the Release Worktree](#present-in-the-release-worktree)
+  - [Pending Feature Integration](#pending-feature-integration)
+- [\[0.2.0\] - 2026-10-05](#020---2026-10-05)
   - [Breaking Changes](#breaking-changes)
   - [Shared Automation](#shared-automation)
   - [Validation and Tests](#validation-and-tests)
@@ -22,6 +26,43 @@ Maintainer Notes
 - [\[0.0.0\] - 2026-09-28](#000---2026-09-28)
 
 ## Unreleased
+
+No additional changes are recorded outside the planned `0.3.0` scope below.
+
+## [0.3.0] - Unreleased
+
+Draft prepared 2026-10-05; this is not a release or publication date. See the [v0.3.0 release draft].
+The `release/0.3.0` branch has not integrated `feature/improve-community-defaults-and-adoption`.
+Items marked pending below describe intended scope, not changes present in this release checkout.
+
+### Present in the Release Worktree
+
+- Align release-archive reference links, navigation, and maintenance conventions with sibling
+  records while preserving historical scope, draft status, and unverified evidence boundaries.
+- Backfill the retrospective v0.2.0 release record and archive entry; reconcile existing hardening
+  history with the local tag without changing tagged content or asserting remote publication.
+
+### Pending Feature Integration
+
+- Add PR-only dependency-review and manual Python audit/inventory starters with matching metadata,
+  immutable-reference placeholders, and read-only permissions.
+- Add affected-project security/support routing and a default private vulnerability form without
+  enabling hosted reporting or inventing a central contact.
+- Improve organization project discovery, contribution onboarding, coordinated report handling,
+  and documentation of inheritance, local overrides, required labels, and consumer-owned settings.
+- Add adoption/maintenance guides and a documentation index; align reference links, headers,
+  workflow selection, and maintainer navigation with sibling conventions.
+- Add focused community-routing/starter regression coverage and expand Python fixture documentation
+  without changing runtime behavior.
+
+No reusable workflow/action interface changes are planned relative to `0.2.0`. Confirm scope and
+compatibility after integration; finalize the release date and candidate SHA only after review.
+
+## [0.2.0] - 2026-10-05
+
+Retrospective summary prepared 2026-10-05 from the local annotated tag. The date is the tag's
+recorded date, not verified publication. Existing hardening entries below describe the tagged tree;
+they were previously grouped under `Unreleased`. See the [v0.2.0 release record].
 
 ### Breaking Changes
 
@@ -189,7 +230,7 @@ recorded date, not verified publication. See the [release record](docs/releases/
   Python/CDK actions; and matching Python/CDK/Swift starters.
 - Add repository conventions, pre-commit configuration, and Actions usage documentation.
 - Historical validation, artifacts, remote publication, and adoption are not established here. Later
-  feature-branch hardening remains under `Unreleased`.
+  shared-Actions hardening is recorded under `0.2.0`.
 
 ## [0.0.0] - 2026-09-28
 
@@ -198,3 +239,6 @@ recorded date, not verified publication. See the [release record](docs/releases/
 
 - Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
 - No workflows, actions, templates, or executable validation exist in this scaffold.
+
+[v0.2.0 release record]: docs/releases/v0.2.0.md
+[v0.3.0 release draft]: docs/releases/v0.3.0.md

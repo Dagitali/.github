@@ -51,9 +51,10 @@ section, use the installed Popo public CLI `python -m popo check-release-changel
 than writing another changelog validator. It checks changelog structure, not hosted evidence,
 workflow compatibility, or release authorization.
 
-These changes are unreleased and include a breaking removal of python-publish.yml. The historical
-v0.1.0 tag remains unchanged. During 0.x development, document breaking changes in a new minor
-release. After 1.0, use a new major version for breaking interface changes.
+The local v0.2.0 tag contains the breaking removal of python-publish.yml and same-revision
+Python/CDK action composition. Its [retrospective record] separates tagged scope from unverified
+publication and hosted evidence. Existing tags remain unchanged. During 0.x development, document
+breaking changes in a new minor release. After 1.0, use a new major version for breaking interfaces.
 
 Never retarget immutable version tags. If a moving major tag is offered, move it only to a validated
 compatible release and record that change. Rollback for SHA-pinned callers means reverting their
@@ -62,3 +63,5 @@ reference to the previous known-good SHA. A major-tag rollback must be documente
 Deprecate interfaces in documentation before removal where feasible, provide a migration path, and
 keep existing released commits available. The unsupported PyPI reusable-publishing path is removed
 with an explicit consumer-owned release-template replacement.
+
+[retrospective record]: docs/releases/v0.2.0.md
