@@ -54,6 +54,8 @@ validation remain pending. See the [v0.4.0 release draft].
 
 ### Documentation Corrections and Conventions
 
+- Separate change scope from compatibility guidance in detailed release records, link v0.1.0's later
+  publishing removal to v0.2.0, and make archive draft/tag status labels consistent.
 - Align the release archive with sibling version-series navigation, entry formatting, and numbered
   maintenance guidance while preserving optional records, draft status, and historical evidence.
 - Match Popo's case-sensitive reference-definition ordering and add navigation to long maintainer
