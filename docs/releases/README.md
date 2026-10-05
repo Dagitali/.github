@@ -4,6 +4,7 @@ Dagitali shared automation library
 
 Responsibilities
 - Index optional release records and explain their evidence boundaries.
+- Route historical readers to version-specific scope and current procedures.
 
 Maintainer Notes
 - Keep candidate status separate from verified publication.
@@ -17,8 +18,21 @@ This directory provides an optional home for reviewed, version-specific release 
 policy](../../RELEASE-POLICY.md) for validation and publication safeguards. A committed record is
 not proof that its tag, GitHub Release, or consumer rollout exists.
 
+- [Reading the Archive](#reading-the-archive)
 - [Records](#records)
 - [Maintaining the Archive](#maintaining-the-archive)
+
+## Reading the Archive
+
+Records describe the tagged revision, not today's automation contracts or support commitments. Use
+each record's version-specific changelog entry for concise scope and the [current release
+policy](../../RELEASE-POLICY.md) for current procedures. Compact scaffold records and fuller
+automation records may use different sections when that reflects their actual scope.
+
+Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
+not establish historical validation; local tag metadata does not establish remote publication. Use
+the [release-notes template](../../.github/RELEASE-NOTES-TEMPLATE.md) for new records rather than
+copying obsolete runtime defaults or operational instructions from an older release.
 
 ## Records
 
