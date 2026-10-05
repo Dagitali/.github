@@ -66,3 +66,4 @@ with an explicit consumer-owned release-template replacement.
 
 [release-notes template]: .github/RELEASE-NOTES-TEMPLATE.md
 [release notes archive]: docs/releases/README.md
+[retrospective record]: docs/releases/v0.2.0.md
