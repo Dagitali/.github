@@ -6,11 +6,18 @@
 
 ### Breaking Changes
 
+- Refactored Python/CDK CI uses GitHub.com's same-revision `$/` action references, which are not
+  supported on GitHub Enterprise Server; consumers on that platform must retain an earlier revision.
 - Remove reusable `python-publish.yml`; migrate to the consumer-owned Python release template for
   PyPI trusted publishing. Shared validation workflows do not receive publishing identity.
 
 ### Shared Automation
 
+- Compose Python CI setup/quality and CDK CI quality from shared actions at the workflow's running
+  revision. Preserve inputs, matrices, installation guards, permissions, and diagnostic uploads.
+  Validate contracts natively with Popo and adapt actionlint through Popo's disposable normalized
+  view without weakening pin or input checks; replace duplicated-step assertions with
+  composition/default/forwarding coverage.
 - Harden optional inspection with fail-fast input guards and declared/installed audit-project
   identity checks. Add opt-in constrained lowest/highest tool resolution, keeping default pip
   behavior, direct pins, and target/tool separation; report SHA/runtime/tool scope and failure-aware
@@ -74,6 +81,10 @@
 
 ### Contributor Tooling
 
+- Upgrade the immutable Popo pin from v0.3.7 to published v0.4.1. Invoke native self-reference
+  contract validation and `check-actionlint` through its public CLI; retire
+  `scripts/check_automation.py` and its redundant generic tests. Keep consumer integration and
+  workflow/action parity coverage, and return Python lint/type-check discovery to `tests`.
 - Align Make with Popo: default quality gate, annotated help, safe explicit environment setup,
   interpreter precedence, overridable tools/paths and repository root, and compatibility aliases.
   Connect installed pre-push hooks to the gate and add explicit Popo-backed `release-changelog`
