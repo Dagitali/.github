@@ -15,7 +15,9 @@ containing these changes is published.
 Prepare reviewed notes using the [release-notes template](.github/RELEASE-NOTES-TEMPLATE.md),
 aligned with the sibling projects but scoped to shared automation. It records consumer interfaces,
 local and hosted evidence, artifact contracts, and rollback without adding a publication workflow or
-requiring a separate release archive. A draft is not proof that a release exists.
+requiring a separate release archive. Maintainers may retain version-specific records in the
+optional [release notes archive](docs/releases/README.md); its index describes naming and evidence
+conventions without adding a release gate. A draft is not proof that a release exists.
 
 Validate a prepared dated release section with `make release-changelog RELEASE_VERSION=x.y.z`. This
 invokes Popo's public checker using the selected interpreter and optional `REPOSITORY_ROOT`; it does
