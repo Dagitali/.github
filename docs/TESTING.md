@@ -96,13 +96,13 @@ release target rejects a missing version before invoking the interpreter. Instal
 delegate once to the existing full Make gate; hooks remain local feedback rather than hosted
 enforcement. Feature-branch checks still do not require an invented release version.
 
-Python setup parity compares cache defaults and setup options, excluding only the deliberately
-different single-version versus matrix-version selector. Hosted setup-only fixture coverage disables
-caching explicitly. CDK dependency-check tests execute the real workflow shell with controlled
-Python/npm shims, covering successful checks and propagation of failures before a subsequent stage.
-These tests do not replace actual dependency resolution or hosted cache evidence.
+Composition tests compare input defaults and forwarding, including the existing matrix-version
+selector. Remaining standalone cache guards retain behavior/parity checks. Hosted setup-only fixture
+coverage disables caching explicitly. CDK dependency-check tests execute the real workflow shell
+with controlled Python/npm shims, covering successful checks and propagation of failures before a
+subsequent stage. These tests do not replace actual dependency resolution or hosted cache evidence.
 
-`make check` runs Ruff lint/format checks, strict mypy on root test helpers, actionlint over
+`make check` runs Ruff lint/format checks, strict mypy on root helpers, actionlint over
 workflows and starter templates, automation contract validation, Popo CLI checks, and pytest
 regression tests. Python validation tools and YAML stubs are pinned in `requirements-dev.txt`; CI
 installs the same requirements before running this gate. Fixture Python code is linted but excluded
@@ -110,15 +110,21 @@ from root mypy discovery because each fixture owns its runtime environment. The 
 execute remote jobs. It checks pins once through full automation-contract validation; standalone
 `make self-check` and `make github-actions-pins` retain their pin-only validation.
 
-`make automation-contracts` invokes Popo's public `check-automation-contracts --root .` command.
-Root `pyproject.toml` supplies discovery globs, local repository aliases, and template placeholders.
-Popo validates duplicate YAML keys, local call inputs, required inputs, composite run-step shells,
-reference pins, and matching template metadata. It is a focused contract checker, not a complete
-replacement for GitHub's action metadata schema or runner validation.
+`make automation-contracts` invokes Popo's public `check-automation-contracts --root .` command
+directly, with native `$/` validation. Workflow lint invokes Popo's `check-actionlint` command,
+which supplies a disposable normalized view for older actionlint without changing source or ignoring
+validator failures. Generic self-reference and normalization regression cases live in Popo, not a
+local adapter. Consumer tests retain template-placeholder acceptance, mutable third-party rejection,
+and workflow/action parity. Hosted consumer fixtures remain necessary to verify GitHub's actual
+same-revision action resolution; local checks do not emulate it. Root `pyproject.toml` supplies
+discovery globs, local repository aliases, and template placeholders. Popo validates duplicate YAML
+keys, local call inputs, required inputs, composite run-step shells, reference pins, and matching
+template metadata. It is a focused contract checker, not a complete replacement for GitHub's action
+metadata schema or runner validation.
 
 Generic parser and input-validation tests live in Popo. `tests/test_contracts.py` retains
 workflow/action parity, shell failure propagation, and publishing isolation. Parity tests use a
-parameterized fixture while retaining their distinct input and step-field checks. Shell behavior is
+parameterized fixture checking defaults and exact action-input forwarding. Shell behavior is
 exercised once per distinct shell/script pair across quality actions and workflow command wrappers;
 new script variants are included automatically, and an unsupported shell fails explicitly. Failure
 cases verify that a subsequent shell stage is not reached. Package-boundary tests exercise missing
@@ -207,11 +213,12 @@ Ruff, pytest, and synthesis with the pinned CLI. Never deploy it. Its L2 resourc
 assertion provide workflow evidence, not production infrastructure.
 
 Workflow isolation assertions also enforce deny-by-default global permissions and job-scoped,
-read-only token grants. Python setup parity includes installation/check conditions and version
-reporting. Library composite CI exercises setup-only mode before the default fixture installation;
-Swift CI retains build/test logs using the same optional diagnostic contract as Python/CDK. Generic
-YAML validation now includes Dependabot and pre-commit configuration. These parser checks do not
-establish that hosted dependency updates or artifact uploads succeed.
+read-only token grants. Python composition checks include exact setup input forwarding; the setup
+action retains installation/check conditions and version reporting. Library composite CI exercises
+setup-only mode before the default fixture installation; Swift CI retains build/test logs using the
+same optional diagnostic contract as Python/CDK. Generic YAML validation now includes Dependabot and
+pre-commit configuration. These parser checks do not establish that hosted dependency updates or
+artifact uploads succeed.
 
 Package directory tests cover absent/empty output, stale/hidden files, symlinks, and a non-directory
 path, including preservation on rejection. Diagnostic upload conditions, actual report retention,

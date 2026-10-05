@@ -188,10 +188,16 @@ steps:
   - uses: Dagitali/.github/actions/python-quality@REPLACE_WITH_RELEASE_SHA
 ```
 
-`actions/cdk-quality` expects its caller to install the runtime, dependencies, and CDK CLI. Reusable
-workflows retain their own steps: `./actions/...` inside a remotely called workflow would resolve
-against the consumer checkout. Contract tests enforce parity between shared actions and workflows,
-avoiding a floating self-reference that would bypass the caller's selected version.
+`actions/cdk-quality` expects its caller to install the runtime, dependencies, and CDK CLI. Python
+CI uses `$/actions/setup-python-project` and `$/actions/python-quality`; CDK CI uses
+`$/actions/cdk-quality`. GitHub's [self-repository reference
+syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-using-an-action-in-the-same-repository-as-the-workflow-at-the-running-commit-recommended)
+resolves these actions from the reusable workflow's repository at its running commit, preserving the
+consumer-selected revision without floating refs or an extra library checkout. `./actions/...` would
+instead resolve against the consumer checkout. These refactored workflows require GitHub.com; the
+`$/` syntax is not supported on GitHub Enterprise Server. Earlier revisions remain available for
+consumers requiring that platform. Contract tests verify input defaults and forwarding; matrices,
+installation policy, permissions, and failure-time uploads stay in the workflows.
 
 Python setup defaults are unchanged. Set `install-command: ''` for setup-only mode; installation and
 its `pip check` are both skipped, while Python/pip versions are still reported. Use an explicit
