@@ -50,6 +50,8 @@ operational instructions from an older release.
 
 ## 0.3 Series
 
+- [v0.3.1] — 2026-10-05: Additional annotated tag at the same commit as v0.3.0; no source changes.
+  Retrospective record prepared 2026-10-05; the synchronization annotation is not a source fix.
 - [v0.3.0] — 2026-10-05: Release-documentation backfills and historical corrections; corrected
   retrospective record prepared 2026-10-05. Its annotated feature scope was not shipped.
 
@@ -82,7 +84,9 @@ local tag establishes remote publication.
 3. Record supported dates and results, keeping missing checks explicit with `Not run: reason`. Link
    public evidence without credentials, private identifiers, or confidential information. Mark
    retrospective records as retrospective; never transfer current-checkout results to a historical
-   tag. Correct errors through reviewed changes without rewriting tags.
+   tag. Correct errors through reviewed changes without rewriting tags. Verify tag targets and
+   differences from the preceding version; describe duplicate-commit tags explicitly rather than
+   treating their annotations as evidence of new source changes.
 4. List records newest first within their version series, using `version — YYYY-MM-DD: summary` with
    an evidence-backed date. Label local tag dates explicitly when publication is unverified. For
    untagged candidates, use `version — planned, prepared YYYY-MM-DD: summary`; use `undated` when no
@@ -104,4 +108,5 @@ publication, deployment, or consumer reference updates.
 [v0.1.0]: v0.1.0.md
 [v0.2.0]: v0.2.0.md
 [v0.3.0]: v0.3.0.md
+[v0.3.1]: v0.3.1.md
 [v0.4.0]: v0.4.0.md
