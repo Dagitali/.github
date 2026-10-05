@@ -260,8 +260,9 @@ distributions and do not enable downstream publication.
 
 Library CI now calls dependency review on PRs only. Confirm dependency graph/API availability before
 adopting this gate in private consumers. It reviews dependency changes, not every installed
-dependency. A resolved-dependency audit, such as Popo's isolated manual audit, is a separate future
-extension; it should preserve findings and failures and never apply automatic fixes.
+dependency. Use the existing [optional dependency inspection](#optional-dependency-inspection)
+workflows for resolved Python dependency auditing and inventories. They preserve findings and
+failures without applying automatic fixes; consumers own adoption and scheduling.
 
 Library CI and Python/CDK/Swift starters handle `merge_group`. See [branch-protection
 guidance](../.github/BRANCH-PROTECTION.md) for selecting verified hosted check names and
