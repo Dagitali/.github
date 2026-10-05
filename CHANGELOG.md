@@ -13,6 +13,9 @@
 
 ### Shared Automation
 
+- Align internal checkout, setup, and quality-gate step labels with sibling conventions for clearer
+  failure logs, preserving job/check identities, command behavior, and regular/candidate gate
+  parity.
 - Align internal CI/candidate jobs with explicit Bash pipeline-failure handling while preserving
   public workflow inputs and required-check names. Expand isolated inspection helper documentation
   and retain focused shell-policy regression coverage.
