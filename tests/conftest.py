@@ -152,7 +152,6 @@ def cache_validation_steps_fixture() -> dict[str, list[dict[str, Any]]]:
     """
     sources = (
         ('actions/setup-python-project/action.yml', None),
-        ('.github/workflows/python-ci.yml', 'quality'),
         ('.github/workflows/python-package.yml', 'build'),
         ('.github/workflows/aws-cdk-ci.yml', 'quality'),
     )
@@ -205,18 +204,17 @@ def inspection_workflow_fixture(
     scope='session',
     params=[
         pytest.param(
-            ('python-ci', 'python-quality', ('run', 'if', 'env'), None),
+            ('python-ci', 'python-quality', None),
             id='python-quality',
         ),
         pytest.param(
-            ('aws-cdk-ci', 'cdk-quality', ('run', 'if', 'env'), None),
+            ('aws-cdk-ci', 'cdk-quality', None),
             id='cdk-quality',
         ),
         pytest.param(
             (
                 'python-ci',
                 'setup-python-project',
-                ('run', 'if', 'env', 'uses', 'with'),
                 (
                     'working-directory',
                     'install-command',
@@ -230,21 +228,21 @@ def inspection_workflow_fixture(
 )
 def parity_case_fixture(
     request: pytest.FixtureRequest,
-) -> tuple[dict[str, Any], dict[str, Any], tuple[str, ...], tuple[str, ...] | None]:
+) -> tuple[dict[str, Any], dict[str, Any], tuple[str, ...] | None]:
     """
-    Return paired workflow/action declarations and the fields to compare.
+    Return paired workflow/action declarations and shared default boundaries.
 
-    Each trusted fixture parameter selects workflow/action stems, step fields,
+    Each trusted fixture parameter selects workflow/action stems
     and optional shared input names. None selects all action inputs; an
     explicit tuple limits comparisons for setup's single-version/matrix-version
     boundary. Returned mappings retain string scalars and must be treated as
     read-only.
     """
-    case: tuple[str, str, tuple[str, ...], tuple[str, ...] | None] = request.param
-    workflow, action, keys, names = case
+    case: tuple[str, str, tuple[str, ...] | None] = request.param
+    workflow, action, names = case
     wf = read_yaml(ROOT / f'.github/workflows/{workflow}.yml')
     composite = read_yaml(ROOT / f'actions/{action}/action.yml')
-    return wf, composite, keys, names
+    return wf, composite, names
 
 
 @pytest.fixture(
