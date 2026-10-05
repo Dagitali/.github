@@ -98,14 +98,15 @@ override `MYPY` to select another configuration. The test runner is `PYTEST` (de
 pytest`), replacing `UNITTEST`. `TEST_PATTERN` overrides pytest's `python_files`; `TEST_ARGS`
 accepts pytest options, for example `make test TEST_ARGS="-q -k parity"`.
 
-`requirements-dev.txt` pins Popo v0.3.7 to its published Git commit. Setup requires network access;
+`requirements-dev.txt` pins Popo v0.4.1 to its published Git commit. Setup requires network access;
 checks run locally without it. Use Popo's public CLI for generic repository policies, not imports
 from its internal checker modules. Update the pin deliberately and run the integration tests.
 Automation policy belongs in `[tool.popo.automation]` in root `pyproject.toml`; the validator
 belongs in Popo. This configuration does not make the library a Python distribution.
 
-The pinned release includes `check-automation-contracts`; no sibling checkout or editable
-installation is required. To replace a previous local Popo installation with the published pin:
+The pinned release includes `check-automation-contracts` and `check-actionlint`; no sibling checkout
+or editable installation is required. To replace a previous local Popo installation with the
+published pin:
 
 ```sh
 .venv/bin/python -m pip install -r requirements-dev.txt
@@ -117,7 +118,8 @@ back to a weaker validator.
 
 Keep changes focused. A workflow input or default is a public interface: update its reference
 documentation, fixtures, contract tests, and changelog together. Preserve full action commit pins.
-Quality workflow and composite-action steps are deliberately duplicated and checked for parity.
+Python setup/quality and CDK quality are composed through `$/actions/...` at the workflow's running
+revision. Keep input-default/forwarding tests and shell behavior coverage when changing them.
 
 Review inspection constraints deliberately using the manual candidate's lowest/highest matrices; do
 not replace direct tool pins or production defaults with a lowest-resolution environment. The
@@ -143,7 +145,19 @@ Align common automation conventions, not application-specific behavior: job-scop
 environment reporting, generic caller commands, diagnostic retention controls, and reviewable
 dependency maintenance. Do not import package-release/build targets, AWS deployment, Xcode signing,
 or hard-coded `main`/`develop` routing solely to match a sibling repository. Local action paths in
-library CI intentionally refer to this checkout; remotely called workflows retain standalone steps.
+library CI intentionally refer to this checkout; remotely called Python/CDK workflows use `$/`
+self-repository references, not consumer-relative `./` action paths.
+
+Popo v0.4.1 validates `$/` self-repository references natively, including containment, target
+existence, revision-free syntax, and action inputs. Automation-contract and pin targets invoke its
+public CLI directly. Workflow lint uses Popo's `check-actionlint` command with the selected
+`ACTIONLINT` executable and `WORKFLOW_PATHS`. Because actionlint 1.7.12 does not recognize `$/`,
+Popo supplies a disposable normalized validation view, preserves source files, maps diagnostics back
+to source paths, and propagates validator exit statuses. No check installs tools. The local
+compatibility adapter and its generic tests have been retired; generic validation coverage belongs
+in Popo. Direct actionlint invocations may reject the new syntax; use the Make target or `python -m
+popo check-actionlint --root . --actionlint actionlint`. GitHub Enterprise Server does not support
+this syntax; the refactored workflows are GitHub.com-only.
 
 Public composite actions stay under `actions/`, unlike the siblings' repository-local
 `.github/actions/` paths. Moving them would break remote consumer references. Keep setup
