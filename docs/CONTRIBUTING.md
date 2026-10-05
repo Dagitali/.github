@@ -79,6 +79,11 @@ distribution, runtime-install, or publishing targets. `lint` includes Ruff lint/
 alongside workflow and contract validation; `typecheck` runs strict mypy over root regression
 helpers.
 
+Root tests and standalone Python fixtures use pytest's native `[tool.pytest]` TOML table, matching
+Popo and aws-cdk-static-site. Keep `addopts` as an argument array and retain each project's existing
+test discovery, strictness, and minimum pytest version. Fixture settings must work independently
+when copied into hosted consumer checkouts; do not import root test paths or package coverage gates.
+
 `make format-check`, `make python-lint`, and `make typecheck` run without modifying source files.
 Ruff follows the siblings' Python 3.13 target, lint rule families, and single-quote formatting.
 `quote-style = "single"` and `nested-string-quote-style = "preferred"` mirror Popo and
