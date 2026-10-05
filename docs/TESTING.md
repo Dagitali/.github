@@ -168,7 +168,7 @@ temporary directory, then checks that a Dagitali template placeholder passes and
 third-party mutable reference fails. Generic pin, broken-link, and placeholder edge-case tests
 belong to Popo; the Make gate still validates this repository's real automation and documentation.
 
-Follow the [setup instructions](CONTRIBUTING.md) to install the published Popo commit pinned in
+Follow the [setup instructions] to install the published Popo commit pinned in
 `requirements-dev.txt`. Validation does not require a sibling Popo checkout.
 
 `tests/test_makefile.py` exercises interpreter precedence, generic overrides, the default gate,
@@ -202,9 +202,9 @@ artifact transfer, permissions, and macOS behavior. Local lint and unit tests do
 hosted success. PyPI publication requires a separately authorized consumer release; library CI does
 not publish or mint PyPI credentials.
 
-Run the manual [candidate workflow](../.github/workflows/release-candidate.yml) on the candidate ref
-before release to expand the runtime matrix without expanding each PR run. Review normal CI as well.
-This workflow never publishes or deploys; local success is not hosted candidate evidence.
+Run the manual [candidate workflow] on the candidate ref before release to expand the runtime matrix
+without expanding each PR run. Review normal CI as well. This workflow never publishes or deploys;
+local success is not hosted candidate evidence.
 
 The Python CDK fixture pins CDK/constructs and test tools in its own `pyproject.toml`. Its
 environment-agnostic SQS stack performs no context lookups and needs no AWS credentials or
@@ -223,3 +223,6 @@ artifact uploads succeed.
 Package directory tests cover absent/empty output, stale/hidden files, symlinks, and a non-directory
 path, including preservation on rejection. Diagnostic upload conditions, actual report retention,
 dependency-review API availability, and merge-group check emission still need hosted evidence.
+
+[candidate workflow]: ../.github/workflows/release-candidate.yml
+[setup instructions]: CONTRIBUTING.md

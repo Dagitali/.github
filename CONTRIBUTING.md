@@ -24,7 +24,7 @@ Thank you for contributing to a Dagitali project.
 - Use the repository's issue forms when reporting bugs or proposing changes.
 - Discuss substantial proposals with maintainers before implementing them.
 - Review the affected project's contribution terms and documented setup requirements.
-- For security vulnerabilities, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.
+- For security vulnerabilities, follow [SECURITY.md] instead of opening a public issue.
 
 ## First Contribution
 
@@ -32,7 +32,7 @@ Documentation corrections, reproducible bug reports, tests, and focused code imp
 welcome. You do not need to start with a large feature.
 
 1. Read the project's README and repository-specific contributor guide. For usage questions, follow
-   its [support instructions](SUPPORT.md).
+   its [support instructions].
 2. Fork and clone the repository when the project permits it, or use an authorized checkout.
 3. Create a topic branch following the project's naming and base-branch policy; do not assume every
    Dagitali repository uses the same branching model.
@@ -54,3 +54,6 @@ Commands, supported runtimes, repository access, and merge requirements remain p
 - Link the issue the pull request addresses, when one exists.
 
 Project-specific contribution instructions take precedence over this document.
+
+[SECURITY.md]: SECURITY.md
+[support instructions]: SUPPORT.md

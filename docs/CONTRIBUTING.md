@@ -1,12 +1,16 @@
 # Contributing to the Automation Library
 
+Use descriptive Markdown reference labels for document and external-resource links, with definitions
+grouped at the bottom of each document. Reuse a definition for repeated destinations; distinguish
+workflow declarations from starters when labels would collide. Keep table-of-contents anchors inline
+and preserve literal link syntax in fenced examples, following the sibling projects' conventions.
+
 File-header comment lines must not exceed 79 characters, including comment markers and indentation.
 Use responsibility/maintainer headings with wrapped bullets, following the sibling projects. Do not
 split language directives or URLs. YAML headers may use the compact `# $schema: URL` form recognized
-by the [YAML language server's modeline
-parser](https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts).
-Keep Python annotations and helper documentation precise; comment-only alignment must not change
-commands, dependency pins, public defaults, or fixture behavior.
+by the [YAML language server's modeline parser]. Keep Python annotations and helper documentation
+precise; comment-only alignment must not change commands, dependency pins, public defaults, or
+fixture behavior.
 
 Use concise file headers for handwritten automation and fixture code: identify the file's
 responsibility and meaningful maintainer constraints. Add YAML editor schema hints where applicable.
@@ -30,12 +34,9 @@ Tool-version queries are best-effort: absent environments or failed pip-list com
 explicit fallback rather than discarding inspection evidence. Keep launch errors visible and do not
 turn this reporting helper into a dependency installer or security audit.
 
-The generated portion of `.gitignore` retains its original [generator
-URL](https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
-and [editable profile
-selection](https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
-here so header comments stay within 79 characters without splitting URLs. Review regenerated
-patterns rather than overwriting project-specific additions.
+The generated portion of `.gitignore` retains its original [generator URL] and [editable profile
+selection] here so header comments stay within 79 characters without splitting URLs. Review
+regenerated patterns rather than overwriting project-specific additions.
 
 Installed pre-push hooks now invoke `make check-pre-push`, the same gate as `make check`, without
 passing filenames or limiting checks to changed paths. Install hooks explicitly with `make hooks`
@@ -52,10 +53,10 @@ gate.
 The root CONTRIBUTING.md is an organization-wide community default. This guide is specific
 to maintaining Dagitali/.github.
 
-Use [consumer maintenance guidance](MAINTENANCE.md) for ownership, local exceptions, and interface
-lifecycle decisions, and the [adoption checklist](ADOPTION.md) for separate local/hosted evidence.
+Use [consumer maintenance guidance] for ownership, local exceptions, and interface lifecycle
+decisions, and the [adoption checklist] for separate local/hosted evidence.
 
-The repository-local [Copilot instructions](../.github/copilot-instructions.md) route assistant
+The repository-local [Copilot instructions] route assistant
 contributions to `AGENTS.md` and these maintenance guides rather than duplicating policies or tool
 versions. They are not organization-wide community defaults or consumer engineering instructions.
 
@@ -194,13 +195,23 @@ sandboxed code. Audit findings concern the selected runtime dependencies; an ins
 is neither a source inventory nor a vulnerability verdict. Inline inspection-state annotations
 document expected values without adding runtime validation or suppressing existing failures.
 
-Use [testing](TESTING.md) for focused validation. Add a regression test for changed behavior. Do not
-introduce deploys or publishing into the library's own CI. Fixtures must remain free of cloud
-credentials. For release work, follow the [release policy](../RELEASE-POLICY.md). Use the
-[release-notes template](../.github/RELEASE-NOTES-TEMPLATE.md) to record the exact candidate,
-consumer compatibility, local/hosted evidence, artifact changes, and rollback. Record missing checks
-explicitly; preparing notes does not authorize tagging, publication, or consumer rollout.
+Use [testing] for focused validation. Add a regression test for changed behavior. Do not introduce
+deploys or publishing into the library's own CI. Fixtures must remain free of cloud credentials. For
+release work, follow the [release policy]. Use the [release-notes template] to record the exact
+candidate, consumer compatibility, local/hosted evidence, artifact changes, and rollback. Record
+missing checks explicitly; preparing notes does not authorize tagging, publication, or consumer
+rollout.
 
 The local pre-commit configuration supplies hygiene and commit-message checks. It complements `make
 check`; hooks alone do not validate GitHub expressions or hosted runner behavior. Review hook
 updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only audit.
+
+[adoption checklist]: ADOPTION.md
+[consumer maintenance guidance]: MAINTENANCE.md
+[Copilot instructions]: ../.github/copilot-instructions.md
+[editable profile selection]: https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+[generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+[release policy]: ../RELEASE-POLICY.md
+[release-notes template]: ../.github/RELEASE-NOTES-TEMPLATE.md
+[testing]: TESTING.md
+[YAML language server's modeline parser]: https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts

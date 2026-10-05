@@ -39,12 +39,12 @@ and maintainable technology.
 
 ## Featured Projects
 
-- [ETLPlus](https://github.com/Dagitali/ETLPlus) — Python tools for practical ETL operations.
-- [Popo](https://github.com/Dagitali/popo) — Read-only repository policy checks.
-- [AWS CDK Static Site](https://github.com/Dagitali/aws-cdk-static-site) — A Python CDK construct
+- [ETLPlus] — Python tools for practical ETL operations.
+- [Popo] — Read-only repository policy checks.
+- [AWS CDK Static Site] — A Python CDK construct
   for static-site infrastructure.
 - Waytally — Apple-platform applications for recording places, routes, and trips.
-- [Dagitali.com](https://www.dagitali.com) — Our company website.
+- [Dagitali.com] — Our company website.
 
 ## Get Involved
 
@@ -55,3 +55,8 @@ published help channel rather than this organization profile for project-specifi
 
 Report suspected vulnerabilities privately through the affected project's security policy, not in
 public issues. Repository access, contribution terms, and support channels vary by project.
+
+[AWS CDK Static Site]: https://github.com/Dagitali/aws-cdk-static-site
+[Dagitali.com]: https://www.dagitali.com
+[ETLPlus]: https://github.com/Dagitali/ETLPlus
+[Popo]: https://github.com/Dagitali/popo

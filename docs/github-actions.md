@@ -33,13 +33,13 @@ caller files and reviewed SHA references; choosing a starter does not enable hos
 
 | Reusable workflow | Purpose and prerequisites | Matching starter | Starter triggers | Important boundary |
 | --- | --- | --- | --- | --- |
-| [Python CI](../.github/workflows/python-ci.yml) | Formatting, lint, typing, tests; installable project and configured tools | [Python CI](../workflow-templates/python-ci.yml) | Push, PR, merge group | Consumer selects supported Python versions and commands |
-| [AWS CDK CI](../.github/workflows/aws-cdk-ci.yml) | Python/Node app synthesis and optional checks; `cdk.json` and offline context | [AWS CDK CI](../workflow-templates/aws-cdk-ci.yml) | Push, PR, merge group | No deployment, AWS credentials, or account lookups |
-| [Swift CI](../.github/workflows/swift-ci.yml) | Builds/tests with `Package.swift` and runner-supplied Swift | [Swift CI](../workflow-templates/swift-ci.yml) | Push, PR, merge group | Swift Package Manager, not signed Xcode application releases |
-| [Python Package](../.github/workflows/python-package.yml) | Build, metadata, clean wheel/sdist installation; buildable `pyproject.toml` | [Python Release](../workflow-templates/python-release.yml) | Release-tag push | Only the consumer-owned publishing job receives publishing identity |
-| [Dependency Review](../.github/workflows/dependency-review.yml) | Review dependency changes; consumer dependency graph/API availability | [Dependency Review](../workflow-templates/dependency-review.yml) | PR only | Not a merge-queue prerequisite or resolved-runtime audit |
-| [Python Dependency Audit](../.github/workflows/python-dependency-audit.yml) | Audit resolved dependencies; trusted installation, distribution name, public advisory access | [Python Inspection](../workflow-templates/python-dependency-inspection.yml) | Manual | Optional evidence; selected runtime dependencies, not inspection tools |
-| [Python SBOM](../.github/workflows/python-sbom.yml) | Validated CycloneDX inventory; trusted runtime installation | [Python Inspection](../workflow-templates/python-dependency-inspection.yml) | Manual | Installed environment, not source inventory or vulnerability verdict |
+| [Python CI] | Formatting, lint, typing, tests; installable project and configured tools | [Python CI][Python CI starter] | Push, PR, merge group | Consumer selects supported Python versions and commands |
+| [AWS CDK CI] | Python/Node app synthesis and optional checks; `cdk.json` and offline context | [AWS CDK CI][AWS CDK CI starter] | Push, PR, merge group | No deployment, AWS credentials, or account lookups |
+| [Swift CI] | Builds/tests with `Package.swift` and runner-supplied Swift | [Swift CI][Swift CI starter] | Push, PR, merge group | Swift Package Manager, not signed Xcode application releases |
+| [Python Package] | Build, metadata, clean wheel/sdist installation; buildable `pyproject.toml` | [Python Release] | Release-tag push | Only the consumer-owned publishing job receives publishing identity |
+| [Dependency Review] | Review dependency changes; consumer dependency graph/API availability | [Dependency Review][Dependency Review starter] | PR only | Not a merge-queue prerequisite or resolved-runtime audit |
+| [Python Dependency Audit] | Audit resolved dependencies; trusted installation, distribution name, public advisory access | [Python Inspection] | Manual | Optional evidence; selected runtime dependencies, not inspection tools |
+| [Python SBOM] | Validated CycloneDX inventory; trusted runtime installation | [Python Inspection] | Manual | Installed environment, not source inventory or vulnerability verdict |
 
 The inspection starter calls both audit and inventory. Python release publication requires explicit
 consumer setup described in [Python Releases](#python-releases); package validation alone never
@@ -58,11 +58,11 @@ Replace GitHub's `$default-branch` placeholder manually when copying locally; th
 template chooser replaces it automatically. Select triggers appropriate to the consumer,
 including `merge_group` if it uses a merge queue.
 
-Use the [consumer adoption checklist](ADOPTION.md) to record the selected revision and separate
+Use the [consumer adoption checklist] to record the selected revision and separate
 hosted verification. Consumer-owned overrides and migration records follow [maintenance
-guidance](MAINTENANCE.md).
+guidance].
 
-The [dependency-review starter](../workflow-templates/dependency-review.yml) runs only on pull
+The [dependency-review starter][Dependency Review starter] runs only on pull
 requests, with the reusable workflow's default severity/scope policy. Confirm dependency-review
 service availability for the consumer and customize policy explicitly. It is not a merge-queue
 required-check candidate or a resolved-runtime audit.
@@ -94,8 +94,7 @@ accepts checkout-relative `cache-dependency-path` overrides, including multiline
 the existing `working-directory/pyproject.toml` default is unchanged. Cache selection does not
 install a package manager or change installation commands. `pipenv` and `poetry` are upstream cache
 options, not additional hosted-tested toolchains; supply their tooling before invoking setup, and
-select appropriate lockfile paths yourself. See [setup-python
-caching](https://github.com/actions/setup-python/tree/v6#caching-packages-dependencies).
+select appropriate lockfile paths yourself. See [setup-python caching].
 
 The YAML declarations are authoritative for all inputs and defaults.
 
@@ -153,10 +152,10 @@ have been migrated or that hosted integration has passed.
 
 ## Python Releases
 
-Use the [Python release template](../workflow-templates/python-release.yml). It calls the reusable
-package builder, then downloads the tested distributions and publishes in a consumer-owned job.
-Configure a protected `pypi` environment with reviewers and allowed release tags, and register the
-consumer repository, actual workflow filename, and environment with PyPI.
+Use the [Python release template][Python Release]. It calls the reusable package builder, then
+downloads the tested distributions and publishes in a consumer-owned job. Configure a protected
+`pypi` environment with reviewers and allowed release tags, and register the consumer repository,
+actual workflow filename, and environment with PyPI.
 
 Only the publishing job has `id-token: write`. Build and installation tests have no publishing
 identity. An optional `smoke-command` runs separately in clean wheel and sdist virtual environments,
@@ -177,14 +176,13 @@ the default. Do not use `always()` to publish or upload after a failed validatio
 
 The package workflow exposes `artifact-id`, `artifact-url`, and `artifact-digest` through
 `needs.package.outputs` when the caller job is named `package`. These forward the existing [pinned
-upload action's
-metadata](https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml),
-following the sibling artifact-evidence convention. The URL requires GitHub authentication and
-expires with the artifact; it is not a public release URL. The digest identifies the uploaded
-artifact archive, not each wheel/sdist, and is not a signature or provenance attestation. Keep
-publishing jobs dependent on successful packaging; outputs do not authorize publication or make a
-failed job safe to consume. A matrix reusable-workflow call does not aggregate outputs for all legs:
-use distinct artifacts and inspect each leg rather than treating one output as a manifest.
+upload action's metadata], following the sibling artifact-evidence convention. The URL requires
+GitHub authentication and expires with the artifact; it is not a public release URL. The digest
+identifies the uploaded artifact archive, not each wheel/sdist, and is not a signature or provenance
+attestation. Keep publishing jobs dependent on successful packaging; outputs do not authorize
+publication or make a failed job safe to consume. A matrix reusable-workflow call does not aggregate
+outputs for all legs: use distinct artifacts and inspect each leg rather than treating one output as
+a manifest.
 
 `build-version` and `twine-version` pin direct validation tools and allow overrides. They are not a
 complete dependency lock: backend requirements and transitive dependencies remain project-owned. The
@@ -211,14 +209,13 @@ steps:
 
 `actions/cdk-quality` expects its caller to install the runtime, dependencies, and CDK CLI. Python
 CI uses `$/actions/setup-python-project` and `$/actions/python-quality`; CDK CI uses
-`$/actions/cdk-quality`. GitHub's [self-repository reference
-syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-using-an-action-in-the-same-repository-as-the-workflow-at-the-running-commit-recommended)
-resolves these actions from the reusable workflow's repository at its running commit, preserving the
-consumer-selected revision without floating refs or an extra library checkout. `./actions/...` would
-instead resolve against the consumer checkout. These refactored workflows require GitHub.com; the
-`$/` syntax is not supported on GitHub Enterprise Server. Earlier revisions remain available for
-consumers requiring that platform. Contract tests verify input defaults and forwarding; matrices,
-installation policy, permissions, and failure-time uploads stay in the workflows.
+`$/actions/cdk-quality`. GitHub's [self-repository reference syntax] resolves these actions from the
+reusable workflow's repository at its running commit, preserving the consumer-selected revision
+without floating refs or an extra library checkout. `./actions/...` would instead resolve against
+the consumer checkout. These refactored workflows require GitHub.com; the `$/` syntax is not
+supported on GitHub Enterprise Server. Earlier revisions remain available for consumers requiring
+that platform. Contract tests verify input defaults and forwarding; matrices, installation policy,
+permissions, and failure-time uploads stay in the workflows.
 
 Python setup defaults are unchanged. Set `install-command: ''` for setup-only mode; installation and
 its `pip check` are both skipped, while Python/pip versions are still reported. Use an explicit
@@ -231,8 +228,7 @@ individually disabled. Setup-only mode does not create a virtual environment or 
 All workflows and starters deny permissions by default and grant `contents: read` at the jobs that
 need it. Reusable-workflow callers must grant that permission to the calling job; a callee cannot
 elevate a caller's token. The release template still grants `id-token: write` only to publication.
-See [GitHub's reusable workflow
-guidance](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
+See [GitHub's reusable workflow guidance].
 
 ## Access and Maintenance
 
@@ -251,15 +247,12 @@ Dependency updates follow the repository default branch rather than imposing `de
 Monday schedules are staggered in UTC; commit prefixes follow the sibling projects' `ci`/`build`
 convention and labels use Dependabot defaults. Maintenance covers validation requirements, both
 Python fixtures, Node fixtures, Actions, and pre-commit hooks. Dependabot's pre-commit ecosystem
-provides reviewable hook updates; see [supported
-ecosystems](https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories).
-Popo also parses Dependabot and pre-commit YAML for generic syntax/duplicate-key checks; this does
-not replace ecosystem-specific hosted validation.
+provides reviewable hook updates; see [supported ecosystems]. Popo also parses Dependabot and
+pre-commit YAML for generic syntax/duplicate-key checks; this does not replace ecosystem-specific
+hosted validation.
 
-See [contributor instructions](CONTRIBUTING.md), [release policy](../RELEASE-POLICY.md), and
-[testing](TESTING.md).
-
-[PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
+See [contributor instructions], [release policy], and
+[testing].
 
 ## Cancellation and Support Boundaries
 
@@ -285,10 +278,9 @@ dependency. Use the existing [optional dependency inspection](#optional-dependen
 workflows for resolved Python dependency auditing and inventories. They preserve findings and
 failures without applying automatic fixes; consumers own adoption and scheduling.
 
-Library CI and Python/CDK/Swift starters handle `merge_group`. See [branch-protection
-guidance](../.github/BRANCH-PROTECTION.md) for selecting verified hosted check names and
-coordinating transitions. PR-only review and manual candidate jobs are not required merge-queue
-gates. No hosted setting is changed by these files.
+Library CI and Python/CDK/Swift starters handle `merge_group`. See [branch-protection guidance] for
+selecting verified hosted check names and coordinating transitions. PR-only review and manual
+candidate jobs are not required merge-queue gates. No hosted setting is changed by these files.
 
 Consumers own concurrency. Python, CDK, and Swift CI starters now use the caller group
 `consumer-ci-${{ github.workflow }}-${{ github.ref }}` with `cancel-in-progress: true`, following
@@ -315,12 +307,12 @@ sibling runtime-matrix convention. Those checks use the same setup and tool pins
 start independently of consumer fixtures. Ordinary PR validation remains single-runtime; manual
 candidate check names are not a replacement for verified required PR/merge-group checks.
 
-The manual [release-candidate workflow](../.github/workflows/release-candidate.yml) broadens Python
-quality checks to Ubuntu/macOS, builds packages on both supported Python versions, checks Swift on
-baseline/current macOS images, and synthesizes the Node CDK fixture. Select the candidate ref in
-GitHub's manual-run UI; review logs/artifacts and separately confirm normal CI passed for that ref.
-It does not publish, deploy, tag, or update consumers. Local checks cannot establish hosted success
-or actual consumer compatibility.
+The manual [release-candidate workflow] broadens Python quality checks to Ubuntu/macOS, builds
+packages on both supported Python versions, checks Swift on baseline/current macOS images, and
+synthesizes the Node CDK fixture. Select the candidate ref in GitHub's manual-run UI; review
+logs/artifacts and separately confirm normal CI passed for that ref. It does not publish, deploy,
+tag, or update consumers. Local checks cannot establish hosted success or actual consumer
+compatibility.
 
 Before releasing, review workflow/action paths; input names, types, defaults, and requiredness;
 permissions and secrets; outputs; artifact names/content/retention; runner and tool changes; and
@@ -345,9 +337,7 @@ Checkout is pinned to v7.0.1, upload-artifact to v7.0.1, and download-artifact t
 uploads explicitly retain zipped archives and the existing names, retention, and output contracts.
 These Node 24 actions require compatible runners; GitHub-hosted runners remain the validated target,
 not arbitrary self-hosted runners or GitHub Enterprise Server. Checkout's unsafe fork opt-in is not
-enabled. See the upstream [checkout](https://github.com/actions/checkout),
-[upload](https://github.com/actions/upload-artifact), and
-[download](https://github.com/actions/download-artifact) compatibility notes.
+enabled. See the upstream [checkout], [upload], and [download] compatibility notes.
 
 ## Optional Dependency Inspection
 
@@ -357,12 +347,12 @@ in manual candidate validation, using its credential-free Python CDK fixture; or
 and their required-check names are unchanged. Python support and installation commands remain
 consumer-owned. Neither workflow gives the root automation library a fictitious runtime package.
 
-For opt-in adoption, copy the [Python inspection starter](../workflow-templates/python-dependency-inspection.yml).
-It runs both workflows manually with a required distribution-name input matching the consumer's
-`pyproject.toml` project name. Replace both SHA placeholders and review runtime, directory, and
-installation defaults before use. Select a trusted revision; no secrets are passed. Optional
-scheduling requires consumer review and a configured distribution name instead of the manual input.
-This manual starter does not provide an ordinary PR or merge-queue prerequisite.
+For opt-in adoption, copy the [Python inspection starter][Python Inspection]. It runs both workflows
+manually with a required distribution-name input matching the consumer's `pyproject.toml` project
+name. Replace both SHA placeholders and review runtime, directory, and installation defaults before
+use. Select a trusted revision; no secrets are passed. Optional scheduling requires consumer review
+and a configured distribution name instead of the manual input. This manual starter does not provide
+an ordinary PR or merge-queue prerequisite.
 
 ```yaml
 name: Inspect Python dependencies
@@ -397,12 +387,12 @@ lowest/highest strategy. Constraints apply only to tool dependencies, not the in
 Invalid modes fail before setup. The default does not install uv or apply constraints.
 
 Manual candidates retain default-tool validation and separately exercise both boundary modes with
-[inspection constraints](../requirements/inspection-constraints.txt). These are tested compatibility
-floors, not upstream's absolute minima: unconstrained lowest resolution selects legacy packages that
-fail on modern Python. Floors keep urllib3, pyparsing, pip-api, and CycloneDX's shared library in
-compatible ranges. Lowest-mode environments are compatibility experiments, not recommended
-production locks or a claim that the tools' own dependencies are vulnerability-free. Review local
-smokes and hosted matrix results when changing these floors; other platforms remain unverified.
+[inspection constraints]. These are tested compatibility floors, not upstream's absolute minima:
+unconstrained lowest resolution selects legacy packages that fail on modern Python. Floors keep
+urllib3, pyparsing, pip-api, and CycloneDX's shared library in compatible ranges. Lowest-mode
+environments are compatibility experiments, not recommended production locks or a claim that the
+tools' own dependencies are vulnerability-free. Review local smokes and hosted matrix results when
+changing these floors; other platforms remain unverified.
 
 Installation runs in a fresh target virtual environment; inspection tools use a separate
 environment. After successful setup, both inspection workflows log the target Python/pip versions
@@ -417,12 +407,12 @@ package indexes: do not pass secrets or run privileged untrusted code. No deploy
 automatic fixes, or cached environments are involved.
 
 The audit freezes resolved dependencies, excluding the named project and pip, then queries public
-advisories with `--no-deps --disable-pip --strict`. Unpublished/VCS/editable dependencies that cannot
-be audited must be handled deliberately; failures are not silently suppressed. Dependency names
-and versions leave the runner for advisory queries. JSON findings upload even after audit failure,
-unless cancelled; missing findings warn without converting the original failure into success.
-This is dependency auditing, not source or CDK infrastructure security analysis.
-See [pip-audit's security model](https://github.com/pypa/pip-audit).
+advisories with `--no-deps --disable-pip --strict`. Unpublished/VCS/editable dependencies that
+cannot be audited must be handled deliberately; failures are not silently suppressed. Dependency
+names and versions leave the runner for advisory queries. JSON findings upload even after audit
+failure, unless cancelled; missing findings warn without converting the original failure into
+success. This is dependency auditing, not source or CDK infrastructure security analysis. See
+[pip-audit's security model].
 
 The excluded audit distribution must be a valid distribution name, match the caller directory's
 `pyproject.toml` `[project].name` after standard name normalization, and be installed in the target
@@ -431,10 +421,10 @@ advisory query. This guards against silently excluding a different dependency. R
 legacy-metadata projects must provide suitable project metadata before adopting this workflow.
 
 The inventory uses CycloneDX's validated environment command and uploads only on successful
-generation. It includes the installed project, runtime dependencies, and target bootstrap tools,
-but not the isolated SBOM generator. It is a Python dependency inventory, not an exhaustive source,
+generation. It includes the installed project, runtime dependencies, and target bootstrap tools, but
+not the isolated SBOM generator. It is a Python dependency inventory, not an exhaustive source,
 Node, Swift, container, or deployed-resource SBOM, and is not a signature or provenance attestation.
-See [CycloneDX environment usage](https://cyclonedx-bom-tool.readthedocs.io/en/latest/usage.html).
+See [CycloneDX environment usage].
 
 Inspection summaries include the candidate SHA, runtime, requested/resolved tool versions,
 resolution mode, selected project scope, report status, and any uploaded artifact link. Audit
@@ -451,7 +441,41 @@ own their scope policy. Dependabot groups named validation tools before producti
 groups, keeping requirements-only root tools separate even if classified as production. Runtime and
 development fixture groups follow supported package-manager classification; schedules stay in UTC.
 
-Repository-specific [CODEOWNERS](../.github/CODEOWNERS) covers automation, fixtures, dependency
-policy, and governance using the sibling maintainer account. It does not establish organization-wide
-ownership or enable review enforcement. See [branch protection
-guidance](../.github/BRANCH-PROTECTION.md) for the separately configured hosted review requirements.
+Repository-specific [CODEOWNERS] covers automation, fixtures, dependency policy, and governance
+using the sibling maintainer account. It does not establish organization-wide ownership or enable
+review enforcement. See [branch protection guidance][branch-protection guidance] for the separately
+configured hosted review requirements.
+
+[AWS CDK CI]: ../.github/workflows/aws-cdk-ci.yml
+[AWS CDK CI starter]: ../workflow-templates/aws-cdk-ci.yml
+[branch-protection guidance]: ../.github/BRANCH-PROTECTION.md
+[checkout]: https://github.com/actions/checkout
+[CODEOWNERS]: ../.github/CODEOWNERS
+[consumer adoption checklist]: ADOPTION.md
+[contributor instructions]: CONTRIBUTING.md
+[CycloneDX environment usage]: https://cyclonedx-bom-tool.readthedocs.io/en/latest/usage.html
+[Dependency Review]: ../.github/workflows/dependency-review.yml
+[Dependency Review starter]: ../workflow-templates/dependency-review.yml
+[download]: https://github.com/actions/download-artifact
+[GitHub's reusable workflow guidance]: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows
+[inspection constraints]: ../requirements/inspection-constraints.txt
+[maintenance guidance]: MAINTENANCE.md
+[pinned upload action's metadata]: https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml
+[pip-audit's security model]: https://github.com/pypa/pip-audit
+[PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
+[Python CI]: ../.github/workflows/python-ci.yml
+[Python CI starter]: ../workflow-templates/python-ci.yml
+[Python Dependency Audit]: ../.github/workflows/python-dependency-audit.yml
+[Python Inspection]: ../workflow-templates/python-dependency-inspection.yml
+[Python Package]: ../.github/workflows/python-package.yml
+[Python Release]: ../workflow-templates/python-release.yml
+[Python SBOM]: ../.github/workflows/python-sbom.yml
+[release policy]: ../RELEASE-POLICY.md
+[release-candidate workflow]: ../.github/workflows/release-candidate.yml
+[self-repository reference syntax]: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-using-an-action-in-the-same-repository-as-the-workflow-at-the-running-commit-recommended
+[setup-python caching]: https://github.com/actions/setup-python/tree/v6#caching-packages-dependencies
+[supported ecosystems]: https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories
+[Swift CI]: ../.github/workflows/swift-ci.yml
+[Swift CI starter]: ../workflow-templates/swift-ci.yml
+[testing]: TESTING.md
+[upload]: https://github.com/actions/upload-artifact

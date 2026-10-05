@@ -20,11 +20,11 @@ This is a proposed maintainer baseline, not evidence of active hosted settings.
 
 ## Shared Protection Baseline
 
-The repository-specific [CODEOWNERS](CODEOWNERS) routes automation, tests, dependency policy, and
-governance changes to the sibling projects' maintainer, @djrlj694. Write/admin access was verified
-when adding the file; maintainers must recheck access when ownership changes. Require code-owner
-review through hosted rules if appropriate for available independent reviewers. Ownership is not
-inherited by consuming repositories, and the file does not activate enforcement by itself.
+The repository-specific [CODEOWNERS] routes automation, tests, dependency policy, and governance
+changes to the sibling projects' maintainer, @djrlj694. Write/admin access was verified when adding
+the file; maintainers must recheck access when ownership changes. Require code-owner review through
+hosted rules if appropriate for available independent reviewers. Ownership is not inherited by
+consuming repositories, and the file does not activate enforcement by itself.
 
 Require reviewed pull requests, resolved conversations, and successful validation for integration
 branches. Restrict force pushes, deletion, and bypass access. Choose approval requirements that
@@ -58,4 +58,8 @@ Revisit this guidance after changes to jobs, matrices, triggers, ownership, or p
 Record hosted verification separately from local validation and do not claim enforcement from
 committed configuration alone.
 
-See [release policy](../RELEASE-POLICY.md) and [shared Actions guidance](../docs/github-actions.md).
+See [release policy] and [shared Actions guidance].
+
+[CODEOWNERS]: CODEOWNERS
+[release policy]: ../RELEASE-POLICY.md
+[shared Actions guidance]: ../docs/github-actions.md

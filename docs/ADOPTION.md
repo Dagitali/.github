@@ -14,8 +14,8 @@ Maintainer Notes
 
 Use this checklist when adopting or updating Dagitali defaults and automation. Keep a completed
 record in the consumer's maintainer documentation; do not put private settings or vulnerability
-details in a public record. See the [adoption boundaries](../README.md#adoption-and-overrides) and
-[Actions guide](github-actions.md) for contracts and examples.
+details in a public record. See the [adoption boundaries] and [Actions guide] for contracts and
+examples.
 
 - [Record](#record)
 - [Review Boundaries](#review-boundaries)
@@ -51,8 +51,13 @@ read-only checklist without authorization for those actions.
 
 Dependency review is PR-only; manual inspection is optional evidence, not an always-reporting merge
 check. Select required checks only after verifying their trigger coverage and exact hosted names;
-follow [branch protection guidance](../.github/BRANCH-PROTECTION.md).
+follow [branch protection guidance].
 
 Revisit the record when defaults, overrides, maintainers, repository visibility, shared references,
-or hosted rules change. Follow [maintenance guidance](MAINTENANCE.md) for exceptions, inactive
-consumers, and deprecated interfaces. An unchecked checklist does not block adoption automatically.
+or hosted rules change. Follow [maintenance guidance] for exceptions, inactive consumers, and
+deprecated interfaces. An unchecked checklist does not block adoption automatically.
+
+[Actions guide]: github-actions.md
+[adoption boundaries]: ../README.md#adoption-and-overrides
+[branch protection guidance]: ../.github/BRANCH-PROTECTION.md
+[maintenance guidance]: MAINTENANCE.md

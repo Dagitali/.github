@@ -19,8 +19,8 @@ For help using a Dagitali project:
 3. Use GitHub Discussions when the repository enables it.
 4. If the behavior appears to be a defect, open a bug report using the repository's issue form.
 
-Do not use public support channels to disclose security vulnerabilities. Follow
-[SECURITY.md](SECURITY.md) instead.
+Do not use public support channels to disclose security vulnerabilities. Follow [SECURITY.md]
+instead.
 
 - [What to Include](#what-to-include)
 
@@ -37,3 +37,5 @@ repository content, and other confidential material. Follow the affected reposit
 for any additional details or private support channels.
 
 Project-specific support instructions take precedence over this document.
+
+[SECURITY.md]: SECURITY.md

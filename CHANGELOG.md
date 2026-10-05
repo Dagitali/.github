@@ -127,6 +127,9 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Mirror sibling Markdown conventions with descriptive bottom-of-document reference definitions,
+  reusing repeated destinations while preserving link targets, inline contents anchors, and
+  examples.
 - Add affected-project support routing to the issue chooser, remove hidden profile starter prompts,
   and organize reusable workflows by purpose, matching starter, triggers, and adoption boundaries.
 - Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
@@ -196,7 +199,7 @@ Maintainer Notes
 ## [0.1.0] - 2026-09-29
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record](docs/releases/v0.1.0.md).
+recorded date, not verified publication. See the [release record].
 
 - Add community-health defaults, issue/PR templates, and organization-profile documentation.
 - Add reusable Python, CDK, Swift, package, publish, and dependency-review workflows; shared
@@ -208,7 +211,10 @@ recorded date, not verified publication. See the [release record](docs/releases/
 ## [0.0.0] - 2026-09-28
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record](docs/releases/v0.0.0.md).
+recorded date, not verified publication. See the [release record][release record v0.0.0].
 
 - Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
 - No workflows, actions, templates, or executable validation exist in this scaffold.
+
+[release record]: docs/releases/v0.1.0.md
+[release record v0.0.0]: docs/releases/v0.0.0.md
