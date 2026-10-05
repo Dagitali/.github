@@ -106,13 +106,13 @@ are not supported on GitHub Enterprise Server. Review the [workflow contracts an
 limitations][Shared GitHub Actions] before adopting a revision.
 
 [changelog]: CHANGELOG.md
-[consumer adoption checklist]: docs/ADOPTION.md
-[contributor instructions]: docs/CONTRIBUTING.md
-[Shared GitHub Actions]: docs/github-actions.md
-[maintenance guidance]: docs/MAINTENANCE.md
-[documentation index]: docs/README.md
-[release notes archive]: docs/releases/README.md
-[testing guide]: docs/TESTING.md
-[default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
 [release policy]: RELEASE-POLICY.md
 [security policy]: SECURITY.md
+[consumer adoption checklist]: docs/ADOPTION.md
+[contributor instructions]: docs/CONTRIBUTING.md
+[maintenance guidance]: docs/MAINTENANCE.md
+[documentation index]: docs/README.md
+[testing guide]: docs/TESTING.md
+[Shared GitHub Actions]: docs/github-actions.md
+[release notes archive]: docs/releases/README.md
+[default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file

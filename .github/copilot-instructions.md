@@ -30,8 +30,8 @@ This guide is repository-local. Consuming repositories maintain their own engine
 calling a shared workflow does not make this document their policy.
 
 [agent instructions]: ../AGENTS.md
-[contributing guide]: ../docs/CONTRIBUTING.md
-[public automation contracts]: ../docs/github-actions.md
-[testing guide]: ../docs/TESTING.md
 [release policy]: ../RELEASE-POLICY.md
+[contributing guide]: ../docs/CONTRIBUTING.md
+[testing guide]: ../docs/TESTING.md
+[public automation contracts]: ../docs/github-actions.md
 [release-notes template]: RELEASE-NOTES-TEMPLATE.md

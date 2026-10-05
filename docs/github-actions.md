@@ -466,6 +466,8 @@ configured hosted review requirements.
 [Swift CI starter]: ../workflow-templates/swift-ci.yml
 [consumer adoption checklist]: ADOPTION.md
 [contributor instructions]: CONTRIBUTING.md
+[maintenance guidance]: MAINTENANCE.md
+[testing]: TESTING.md
 [CycloneDX environment usage]: https://cyclonedx-bom-tool.readthedocs.io/en/latest/usage.html
 [GitHub's reusable workflow guidance]: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows
 [self-repository reference syntax]: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-using-an-action-in-the-same-repository-as-the-workflow-at-the-running-commit-recommended
@@ -477,5 +479,3 @@ configured hosted review requirements.
 [pinned upload action's metadata]: https://github.com/actions/upload-artifact/blob/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml
 [PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
 [pip-audit's security model]: https://github.com/pypa/pip-audit
-[maintenance guidance]: MAINTENANCE.md
-[testing]: TESTING.md

@@ -127,6 +127,8 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Match Popo's case-sensitive reference-definition ordering and add navigation to long maintainer
+  guides, with a source-of-truth table for focused documentation synchronization.
 - Align Markdown reference definitions by destination, clarify starter labels and versioned records,
   add a canonical documentation index and missing guide/fixture headers, and preserve standalone
   fixture scope and historical evidence boundaries.

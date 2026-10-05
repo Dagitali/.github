@@ -11,6 +11,17 @@ Maintainer Notes
 -->
 # Testing
 
+Use the [setup instructions] for the local environment and the [documentation index] to find related
+consumer and maintainer guidance. The sections below distinguish local regression evidence from
+hosted validation; neither authorizes publishing or deployment.
+
+- [Contract Coverage](#contract-coverage)
+- [Local Quality Gate](#local-quality-gate)
+- [Test Design and Focused Checks](#test-design-and-focused-checks)
+- [Hosted Consumer Evidence](#hosted-consumer-evidence)
+
+## Contract Coverage
+
 The existing parameterized inspection-summary cases also exercise successful, nonzero, and absent
 tool-version queries. Executable shims capture the actual pip-list arguments; failed queries retain
 the explicit unavailable message and the original report status. This coverage uses the same
@@ -102,6 +113,8 @@ coverage disables caching explicitly. CDK dependency-check tests execute the rea
 with controlled Python/npm shims, covering successful checks and propagation of failures before a
 subsequent stage. These tests do not replace actual dependency resolution or hosted cache evidence.
 
+## Local Quality Gate
+
 `make check` runs Ruff lint/format checks, strict mypy on root helpers, actionlint over
 workflows and starter templates, automation contract validation, Popo CLI checks, and pytest
 regression tests. Python validation tools and YAML stubs are pinned in `requirements-dev.txt`; CI
@@ -121,6 +134,8 @@ discovery globs, local repository aliases, and template placeholders. Popo valid
 keys, local call inputs, required inputs, composite run-step shells, reference pins, and matching
 template metadata. It is a focused contract checker, not a complete replacement for GitHub's action
 metadata schema or runner validation.
+
+## Test Design and Focused Checks
 
 Generic parser and input-validation tests live in Popo. `tests/test_contracts.py` retains
 workflow/action parity, shell failure propagation, and publishing isolation. Parity tests use a
@@ -175,6 +190,8 @@ Follow the [setup instructions] to install the published Popo commit pinned in
 compatibility aliases, and preservation of existing environments. `make check-pre-push` runs the
 same gate as `make check`; `make self-check` runs the pin and documentation policies only.
 
+## Hosted Consumer Evidence
+
 The library CI also executes these fixtures:
 
 | Fixture | Evidence |
@@ -226,3 +243,4 @@ dependency-review API availability, and merge-group check emission still need ho
 
 [candidate workflow]: ../.github/workflows/release-candidate.yml
 [setup instructions]: CONTRIBUTING.md
+[documentation index]: README.md

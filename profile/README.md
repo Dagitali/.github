@@ -14,7 +14,8 @@ Maintainer Notes
 
 🙋‍♀️ A short introduction - what is your organization all about?
 🌈 Contribution guidelines - how can the community get involved?
-👩‍💻 Useful resources - where can the community find your docs? Is there anything else the community should know?
+👩‍💻 Useful resources - where can the community find your docs?
+Is there anything else the community should know?
 🍿 Fun facts - what does your team eat for breakfast?
 🧙 Remember, you can do mighty things with the power of
 [Markdown][markdown-guide]
@@ -56,8 +57,8 @@ published help channel rather than this organization profile for project-specifi
 Report suspected vulnerabilities privately through the affected project's security policy, not in
 public issues. Repository access, contribution terms, and support channels vary by project.
 
-[AWS CDK Static Site]: https://github.com/Dagitali/aws-cdk-static-site
 [ETLPlus]: https://github.com/Dagitali/ETLPlus
+[AWS CDK Static Site]: https://github.com/Dagitali/aws-cdk-static-site
 [Popo]: https://github.com/Dagitali/popo
 [Dagitali.com]: https://www.dagitali.com
 [markdown-guide]: https://www.markdownguide.org/

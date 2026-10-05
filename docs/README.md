@@ -38,7 +38,8 @@ defaults; consuming projects retain their own engineering instructions and hoste
 From the prepared checkout, run `make docs-markdown` for local link destinations and heading
 anchors, then `make check` for the full library gate. Review undefined reference labels, external
 URLs, and factual claims separately; a passing local check does not establish hosted behavior. Use
-descriptive reference labels with definitions at the bottom, sorted by destination.
+descriptive reference labels with definitions at the bottom, sorted case-sensitively by destination
+exactly as written, then by label. Preserve destination casing, fragments, and encoding.
 
 Historical records describe their recorded revision, not today's contracts. This library has no
 documentation-site build or cloud deployment guide; do not copy application-specific operations
@@ -55,7 +56,7 @@ solely to match another repository. Fixtures remain self-contained when copied i
 [support defaults]: ../SUPPORT.md
 [Adoption checklist]: ADOPTION.md
 [Library contributor guide]: CONTRIBUTING.md
-[Shared GitHub Actions]: github-actions.md
 [Maintenance guide]: MAINTENANCE.md
-[release archive]: releases/README.md
 [Testing guide]: TESTING.md
+[Shared GitHub Actions]: github-actions.md
+[release archive]: releases/README.md
