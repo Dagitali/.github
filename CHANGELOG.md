@@ -124,6 +124,9 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Clarify first-time contribution and coordinated security-report handling without imposing
+  project-specific commands, response deadlines, or publication commitments. Remove obsolete
+  profile prompts and link stale dependency-audit guidance to the implemented inspection workflows.
 - Route inherited security links to affected-repository instructions and add a default private
   vulnerability form, without enabling hosted reporting or inventing a central contact.
 - Add public project discovery and participation links to the organization profile, and document

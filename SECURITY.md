@@ -13,6 +13,7 @@ Maintainer Notes
 # Security Policy
 
 - [Reporting a Vulnerability](#reporting-a-vulnerability)
+- [Report Handling](#report-handling)
 - [Maintainer Setup](#maintainer-setup)
 
 ## Reporting a Vulnerability
@@ -37,8 +38,25 @@ Include enough information to reproduce and assess the issue:
 - Reproduction steps or a proof of concept
 - Any known mitigations
 
+For automated scanner or fuzzer findings, include the relevant configuration, affected behavior, and
+reproducible steps or a minimal proof of concept when feasible. Tool output alone may not establish
+impact; explain uncertainty or evidence you could not obtain rather than testing systems without
+authorization. Keep credentials and unrelated confidential data out of submitted examples.
+
+## Report Handling
+
 Maintainers will acknowledge the report, assess its impact, and coordinate remediation and
 disclosure. Response times vary by project and severity.
+
+An acknowledgment confirms receipt, not that the vulnerability has been verified or accepted.
+Maintainers may request additional reproduction details while assessing affected versions, impact,
+and possible mitigations.
+
+Keep vulnerability details in the agreed private channel during investigation. For confirmed issues,
+maintainers and reporters coordinate remediation and public disclosure, including an appropriate
+security advisory when applicable. Agree on any public attribution with the reporter and exclude
+confidential evidence. This default does not establish a response deadline, bounty program, or
+automatic publication schedule; project-specific policies take precedence.
 
 ## Maintainer Setup
 

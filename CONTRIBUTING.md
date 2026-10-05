@@ -15,13 +15,33 @@ Maintainer Notes
 Thank you for contributing to a Dagitali project.
 
 - [Before You Begin](#before-you-begin)
+- [First Contribution](#first-contribution)
 - [Pull Requests](#pull-requests)
 
 ## Before You Begin
 
 - Search existing issues and pull requests before opening a new one.
 - Use the repository's issue forms when reporting bugs or proposing changes.
+- Discuss substantial proposals with maintainers before implementing them.
+- Review the affected project's contribution terms and documented setup requirements.
 - For security vulnerabilities, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.
+
+## First Contribution
+
+Documentation corrections, reproducible bug reports, tests, and focused code improvements are
+welcome. You do not need to start with a large feature.
+
+1. Read the project's README and repository-specific contributor guide. For usage questions, follow
+   its [support instructions](SUPPORT.md).
+2. Fork and clone the repository when the project permits it, or use an authorized checkout.
+3. Create a topic branch following the project's naming and base-branch policy; do not assume every
+   Dagitali repository uses the same branching model.
+4. Follow the project's setup instructions, make a focused change, and run its relevant checks.
+   Update affected tests and documentation; record any checks you could not run and why.
+5. Open a pull request against the project's designated base branch, following the review guidance
+   below. Use a draft when seeking early feedback and respond to review or CI findings.
+
+Commands, supported runtimes, repository access, and merge requirements remain project-specific.
 
 ## Pull Requests
 
