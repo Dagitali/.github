@@ -766,34 +766,46 @@ def test_shell_behavior(
 
 
 def test_workflow_action_parity(
-    parity_case: tuple[
-        dict[str, Any], dict[str, Any], tuple[str, ...], tuple[str, ...] | None
-    ],
+    parity_case: tuple[dict[str, Any], dict[str, Any], tuple[str, ...] | None],
 ) -> None:
-    """Compare inputs and steps, retaining the Python version selector exception."""
-    workflow, action, keys, input_names = parity_case
+    """
+    Verify same-revision composition, defaults, and explicit input forwarding.
+
+    Python setup maps its version from the existing matrix. Each other action
+    input must be forwarded from the corresponding workflow input; diagnostics
+    remain outside the composite so uploads can run after a failed check.
+    """
+    workflow, action, input_names = parity_case
     inputs = workflow['on']['workflow_call']['inputs']
     steps = workflow['jobs']['quality']['steps']
     names = action['inputs'] if input_names is None else input_names
     for name in names:
         assert action['inputs'][name]['default'] == inputs[name]['default'], name
-    for step in action['runs']['steps']:
-        peer = next(item for item in steps if item.get('name') == step['name'])
-        for key in keys:
-            actual, expected = step.get(key), peer.get(key)
-            if key == 'with' and actual is not None and expected is not None:
-                # The action selects one version; the workflow selects a matrix member.
-                actual = {
-                    name: value
-                    for name, value in actual.items()
-                    if name != 'python-version'
-                }
-                expected = {
-                    name: value
-                    for name, value in expected.items()
-                    if name != 'python-version'
-                }
-            assert actual == expected, (step['name'], key)
+    calls = [
+        step
+        for step in steps
+        if step.get('uses', '').startswith('$/actions/')
+        and step['uses'].endswith(
+            '/'
+            + {
+                'Python quality checks': 'python-quality',
+                'AWS CDK quality checks': 'cdk-quality',
+                'Set up Python project': 'setup-python-project',
+            }[action['name']]
+        )
+    ]
+    assert len(calls) == 1
+    call = calls[0]
+    assert set(call['with']) == set(action['inputs'])
+    for name in action['inputs']:
+        selector = (
+            'matrix.python-version' if name == 'python-version' else f'inputs.{name}'
+        )
+        assert call['with'][name] == f'${{{{ {selector} }}}}', name
+    assert not call.get('continue-on-error')
+    assert steps.index(call) < next(
+        i for i, step in enumerate(steps) if step.get('name') == 'Upload diagnostics'
+    )
 
 
 def test_workflow_validation_boundaries(
