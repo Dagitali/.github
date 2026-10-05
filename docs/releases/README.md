@@ -45,8 +45,9 @@ operational instructions from an older release.
 
 ## 0.4 Series
 
-- [v0.4.0] — 2026-10-05: Community defaults, security starters, and adoption guidance are integrated
-  into `develop`, but final candidate validation is pending.
+- [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
+  release-history corrections are integrated into `release/0.4.0`. Tagging, hosted validation, and
+  publication remain pending; see the record for local validation evidence.
 
 ## 0.3 Series
 
