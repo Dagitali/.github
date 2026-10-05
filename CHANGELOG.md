@@ -127,6 +127,8 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Add affected-project support routing to the issue chooser, remove hidden profile starter prompts,
+  and organize reusable workflows by purpose, matching starter, triggers, and adoption boundaries.
 - Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
   missing settings from unverified hosted evidence without automatic enforcement or consumer writes.
 - Clarify first-time contribution and coordinated security-report handling without imposing
