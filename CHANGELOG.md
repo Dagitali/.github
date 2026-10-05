@@ -102,6 +102,8 @@
 
 ### Documentation and Maintenance
 
+- Standardize inline workflow helper docstrings on NumPy-style parameter, return, exception, and
+  side-effect documentation while preserving existing type hints and runtime behavior.
 - Align CODEOWNERS with sibling default-owner and grouped-surface conventions, retaining all
   existing owners and adding explicit profile coverage. Cover new paths and root policies through
   the fallback without changing hosted review enforcement or consumer ownership.
