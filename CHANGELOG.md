@@ -124,6 +124,8 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Align temporary-tree, Make, and package-runner fixture contracts with sibling NumPy-style
+  documentation, clarifying side effects, trusted-code boundaries, and subprocess failures.
 - Align root/fixture pytest configuration with sibling native TOML conventions, preserving test
   discovery and strictness. Expand typed collection/YAML helper contracts in NumPy-format
   docstrings.
