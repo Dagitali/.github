@@ -45,7 +45,8 @@ release approval remain pending. See the [v0.4.0 release candidate][0.4.0].
 - Align documentation links, navigation, headers, fixture contracts, release records, and
   present-tense highlights; clarify archive draft dates and correct historical scope without
   rewriting existing tags. Replace hard-coded Markdown commit SHAs with descriptive release
-  references; align archive candidate labels and evidence guidance with sibling release records.
+  references; align archive candidate labels, evidence guidance, and closing navigation with sibling
+  release records.
 - Move detailed change categories into the matching release records and keep this changelog concise.
 
 Full change details, compatibility boundaries, and local/hosted validation status are preserved in
