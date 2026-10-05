@@ -12,30 +12,25 @@ Maintainer Notes
 
 # Changelog
 
+All notable changes to this project are documented in this file. Detailed release and candidate
+records are indexed in the [release notes archive]. Versioning, compatibility, and publication
+safeguards follow the [release policy].
+
+Dated historical entries preserve local tag dates, not verified publication dates. Planned entries
+remain explicitly unreleased; corrections to maintained history do not rewrite existing tags.
+
 - [Unreleased](#unreleased)
-- [\[0.4.0\] - Unreleased](#040---unreleased)
-  - [Community Defaults and Adoption](#community-defaults-and-adoption)
-  - [Dependency-Security Starters](#dependency-security-starters)
-  - [Documentation Corrections and Conventions](#documentation-corrections-and-conventions)
-- [\[0.3.0\] - 2026-10-05](#030---2026-10-05)
-- [\[0.2.0\] - 2026-10-05](#020---2026-10-05)
+- [0.4.0 - Unreleased](#040---unreleased)
+- [0.3.1 - 2026-10-05](#031---2026-10-05)
+- [0.3.0 - 2026-10-05](#030---2026-10-05)
+- [0.2.0 - 2026-10-05](#020---2026-10-05)
   - [Breaking Changes](#breaking-changes)
   - [Shared Automation](#shared-automation)
   - [Validation and Tests](#validation-and-tests)
   - [Contributor Tooling](#contributor-tooling)
   - [Documentation and Maintenance](#documentation-and-maintenance)
-- [\[0.1.0\] - 2026-09-29](#010---2026-09-29)
-- [\[0.0.0\] - 2026-09-28](#000---2026-09-28)
-
-## Unreleased
-
-No additional changes are recorded outside the planned `0.4.0` scope below.
-
-## [0.4.0] - Unreleased
-
-Planned minor release; draft prepared 2026-10-05, not a publication date. The feature is now
-integrated into `develop` but absent from the v0.3.0 tag. Final candidate selection and local/hosted
-validation remain pending. See the [v0.4.0 release draft].
+- [0.1.0 - 2026-09-29](#010---2026-09-29)
+- [0.0.0 - 2026-09-28](#000---2026-09-28)
 
 ### Community Defaults and Adoption
 
@@ -54,6 +49,10 @@ validation remain pending. See the [v0.4.0 release draft].
 
 ### Documentation Corrections and Conventions
 
+- Align changelog introduction, archive/policy navigation, and version-heading reference links with
+  sibling conventions while preserving all change history and explicit release-evidence boundaries.
+- Backfill the v0.3.1 record and dated history, documenting its identical source commit to v0.3.0;
+  index it newest first and retain explicit planned status for v0.4.0 without rewriting tags.
 - Standardize the section names, existence, and order across release records and their template,
   retaining concise non-applicable sections and library-specific artifact/adoption boundaries.
 - Separate change scope from compatibility guidance in detailed release records, link v0.1.0's later
@@ -86,11 +85,33 @@ validation remain pending. See the [v0.4.0 release draft].
 The integrated feature does not change reusable workflow/action declarations relative to v0.3.0.
 Confirm compatibility and record the exact candidate and release date only after review.
 
+## Unreleased
+
+No additional changes are recorded outside the planned `0.4.0` scope below.
+
+## [0.4.0] - Unreleased
+
+Planned minor release; draft prepared 2026-10-05, not a publication date. The feature is now
+integrated into `develop` but absent from the v0.3.0 tag. Final candidate selection and local/hosted
+validation remain pending. See the [v0.4.0 release draft][0.4.0].
+
+## [0.3.1] - 2026-10-05
+
+Retrospective summary prepared 2026-10-05 from local annotated-tag metadata. The date is the tag's
+recorded date, not verified publication. See the [v0.3.1 release record][0.3.1].
+
+- Add the annotated v0.3.1 tag at `00cc6dfd3be569dfd50f015012916648f54da120`, identical to v0.3.0.
+- No repository source changes from v0.3.0; its documentation-only scope remains unchanged.
+- The annotation describes synchronization intent, but the identical commit does not include a new
+  source fix or the community/security feature planned for v0.4.0.
+- This dated entry and retrospective record were absent from the tagged tree. Historical validation,
+  remote publication, and adoption remain unverified.
+
 ## [0.3.0] - 2026-10-05
 
 Retrospective correction prepared 2026-10-05 from annotated tag `v0.3.0` at
 `00cc6dfd3be569dfd50f015012916648f54da120`. The date is the tag's recorded date, not verified
-GitHub Release publication. See the [v0.3.0 release record].
+GitHub Release publication. See the [v0.3.0 release record][0.3.0].
 
 - Backfill the retrospective v0.2.0 record and reconcile hardening history with that tag.
 - Correct release-policy wording that described already-tagged v0.2.0 changes as unreleased.
@@ -104,7 +125,7 @@ GitHub Release publication. See the [v0.3.0 release record].
 
 Retrospective summary prepared 2026-10-05 from the local annotated tag. The date is the tag's
 recorded date, not verified publication. Existing hardening entries below describe the tagged tree;
-they were previously grouped under `Unreleased`. See the [v0.2.0 release record].
+they were previously grouped under `Unreleased`. See the [v0.2.0 release record][0.2.0].
 
 ### Breaking Changes
 
@@ -165,7 +186,6 @@ they were previously grouped under `Unreleased`. See the [v0.2.0 release record]
   ID/digest/content checks, both Node CDK installation paths, optional dependency inspection, and
   failure-aware SHA/runtime/result summaries. Add focused archive and summary behavior tests without
   changing ordinary required-check names or introducing hosted publication.
-
 - Add repository CI, contract regression tests, and hosted language/composite-action fixtures,
   including a pinned, credential-free Python CDK fixture for offline synthesis in regular and
   candidate runs. Pin fixture CDK tooling and retain independent fixture environments.
@@ -265,7 +285,7 @@ they were previously grouped under `Unreleased`. See the [v0.2.0 release record]
 ## [0.1.0] - 2026-09-29
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record][v0.1.0 release record].
+recorded date, not verified publication. See the [release record][0.1.0].
 
 - Add community-health defaults, issue/PR templates, and organization-profile documentation.
 - Add reusable Python, CDK, Swift, package, publish, and dependency-review workflows; shared
@@ -277,13 +297,16 @@ recorded date, not verified publication. See the [release record][v0.1.0 release
 ## [0.0.0] - 2026-09-28
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record][v0.0.0 release record].
+recorded date, not verified publication. See the [release record][0.0.0].
 
 - Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
 - No workflows, actions, templates, or executable validation exist in this scaffold.
 
-[v0.0.0 release record]: docs/releases/v0.0.0.md
-[v0.1.0 release record]: docs/releases/v0.1.0.md
-[v0.2.0 release record]: docs/releases/v0.2.0.md
-[v0.3.0 release record]: docs/releases/v0.3.0.md
-[v0.4.0 release draft]: docs/releases/v0.4.0.md
+[release policy]: RELEASE-POLICY.md
+[release notes archive]: docs/releases/README.md
+[0.0.0]: docs/releases/v0.0.0.md
+[0.1.0]: docs/releases/v0.1.0.md
+[0.2.0]: docs/releases/v0.2.0.md
+[0.3.0]: docs/releases/v0.3.0.md
+[0.3.1]: docs/releases/v0.3.1.md
+[0.4.0]: docs/releases/v0.4.0.md
