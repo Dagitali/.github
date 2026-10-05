@@ -14,6 +14,7 @@ Maintainer Notes
 Dagitali maintains reusable workflows, composite actions, and starter templates here. Caller
 repositories still own their triggers, required checks, runtime policy, and release identity.
 
+- [Workflow Selection](#workflow-selection)
 - [Adoption](#adoption)
 - [Workflow Contracts](#workflow-contracts)
 - [Existing Dagitali Projects](#existing-dagitali-projects)
@@ -23,6 +24,27 @@ repositories still own their triggers, required checks, runtime policy, and rele
 - [Cancellation and Support Boundaries](#cancellation-and-support-boundaries)
 - [Candidate Validation and Compatibility](#candidate-validation-and-compatibility)
 - [Optional Dependency Inspection](#optional-dependency-inspection)
+
+## Workflow Selection
+
+Choose by project scope, then review the contracts below. Triggers listed here belong to the copied
+starters, not the reusable workflows, which declare `workflow_call`. Consumers still need their own
+caller files and reviewed SHA references; choosing a starter does not enable hosted rules.
+
+| Reusable workflow | Purpose and prerequisites | Matching starter | Starter triggers | Important boundary |
+| --- | --- | --- | --- | --- |
+| [Python CI](../.github/workflows/python-ci.yml) | Formatting, lint, typing, tests; installable project and configured tools | [Python CI](../workflow-templates/python-ci.yml) | Push, PR, merge group | Consumer selects supported Python versions and commands |
+| [AWS CDK CI](../.github/workflows/aws-cdk-ci.yml) | Python/Node app synthesis and optional checks; `cdk.json` and offline context | [AWS CDK CI](../workflow-templates/aws-cdk-ci.yml) | Push, PR, merge group | No deployment, AWS credentials, or account lookups |
+| [Swift CI](../.github/workflows/swift-ci.yml) | Builds/tests with `Package.swift` and runner-supplied Swift | [Swift CI](../workflow-templates/swift-ci.yml) | Push, PR, merge group | Swift Package Manager, not signed Xcode application releases |
+| [Python Package](../.github/workflows/python-package.yml) | Build, metadata, clean wheel/sdist installation; buildable `pyproject.toml` | [Python Release](../workflow-templates/python-release.yml) | Release-tag push | Only the consumer-owned publishing job receives publishing identity |
+| [Dependency Review](../.github/workflows/dependency-review.yml) | Review dependency changes; consumer dependency graph/API availability | [Dependency Review](../workflow-templates/dependency-review.yml) | PR only | Not a merge-queue prerequisite or resolved-runtime audit |
+| [Python Dependency Audit](../.github/workflows/python-dependency-audit.yml) | Audit resolved dependencies; trusted installation, distribution name, public advisory access | [Python Inspection](../workflow-templates/python-dependency-inspection.yml) | Manual | Optional evidence; selected runtime dependencies, not inspection tools |
+| [Python SBOM](../.github/workflows/python-sbom.yml) | Validated CycloneDX inventory; trusted runtime installation | [Python Inspection](../workflow-templates/python-dependency-inspection.yml) | Manual | Installed environment, not source inventory or vulnerability verdict |
+
+The inspection starter calls both audit and inventory. Python release publication requires explicit
+consumer setup described in [Python Releases](#python-releases); package validation alone never
+publishes. Review [platform and support boundaries](#cancellation-and-support-boundaries) before
+adoption, including the GitHub.com-only same-revision action references in Python/CDK CI.
 
 ## Adoption
 
@@ -83,16 +105,6 @@ Values are case-sensitive and are not trimmed. CDK validates `language` before t
 `prepare-command`, and validates `python-cache` before preparation when `language: python`. Node CDK
 ignores the unused Python cache selector. Valid defaults and installation commands are unchanged;
 these checks do not install alternative package managers or validate remote caches.
-
-| Workflow | Scope | Consumer requirements |
-| --- | --- | --- |
-| `python-ci.yml` | Python formatting, lint, typing, tests | Installable project, compatible Python matrix, configured tools |
-| `aws-cdk-ci.yml` | Python or Node CDK app synthesis and optional checks | `cdk.json`, dependencies, offline synthesis context |
-| `swift-ci.yml` | Swift Package Manager builds and tests | `Package.swift`; Swift supplied by the selected macOS runner |
-| `python-package.yml` | Build, metadata check, clean wheel and sdist installation | Buildable `pyproject.toml`; optional installed-package smoke command |
-| `dependency-review.yml` | Dependency changes on pull requests | Dependency graph/API availability for the consumer's plan and visibility |
-| `python-dependency-audit.yml` | Resolved Python dependency vulnerability audit | Trusted install command and project distribution name; public advisory access |
-| `python-sbom.yml` | Validated CycloneDX inventory of an installed Python environment | Trusted install command; runtime dependency environment |
 
 Python CI defaults to 3.13 and 3.14 to match the inspected Popo and AWS CDK construct support
 ranges. Consumers must choose their own supported versions; this is not an organization-wide Python
