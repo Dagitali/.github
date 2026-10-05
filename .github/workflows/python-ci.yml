@@ -7,8 +7,8 @@
 # - Reject unsupported cache selectors before runtime setup.
 #
 # Maintainer Notes
-# - Preserve setup/quality parity with composite actions and propagate
-#   failures.
+# - Compose same-revision setup/quality actions and propagate failures.
+# - Self-repository action references require GitHub.com, not GHES.
 # - Caller workflows own triggers and cancellation, not this shared workflow.
 # - Command inputs execute caller code; they are not a sandbox boundary.
 
@@ -94,64 +94,23 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Validate Python cache
-        working-directory: .
-        env:
-          PYTHON_CACHE: ${{ inputs.cache }}
-        run: |
-          case "$PYTHON_CACHE" in
-            ''|pip|pipenv|poetry) ;;
-            *)
-              echo 'Python cache must be pip, pipenv, poetry, or empty.' >&2
-              exit 2
-              ;;
-          esac
-
-      - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
+      - name: Set up Python project
+        uses: $/actions/setup-python-project
         with:
           python-version: ${{ matrix.python-version }}
+          working-directory: ${{ inputs.working-directory }}
           cache: ${{ inputs.cache }}
-          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path }}
+          install-command: ${{ inputs.install-command }}
 
-      - name: Install project
-        if: inputs.install-command != ''
-        env:
-          COMMAND: ${{ inputs.install-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Verify dependency compatibility
-        if: inputs.install-command != ''
-        run: python -m pip check
-
-      - name: Report Python environment
-        run: |
-          python --version
-          python -m pip --version
-
-      - name: Check formatting
-        if: inputs.format-command != ''
-        env:
-          COMMAND: ${{ inputs.format-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Lint
-        if: inputs.lint-command != ''
-        env:
-          COMMAND: ${{ inputs.lint-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Type-check
-        if: inputs.typecheck-command != ''
-        env:
-          COMMAND: ${{ inputs.typecheck-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Test
-        if: inputs.test-command != ''
-        env:
-          COMMAND: ${{ inputs.test-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Run Python quality checks
+        uses: $/actions/python-quality
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          format-command: ${{ inputs.format-command }}
+          lint-command: ${{ inputs.lint-command }}
+          typecheck-command: ${{ inputs.typecheck-command }}
+          test-command: ${{ inputs.test-command }}
 
       - name: Upload diagnostics
         if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}

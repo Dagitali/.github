@@ -8,6 +8,7 @@
 #
 # Maintainer Notes
 # - Preserve lockfile-aware caching; never obtain credentials or deploy.
+# - Compose same-revision quality checks; self references require GitHub.com.
 # - Caller workflows own triggers and cancellation, not this shared workflow.
 # - Offline synthesis executes caller code; it is not a sandbox boundary.
 
@@ -189,28 +190,14 @@ jobs:
           python --version
           python -m pip --version
 
-      - name: Check formatting
-        if: inputs.format-command != ''
-        env:
-          COMMAND: ${{ inputs.format-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Lint
-        if: inputs.lint-command != ''
-        env:
-          COMMAND: ${{ inputs.lint-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Test
-        if: inputs.test-command != ''
-        env:
-          COMMAND: ${{ inputs.test-command }}
-        run: bash -euo pipefail -c "$COMMAND"
-
-      - name: Synthesize CloudFormation
-        env:
-          COMMAND: ${{ inputs.synth-command }}
-        run: bash -euo pipefail -c "$COMMAND"
+      - name: Run CDK quality checks
+        uses: $/actions/cdk-quality
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          format-command: ${{ inputs.format-command }}
+          lint-command: ${{ inputs.lint-command }}
+          test-command: ${{ inputs.test-command }}
+          synth-command: ${{ inputs.synth-command }}
 
       - name: Upload diagnostics
         if: ${{ always() && !cancelled() && inputs.diagnostics-path != '' }}
