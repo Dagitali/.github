@@ -11,6 +11,7 @@
 # - Preserve job identifiers and names used by required branch checks.
 # - Keep make check authoritative for local and hosted library validation.
 # - Use explicit Bash so failed pipeline stages cannot hide gate failures.
+# - Name setup and gate steps for useful logs without renaming required jobs.
 
 name: Automation library CI
 
@@ -43,10 +44,12 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./actions/setup-python-project
+      - name: Set up project
+        uses: ./actions/setup-python-project
         with:
           python-version: '3.13'
           cache-dependency-path: requirements-dev.txt
@@ -56,7 +59,8 @@ jobs:
           go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
           command -v shellcheck
-      - run: make check
+      - name: Run the repository quality gate
+        run: make check
 
   python:
     permissions:
@@ -136,7 +140,8 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python without installing the project
@@ -147,13 +152,16 @@ jobs:
           cache: ''
       - name: Verify setup-only mode
         run: python -c 'import importlib.util; assert importlib.util.find_spec("dagitali_fixture") is None'
-      - uses: ./actions/setup-python-project
+      - name: Set up Python fixture
+        uses: ./actions/setup-python-project
         with:
           working-directory: tests/fixtures/python
-      - uses: ./actions/python-quality
+      - name: Run Python fixture quality checks
+        uses: ./actions/python-quality
         with:
           working-directory: tests/fixtures/python
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
           package-manager-cache: false
@@ -163,7 +171,8 @@ jobs:
           npm install
           npm install --global aws-cdk@2.1144.0
           cdk --version
-      - uses: ./actions/cdk-quality
+      - name: Run CDK fixture quality checks
+        uses: ./actions/cdk-quality
         with:
           working-directory: tests/fixtures/node-cdk
           test-command: npm test
