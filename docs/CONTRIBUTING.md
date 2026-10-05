@@ -13,7 +13,10 @@ responsibility and meaningful maintainer constraints. Add YAML editor schema hin
 Do not add comments to JSON or generated lockfiles; preserve required language directives such as
 Swift's first-line tools version. Document Python helper side effects, failure behavior, and return
 values, and annotate test/fixture interfaces with Path, pytest types, and captured subprocess types.
-Dynamic YAML fields may use Any deliberately; type annotations do not replace Popo validation.
+Dynamic YAML fields may use Any deliberately; type annotations do not replace Popo validation. Use
+NumPy-format docstrings when creating or expanding Python documentation: underlined `Parameters`,
+`Returns`, `Raises`, and `Notes` sections as applicable, with parameter types and explicit side
+effects. Omit irrelevant sections rather than inventing return values or guarantees.
 
 Issue-form and chooser headers follow sibling responsibility/maintainer conventions, while keeping
 the organization default's existing field IDs, requiredness, labels, and reporting routes. Do not
