@@ -124,6 +124,10 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Add sibling-aligned README getting-started and design-boundary guidance, clarifying caller-owned
+  adoption, publication, runtime scope, and platform compatibility without duplicating setup guides.
+- Align organization contribution/support guidance with sibling validation and reproduction
+  expectations, retaining repository-specific tooling, support channels, and policy overrides.
 - Add root Markdown scope/maintenance headers and README release-archive navigation, preserving
   organization-wide policy text, reporting channels, conduct attribution, and library boundaries.
 - Align release-archive reading guidance and version-specific changelog navigation with sibling

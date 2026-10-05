@@ -29,6 +29,8 @@ Thank you for contributing to a Dagitali project.
 - Explain the problem, the approach, and any important tradeoffs.
 - Add or update tests and documentation when applicable.
 - Confirm that relevant checks pass before requesting review.
+- Report the validation commands and results, including checks not run and why.
+- Identify compatibility risks and migration steps when changing a public interface.
 - Link the issue the pull request addresses, when one exists.
 
 Project-specific contribution instructions take precedence over this document.
