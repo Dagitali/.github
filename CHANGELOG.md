@@ -32,6 +32,9 @@ Maintainer Notes
 
 ### Shared Automation
 
+- Add PR-only dependency-review and manual Python audit/inventory starters with matching chooser
+  metadata, retaining read-only tokens, SHA placeholders, and consumer-owned adoption.
+
 - Align internal checkout, setup, and quality-gate step labels with sibling conventions for clearer
   failure logs, preserving job/check identities, command behavior, and regular/candidate gate
   parity.
@@ -124,6 +127,25 @@ Maintainer Notes
 
 ### Documentation and Maintenance
 
+- Match Popo's case-sensitive reference-definition ordering and add navigation to long maintainer
+  guides, with a source-of-truth table for focused documentation synchronization.
+- Align Markdown reference definitions by destination, clarify starter labels and versioned records,
+  add a canonical documentation index and missing guide/fixture headers, and preserve standalone
+  fixture scope and historical evidence boundaries.
+- Mirror sibling Markdown conventions with descriptive bottom-of-document reference definitions,
+  reusing repeated destinations while preserving link targets, inline contents anchors, and
+  examples.
+- Add affected-project support routing to the issue chooser, remove hidden profile starter prompts,
+  and organize reusable workflows by purpose, matching starter, triggers, and adoption boundaries.
+- Add a manual consumer adoption checklist and ownership/exception/lifecycle guidance, separating
+  missing settings from unverified hosted evidence without automatic enforcement or consumer writes.
+- Clarify first-time contribution and coordinated security-report handling without imposing
+  project-specific commands, response deadlines, or publication commitments. Remove obsolete
+  profile prompts and link stale dependency-audit guidance to the implemented inspection workflows.
+- Route inherited security links to affected-repository instructions and add a default private
+  vulnerability form, without enabling hosted reporting or inventing a central contact.
+- Add public project discovery and participation links to the organization profile, and document
+  adoption/override boundaries, required labels, and consumer-owned settings in the README.
 - Align temporary-tree, Make, and package-runner fixture contracts with sibling NumPy-style
   documentation, clarifying side effects, trusted-code boundaries, and subprocess failures.
 - Align root/fixture pytest configuration with sibling native TOML conventions, preserving test
@@ -182,7 +204,7 @@ Maintainer Notes
 ## [0.1.0] - 2026-09-29
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record](docs/releases/v0.1.0.md).
+recorded date, not verified publication. See the [release record][v0.1.0 release record].
 
 - Add community-health defaults, issue/PR templates, and organization-profile documentation.
 - Add reusable Python, CDK, Swift, package, publish, and dependency-review workflows; shared
@@ -194,7 +216,10 @@ recorded date, not verified publication. See the [release record](docs/releases/
 ## [0.0.0] - 2026-09-28
 
 Retrospective summary prepared 2026-10-04 from the local annotated tag. The date is the tag's
-recorded date, not verified publication. See the [release record](docs/releases/v0.0.0.md).
+recorded date, not verified publication. See the [release record][v0.0.0 release record].
 
 - Initialize the repository with `LICENSE` and a brief README describing its intended purpose.
 - No workflows, actions, templates, or executable validation exist in this scaffold.
+
+[v0.0.0 release record]: docs/releases/v0.0.0.md
+[v0.1.0 release record]: docs/releases/v0.1.0.md

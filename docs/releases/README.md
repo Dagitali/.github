@@ -14,9 +14,9 @@ Maintainer Notes
 # Release Notes Archive
 
 This directory provides an optional home for reviewed, version-specific release records. Use the
-[changelog](../../CHANGELOG.md) for concise change history and the [release
-policy](../../RELEASE-POLICY.md) for validation and publication safeguards. A committed record is
-not proof that its tag, GitHub Release, or consumer rollout exists.
+[changelog] for concise change history and the [release policy] for validation and publication
+safeguards. A committed record is not proof that its tag, GitHub Release, or consumer rollout
+exists.
 
 - [Reading the Archive](#reading-the-archive)
 - [Records](#records)
@@ -26,19 +26,19 @@ not proof that its tag, GitHub Release, or consumer rollout exists.
 
 Records describe the tagged revision, not today's automation contracts or support commitments. Use
 each record's version-specific changelog entry for concise scope and the [current release
-policy](../../RELEASE-POLICY.md) for current procedures. Compact scaffold records and fuller
+policy][release policy] for current procedures. Compact scaffold records and fuller
 automation records may use different sections when that reflects their actual scope.
 
 Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
 not establish historical validation; local tag metadata does not establish remote publication. Use
-the [release-notes template](../../.github/RELEASE-NOTES-TEMPLATE.md) for new records rather than
+the [release-notes template] for new records rather than
 copying obsolete runtime defaults or operational instructions from an older release.
 
 ## Records
 
-- [v0.1.0](v0.1.0.md) — locally tagged 2026-09-29: Initial defaults, shared automation, and
+- [v0.1.0] — locally tagged 2026-09-29: Initial defaults, shared automation, and
   Python/CDK/Swift starters; retrospective record prepared 2026-10-04.
-- [v0.0.0](v0.0.0.md) — locally tagged 2026-09-28: License and README scaffold;
+- [v0.0.0] — locally tagged 2026-09-28: License and README scaffold;
   retrospective record prepared 2026-10-04.
 
 Dates come from local annotated-tag metadata, not verified remote publication. Historical validation
@@ -48,8 +48,8 @@ gaps are explicit. Current feature-branch changes remain unreleased; this index 
 
 - When a maintainer chooses to archive a release record, use `vMAJOR.MINOR.PATCH.md` and list it
   here, newest version first. Identify planned candidates separately from verified releases.
-- Start from the [release-notes template](../../.github/RELEASE-NOTES-TEMPLATE.md), preserving
-  consumer compatibility, support, validation, artifact, adoption, and rollback sections.
+- Start from the [release-notes template], preserving consumer compatibility, support, validation,
+  artifact, adoption, and rollback sections.
 - Identify the intended version and exact candidate commit. Record dates and results only when
   supported by evidence; distinguish local checks from hosted validation and publication.
 - Keep missing checks explicit with `Not run: reason`. Link public evidence without credentials,
@@ -62,3 +62,9 @@ gaps are explicit. Current feature-branch changes remain unreleased; this index 
 
 Archiving notes is optional, not a new release gate. Adding a record does not authorize tagging,
 publication, deployment, or consumer reference updates.
+
+[release-notes template]: ../../.github/RELEASE-NOTES-TEMPLATE.md
+[changelog]: ../../CHANGELOG.md
+[release policy]: ../../RELEASE-POLICY.md
+[v0.0.0]: v0.0.0.md
+[v0.1.0]: v0.1.0.md

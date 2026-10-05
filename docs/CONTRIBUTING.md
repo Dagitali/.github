@@ -1,12 +1,56 @@
+<!--
+docs/CONTRIBUTING.md
+Dagitali shared automation library
+
+Responsibilities
+- Describe checkout maintenance, documentation, and validation conventions.
+
+Maintainer Notes
+- Keep consumer defaults separate from this library's engineering policy.
+- Preserve public contracts and distinguish local from hosted evidence.
+-->
+
 # Contributing to the Automation Library
+
+- [Documentation Conventions](#documentation-conventions)
+- [Local Setup and Hooks](#local-setup-and-hooks)
+- [Validation Configuration](#validation-configuration)
+- [Shared Automation Maintenance](#shared-automation-maintenance)
+- [Validation and Release Evidence](#validation-and-release-evidence)
+
+## Documentation Conventions
+
+Use descriptive Markdown reference labels for document and external-resource links, with definitions
+grouped at the bottom of each document and sorted lexicographically by destination exactly as
+written (case-sensitive), then by label as a tie-breaker, as in Popo. Preserve destination casing,
+fragments, and encoding; do not rename labels or normalize URLs just to sort them. Reuse a definition
+for repeated destinations; distinguish workflow declarations from starters when labels would collide.
+Keep table-of-contents anchors inline and preserve literal link syntax in fenced examples, following
+the sibling projects' conventions.
+
+Use the [documentation index] to find canonical guides rather than duplicating their policies.
+Review reference-label resolution separately from `make docs-markdown`: Popo checks destinations and
+anchors, not undefined labels. Preserve community-policy attribution and standalone fixture scope;
+do not add links to this checkout that would break when a fixture is copied into a consumer.
+
+Keep documentation synchronized with executable sources, updating the smallest set of affected
+guides rather than duplicating policy. Prefer repository-relative links for local resources and
+primary sources for external technical guidance. Preserve official tool names and title-case
+headings, and keep table-of-contents anchors synchronized with those headings.
+
+| Claim | Source of truth | Documentation to review |
+| --- | --- | --- |
+| Setup, commands, and validation tools | [Makefile], requirements, and [validation configuration] | This guide and [testing] |
+| Workflow/action inputs, permissions, and artifacts | Workflow/action declarations and contract tests | [Shared GitHub Actions], [adoption checklist], and release notes |
+| Defaults, overrides, and hosted settings | Community files plus separately verified consumer settings | [Project overview], [consumer maintenance guidance], and adoption records |
+| Release scope and compatibility | Reviewed changes, candidate results, and authorized release metadata | [release policy], changelog, and [release-notes template] |
 
 File-header comment lines must not exceed 79 characters, including comment markers and indentation.
 Use responsibility/maintainer headings with wrapped bullets, following the sibling projects. Do not
 split language directives or URLs. YAML headers may use the compact `# $schema: URL` form recognized
-by the [YAML language server's modeline
-parser](https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts).
-Keep Python annotations and helper documentation precise; comment-only alignment must not change
-commands, dependency pins, public defaults, or fixture behavior.
+by the [YAML language server's modeline parser]. Keep Python annotations and helper documentation
+precise; comment-only alignment must not change commands, dependency pins, public defaults, or
+fixture behavior.
 
 Use concise file headers for handwritten automation and fixture code: identify the file's
 responsibility and meaningful maintainer constraints. Add YAML editor schema hints where applicable.
@@ -30,12 +74,11 @@ Tool-version queries are best-effort: absent environments or failed pip-list com
 explicit fallback rather than discarding inspection evidence. Keep launch errors visible and do not
 turn this reporting helper into a dependency installer or security audit.
 
-The generated portion of `.gitignore` retains its original [generator
-URL](https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
-and [editable profile
-selection](https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows)
-here so header comments stay within 79 characters without splitting URLs. Review regenerated
-patterns rather than overwriting project-specific additions.
+The generated portion of `.gitignore` retains its original [generator URL] and [editable profile
+selection] here so header comments stay within 79 characters without splitting URLs. Review
+regenerated patterns rather than overwriting project-specific additions.
+
+## Local Setup and Hooks
 
 Installed pre-push hooks now invoke `make check-pre-push`, the same gate as `make check`, without
 passing filenames or limiting checks to changed paths. Install hooks explicitly with `make hooks`
@@ -52,7 +95,10 @@ gate.
 The root CONTRIBUTING.md is an organization-wide community default. This guide is specific
 to maintaining Dagitali/.github.
 
-The repository-local [Copilot instructions](../.github/copilot-instructions.md) route assistant
+Use [consumer maintenance guidance] for ownership, local exceptions, and interface lifecycle
+decisions, and the [adoption checklist] for separate local/hosted evidence.
+
+The repository-local [Copilot instructions] route assistant
 contributions to `AGENTS.md` and these maintenance guides rather than duplicating policies or tool
 versions. They are not organization-wide community defaults or consumer engineering instructions.
 
@@ -78,6 +124,8 @@ pin and documentation policies rather than Popo's package-oriented `check-all`. 
 distribution, runtime-install, or publishing targets. `lint` includes Ruff lint/format checks
 alongside workflow and contract validation; `typecheck` runs strict mypy over root regression
 helpers.
+
+## Validation Configuration
 
 Root tests and standalone Python fixtures use pytest's native `[tool.pytest]` TOML table, matching
 Popo and aws-cdk-static-site. Keep `addopts` as an argument array and retain each project's existing
@@ -127,6 +175,8 @@ make check
 
 Local and CI setup use the same immutable dependency pin. No check installs tools or silently falls
 back to a weaker validator.
+
+## Shared Automation Maintenance
 
 Keep changes focused. A workflow input or default is a public interface: update its reference
 documentation, fixtures, contract tests, and changelog together. Preserve full action commit pins.
@@ -191,13 +241,30 @@ sandboxed code. Audit findings concern the selected runtime dependencies; an ins
 is neither a source inventory nor a vulnerability verdict. Inline inspection-state annotations
 document expected values without adding runtime validation or suppressing existing failures.
 
-Use [testing](TESTING.md) for focused validation. Add a regression test for changed behavior. Do not
-introduce deploys or publishing into the library's own CI. Fixtures must remain free of cloud
-credentials. For release work, follow the [release policy](../RELEASE-POLICY.md). Use the
-[release-notes template](../.github/RELEASE-NOTES-TEMPLATE.md) to record the exact candidate,
-consumer compatibility, local/hosted evidence, artifact changes, and rollback. Record missing checks
-explicitly; preparing notes does not authorize tagging, publication, or consumer rollout.
+## Validation and Release Evidence
+
+Use [testing] for focused validation. Add a regression test for changed behavior. Do not introduce
+deploys or publishing into the library's own CI. Fixtures must remain free of cloud credentials. For
+release work, follow the [release policy]. Use the [release-notes template] to record the exact
+candidate, consumer compatibility, local/hosted evidence, artifact changes, and rollback. Record
+missing checks explicitly; preparing notes does not authorize tagging, publication, or consumer
+rollout.
 
 The local pre-commit configuration supplies hygiene and commit-message checks. It complements `make
 check`; hooks alone do not validate GitHub expressions or hosted runner behavior. Review hook
 updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only audit.
+
+[release-notes template]: ../.github/RELEASE-NOTES-TEMPLATE.md
+[Copilot instructions]: ../.github/copilot-instructions.md
+[Makefile]: ../Makefile
+[Project overview]: ../README.md
+[release policy]: ../RELEASE-POLICY.md
+[validation configuration]: ../pyproject.toml
+[adoption checklist]: ADOPTION.md
+[consumer maintenance guidance]: MAINTENANCE.md
+[documentation index]: README.md
+[testing]: TESTING.md
+[Shared GitHub Actions]: github-actions.md
+[YAML language server's modeline parser]: https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts
+[generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+[editable profile selection]: https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows

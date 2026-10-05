@@ -1,0 +1,7 @@
+{
+  "name": "Dagitali Python Dependency Inspection",
+  "description": "Manually audit installed Python runtime dependencies and generate a CycloneDX inventory without publishing or fixing packages.",
+  "iconName": "octicon shield-check",
+  "categories": ["Python"],
+  "filePatterns": ["^pyproject\\.toml$"]
+}

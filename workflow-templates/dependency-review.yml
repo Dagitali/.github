@@ -1,0 +1,27 @@
+# $schema: https://json.schemastore.org/github-workflow.json
+# workflow-templates/dependency-review.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Review dependency changes in consumer pull requests.
+#
+# Maintainer Notes
+# - Replace the release-SHA placeholder and review service availability.
+# - PR-only review is not a merge-queue prerequisite or runtime audit.
+
+name: Dependency Review
+
+on:
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: consumer-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    permissions:
+      contents: read
+    uses: Dagitali/.github/.github/workflows/dependency-review.yml@REPLACE_WITH_RELEASE_SHA

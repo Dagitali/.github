@@ -1,0 +1,6 @@
+{
+  "name": "Dagitali Dependency Review",
+  "description": "Review pull-request dependency changes; not a merge-queue prerequisite or resolved runtime audit.",
+  "iconName": "octicon shield-check",
+  "categories": ["Automation"]
+}

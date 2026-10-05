@@ -309,9 +309,17 @@ def test_generated_callers_lint(
     """
     Render starters and check syntax plus caller-owned cancellation boundaries.
 
-    CI groups distinguish workflows and refs; publishing must not cancel an
+    CI groups distinguish workflows and refs; PR-only dependency review is
+    deliberately excluded from merge queues. Publishing must not cancel an
     active release. Temporary SHA replacement checks syntax, not remote commit
     existence or hosted scheduling. Source templates remain unchanged.
+
+    Parameters
+    ----------
+    repo_root : pathlib.Path
+        Source checkout containing the unmodified workflow starters.
+    tmp_path : pathlib.Path
+        Isolated output directory for rendered callers passed to actionlint.
     """
     templates = sorted((repo_root / 'workflow-templates').glob('*.yml'))
     assert templates, 'No starter workflows found'
@@ -325,7 +333,10 @@ def test_generated_callers_lint(
         )
         caller: dict[str, Any] = yaml.load(target.read_text(), Loader=yaml.BaseLoader)
         if 'pull_request' in caller['on']:
-            assert 'merge_group' in caller['on'], source.name
+            if source.name == 'dependency-review.yml':
+                assert set(caller['on']) == {'pull_request'}, source.name
+            else:
+                assert 'merge_group' in caller['on'], source.name
             assert caller['concurrency'] == {
                 'group': 'consumer-ci-${{ github.workflow }}-${{ github.ref }}',
                 'cancel-in-progress': 'true',
@@ -345,6 +356,54 @@ def test_generated_callers_lint(
         timeout=60,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.parametrize(
+    ('stem', 'workflow_names'),
+    [
+        ('dependency-review', {'dependency-review'}),
+        ('python-dependency-inspection', {'python-dependency-audit', 'python-sbom'}),
+    ],
+)
+def test_security_starter_boundaries(
+    repo_root: Path, stem: str, workflow_names: set[str]
+) -> None:
+    """
+    Preserve security starters' opt-in and read-only adoption boundaries.
+
+    Parameters
+    ----------
+    repo_root : pathlib.Path
+        Checkout containing starters and their chooser metadata.
+    stem : str
+        Security starter basename shared by YAML and metadata files.
+    workflow_names : set[str]
+        Existing shared workflows the starter must invoke independently.
+    """
+    templates = repo_root / 'workflow-templates'
+    caller: dict[str, Any] = yaml.load(
+        (templates / f'{stem}.yml').read_text(), Loader=yaml.BaseLoader
+    )
+    metadata = json.loads((templates / f'{stem}.properties.json').read_text())
+    assert metadata['name'] and metadata['description']
+    assert caller['permissions'] == {}
+    assert {job['uses'] for job in caller['jobs'].values()} == {
+        f'Dagitali/.github/.github/workflows/{name}.yml@REPLACE_WITH_RELEASE_SHA'
+        for name in workflow_names
+    }
+    for job in caller['jobs'].values():
+        assert job['permissions'] == {'contents': 'read'}
+        assert 'secrets' not in job
+        assert 'needs' not in job
+    if stem == 'python-dependency-inspection':
+        assert set(caller['on']) == {'workflow_dispatch'}
+        manual_inputs = caller['on']['workflow_dispatch']['inputs']
+        distribution = manual_inputs['project-distribution']
+        assert distribution['required'] == 'true'
+        assert distribution['type'] == 'string'
+        assert caller['jobs']['audit']['with'] == {
+            'project-distribution': '${{ inputs.project-distribution }}'
+        }
 
 
 # !SECTION
