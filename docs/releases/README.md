@@ -45,9 +45,12 @@ operational instructions from an older release.
 
 ## 0.4 Series
 
+- [v0.4.1] — 2026-10-05: Hosted adoption audit evidence for the library and representative consumer;
+  documentation-only follow-up that does not resolve the observed gaps.
 - [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
-  release-history corrections are integrated into `release/0.4.0`. Tagging, hosted validation, and
-  publication remain pending; see the record for local validation evidence.
+  release-history corrections. The local tag exists; its record preserves preparation-time wording.
+  Later fixture-run evidence is recorded in the [hosted adoption review]; publication and complete
+  consumer adoption are not established by tag existence.
 
 ## 0.3 Series
 
@@ -107,9 +110,11 @@ publication, deployment, or consumer reference updates.
 [release-notes template]: ../../.github/RELEASE-NOTES-TEMPLATE.md
 [changelog]: ../../CHANGELOG.md
 [release policy]: ../../RELEASE-POLICY.md
+[hosted adoption review]: ../adoption/2026-10-05-hosted-review.md
 [v0.0.0]: v0.0.0.md
 [v0.1.0]: v0.1.0.md
 [v0.2.0]: v0.2.0.md
 [v0.3.0]: v0.3.0.md
 [v0.3.1]: v0.3.1.md
 [v0.4.0]: v0.4.0.md
+[v0.4.1]: v0.4.1.md
