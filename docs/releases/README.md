@@ -22,6 +22,7 @@ Use the [changelog] for concise change history, the [release-notes template] whe
 record, and the [release policy] for validation and publication safeguards.
 
 - [Reading the Archive](#reading-the-archive)
+- [0.5 Series](#05-series)
 - [0.4 Series](#04-series)
 - [0.3 Series](#03-series)
 - [0.2 Series](#02-series)
@@ -43,10 +44,17 @@ not establish historical validation; local tag metadata does not establish remot
 the [release-notes template] for new records rather than copying obsolete runtime defaults or
 operational instructions from an older release.
 
+## 0.5 Series
+
+- [v0.5.0] — planned, prepared 2026-10-06: Configuration-driven hosted drift auditing through pinned
+  Popo v0.5.2, with an opt-in Make target, offline inventory integration coverage, and
+  evidence/exception guidance. No shared workflow interfaces or hosted settings change.
+
 ## 0.4 Series
 
 - [v0.4.1] — 2026-10-05: Hosted adoption audit evidence for the library and representative consumer;
-  documentation-only follow-up that does not resolve the observed gaps.
+  documentation-only follow-up that does not resolve the observed gaps. The local tag exists; GitHub
+  Release publication and completed operational adoption remain unverified.
 - [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
   release-history corrections. The local tag exists; its record preserves preparation-time wording.
   Later fixture-run evidence is recorded in the [hosted adoption review]; publication and complete
@@ -118,3 +126,4 @@ publication, deployment, or consumer reference updates.
 [v0.3.1]: v0.3.1.md
 [v0.4.0]: v0.4.0.md
 [v0.4.1]: v0.4.1.md
+[v0.5.0]: v0.5.0.md
