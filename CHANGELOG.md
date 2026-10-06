@@ -53,6 +53,7 @@ scope, validation, and outstanding release evidence.
   guidance, explicitly label planned entries, and retain library-specific artifact/adoption sections
   and recorded historical timezones. Put release navigation before maintenance guidance and clarify
   changelog, index, and version-record responsibilities without changing existing anchors.
+  Consolidate overlapping archive guidance and keep the untagged v0.5.1 entry explicitly planned.
 - Correct maintained v0.5.0 tag-status wording from local annotated-tag evidence, preserving
   preparation-time checks and keeping publication and final-tag validation unverified; prepare the
   documentation-only v0.5.1 record and archive entry.
