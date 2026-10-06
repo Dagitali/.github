@@ -21,35 +21,25 @@ that a GitHub Release or consumer rollout exists.
 Use the [changelog] for concise change history, the [release-notes template] when preparing a
 record, and the [release policy] for validation and publication safeguards.
 
-- [Reading the Archive](#reading-the-archive)
 - [0.5 Series](#05-series)
 - [0.4 Series](#04-series)
 - [0.3 Series](#03-series)
 - [0.2 Series](#02-series)
 - [0.1 Series](#01-series)
 - [Initial Scaffold](#initial-scaffold)
+- [Reading the Archive](#reading-the-archive)
+  - [Evidence Boundaries](#evidence-boundaries)
+  - [Release Operations](#release-operations)
 - [Maintaining the Archive](#maintaining-the-archive)
-
-## Reading the Archive
-
-Historical records describe the tagged revision; planned records describe intended candidates, not
-an existing release. Neither establishes today's automation contracts or support commitments. Use
-each record's version-specific changelog entry for concise scope and the [current release
-policy][release policy] for current procedures. Records use the common section names and order in
-the [release-notes template]. Keep scaffold and documentation-only sections brief, stating what is
-not applicable without inventing historical evidence.
-
-Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
-not establish historical validation; local tag metadata does not establish remote publication. Use
-the [release-notes template] for new records rather than copying obsolete runtime defaults or
-operational instructions from an older release.
 
 ## 0.5 Series
 
+- [v0.5.1] — 2026-10-06: Release-template and archive normalization, centralized evidence guidance,
+  and historical status corrections; documentation-only patch candidate.
 - [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
   an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
-  Prepared on `release/0.5.0` with matching-commit hosted fixture evidence; final tag/publication
-  approval is pending. No shared interfaces or hosted settings change.
+  The local tag exists; its record preserves preparation-time and matching-commit hosted fixture
+  evidence. GitHub Release publication and final-tag validation remain unverified here.
 
 ## 0.4 Series
 
@@ -57,9 +47,9 @@ operational instructions from an older release.
   documentation-only follow-up that does not resolve the observed gaps. The local tag exists; GitHub
   Release publication and completed operational adoption remain unverified.
 - [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
-  release-history corrections. The local tag exists; its record preserves preparation-time wording.
-  Later fixture-run evidence is recorded in the [hosted adoption review]; publication and complete
-  consumer adoption are not established by tag existence.
+  release-history corrections. The local tag exists; its record preserves preparation-time results
+  separately from current local tag status. Later fixture-run evidence is recorded in the [hosted
+  adoption review]; publication and complete consumer adoption are not established by tag existence.
 
 ## 0.3 Series
 
@@ -82,9 +72,51 @@ operational instructions from an older release.
 
 - [v0.0.0] — 2026-09-28: License and README scaffold; retrospective record prepared 2026-10-04.
 
-Tagged-entry dates come from local annotated-tag metadata, not verified remote publication. Draft
-dates identify preparation only. Historical validation gaps are explicit; neither a draft nor a
-local tag establishes remote publication.
+## Reading the Archive
+
+The [changelog] owns concise, version-specific highlights. This index owns navigation and release
+status; versioned records own detailed scope, compatibility, support, validation, artifact
+contracts, limitations, adoption, and rollback considerations. Link to the owning document rather
+than copying its full guidance. Validation owns completed checks and evidence gaps; Artifact
+Contracts owns declared behavior. Publication, Adoption, and Rollback links shared operations and
+records version-specific outcomes.
+
+Historical records describe the tagged revision; planned records describe intended candidates, not
+an existing release. Neither establishes today's automation contracts or support commitments. Use
+each record's version-specific changelog entry for concise scope and the [current release
+policy][release policy] for current procedures. Records use the common section names and order in
+the [release-notes template]. Keep scaffold and documentation-only sections brief, stating what is
+not applicable without inventing historical evidence.
+
+Use the [release-notes template] for new records rather than copying obsolete runtime defaults or
+operational instructions from an older release. Editorial normalization does not change a record's
+historical or candidate status.
+
+### Evidence Boundaries
+
+Tagged-entry dates preserve local annotated-tag metadata in the recorded timezone; they are not
+verified remote publication dates. Candidate dates identify preparation only. Distinguish the
+original tag date from the retrospective preparation date, and record the timezone when verifying
+dates rather than silently shifting historical entries to another timezone.
+
+Preparation results describe the checkout tested at that time. Pending historical checklists do not
+prove that the eventual tagged tree passed. Retrospective corrections maintain history without
+changing the immutable tagged tree; current-checkout tests do not establish historical validation.
+Neither a document nor a tag establishes hosted compatibility, artifact integrity, publication, or
+consumer adoption. Each record retains its completed checks, failures, skipped checks, and evidence
+gaps. The [hosted evidence guide] explains the separate consumer and enforcement evidence needed.
+
+### Release Operations
+
+The [release policy] owns validation and publication safeguards, including the [release checklist].
+Versioned records describe release-specific publication, adoption, and rollback effects rather than
+duplicating those rules. Preserve existing tags and carry fixes through reviewed follow-up changes.
+Library validation never publishes consumer packages or deploys infrastructure; consumers own their
+caller files, shared references, hosted settings, and staged rollout.
+
+Archiving notes is optional, not a new release gate. A committed record does not authorize tagging,
+publication, deployment, hosted settings changes, or consumer reference updates. Keep any authorized
+GitHub Release notes consistent with the reviewed record; this archive is not a publication receipt.
 
 ## Maintaining the Archive
 
@@ -113,12 +145,14 @@ local tag establishes remote publication.
    complete the separate gates in the [release policy]. Local link validation does not establish
    external availability, publication, or historical evidence.
 
-Archiving notes is optional, not a new release gate. Adding a record does not authorize tagging,
-publication, deployment, or consumer reference updates.
+Keep changes after the latest dated changelog entry in `Unreleased` until the next candidate is
+prepared.
 
 [release-notes template]: ../../.github/RELEASE-NOTES-TEMPLATE.md
 [changelog]: ../../CHANGELOG.md
 [release policy]: ../../RELEASE-POLICY.md
+[release checklist]: ../../RELEASE-POLICY.md#release-checklist
+[hosted evidence guide]: ../TESTING.md#hosted-consumer-evidence
 [hosted adoption review]: ../adoption/2026-10-05-hosted-review.md
 [v0.0.0]: v0.0.0.md
 [v0.1.0]: v0.1.0.md
@@ -128,3 +162,4 @@ publication, deployment, or consumer reference updates.
 [v0.4.0]: v0.4.0.md
 [v0.4.1]: v0.4.1.md
 [v0.5.0]: v0.5.0.md
+[v0.5.1]: v0.5.1.md
