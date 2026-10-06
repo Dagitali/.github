@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.5.0 - 2026-10-06](#050---2026-10-06)
 - [0.4.1 - 2026-10-05](#041---2026-10-05)
 - [0.4.0 - 2026-10-05](#040---2026-10-05)
 - [0.3.1 - 2026-10-05](#031---2026-10-05)
@@ -30,12 +31,27 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes are recorded outside the prepared `0.4.1` scope below.
+No additional changes are recorded outside the prepared `0.5.0` scope below.
+
+## [0.5.0] - 2026-10-06
+
+Prepared minor-release candidate on `release/0.5.0`; 2026-10-06 records preparation, not tagging or
+publication. See the [v0.5.0 release candidate][0.5.0] for local validation and matching-commit
+hosted fixture evidence; final release authorization remains pending.
+
+- Add a declarative hosted-settings inventory for the library and representative consumer, plus an
+  opt-in read-only audit target and evidence/exception guidance. Generic validation lives in Popo
+  v0.5.2, pinned to its published release commit; no sibling checkout is required.
+- Validate the inventory through the installed public CLI using an inert GitHub substitute; keep
+  ordinary checks offline and distinguish confirmed drift from inaccessible evidence.
+- Preserve shared workflow/action contracts and consumer-owned hosted settings; approve no
+  exceptions or automatic remediation. Correct v0.4.1's maintained tag-status wording.
 
 ## [0.4.1] - 2026-10-05
 
-Planned documentation-only patch; prepared 2026-10-05, not a tag or publication date. See the
-[v0.4.1 release candidate][0.4.1].
+Documentation-only patch with an existing local `v0.4.1` tag recorded on 2026-10-05. Its [release
+record][0.4.1] preserves preparation evidence; tag existence does not establish GitHub Release
+publication or completion of the operational follow-up.
 
 - Record a read-only hosted adoption audit for the library and `aws-cdk-static-site`, separating
   verified settings and runs from reporting, notification, caller, and protection gaps.
@@ -137,3 +153,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.3.1]: docs/releases/v0.3.1.md
 [0.4.0]: docs/releases/v0.4.0.md
 [0.4.1]: docs/releases/v0.4.1.md
+[0.5.0]: docs/releases/v0.5.0.md
