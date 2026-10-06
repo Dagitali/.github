@@ -54,9 +54,12 @@ scope, validation, and outstanding release evidence.
   and recorded historical timezones. Put release navigation before maintenance guidance and clarify
   changelog, index, and version-record responsibilities without changing existing anchors.
   Consolidate overlapping archive guidance and keep the untagged v0.5.1 entry explicitly planned.
-- Correct maintained v0.5.0 tag-status wording from local annotated-tag evidence, preserving
+- Correct maintained v0.4.0/v0.5.0 tag-status wording from local annotated-tag evidence, preserving
   preparation-time checks and keeping publication and final-tag validation unverified; prepare the
-  documentation-only v0.5.1 record and archive entry.
+  documentation-only v0.5.1 record and archive entry. Qualify older tagged introductions with
+  verified timezone offsets without shifting their historical dates. Reconcile older references to
+  planned v0.4.0 with its tagged scope and remove obsolete candidate instructions without claiming
+  historical release-approval evidence.
 
 ## [0.5.0] - 2026-10-06
 
@@ -114,7 +117,7 @@ recorded date, not verified publication. See the [v0.3.1 release record][0.3.1].
 - Add the annotated v0.3.1 tag at the same commit as v0.3.0.
 - No repository source changes from v0.3.0; its documentation-only scope remains unchanged.
 - The annotation describes synchronization intent, but the identical commit does not include a new
-  source fix or the community/security feature planned for v0.4.0.
+  source fix or the community/security feature subsequently included in v0.4.0.
 - This dated entry and retrospective record were absent from the tagged tree. Historical validation,
   remote publication, and adoption remain unverified.
 
@@ -128,8 +131,8 @@ recorded date, not verified GitHub Release publication. See the [v0.3.0 release 
 - Align release-archive navigation, historical introductions, and bottom-of-document references.
 - Add the original v0.3.0 draft, which incorrectly described features absent from the tagged tree.
 - No workflows, actions, starters, community defaults, dependencies, or tests change from v0.2.0.
-- The tag annotation describes intended feature scope that was not included; that scope is now
-  tracked under planned v0.4.0. Existing tags and their contents remain unchanged.
+- The tag annotation describes intended feature scope that was not included; that scope was
+  subsequently included in v0.4.0. Existing tags and their contents remain unchanged.
 
 ## [0.2.0] - 2026-10-05
 
