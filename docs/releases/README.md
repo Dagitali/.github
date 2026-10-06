@@ -35,7 +35,7 @@ record, and the [release policy] for validation and publication safeguards.
 ## 0.5 Series
 
 - [v0.5.1] — 2026-10-06: Release-template and archive normalization, centralized evidence guidance,
-  and historical status corrections; documentation-only patch.
+  and historical status corrections; documentation-only patch candidate.
 - [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
   an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
   The local tag exists; its record preserves preparation-time and matching-commit hosted fixture
@@ -77,7 +77,9 @@ record, and the [release policy] for validation and publication safeguards.
 The [changelog] owns concise, version-specific highlights. This index owns navigation and release
 status; versioned records own detailed scope, compatibility, support, validation, artifact
 contracts, limitations, adoption, and rollback considerations. Link to the owning document rather
-than copying its full guidance.
+than copying its full guidance. Validation owns completed checks and evidence gaps; Artifact
+Contracts owns declared behavior. Publication, Adoption, and Rollback links shared operations and
+records version-specific outcomes.
 
 Historical records describe the tagged revision; planned records describe intended candidates, not
 an existing release. Neither establishes today's automation contracts or support commitments. Use
@@ -86,13 +88,9 @@ policy][release policy] for current procedures. Records use the common section n
 the [release-notes template]. Keep scaffold and documentation-only sections brief, stating what is
 not applicable without inventing historical evidence.
 
-Highlights link to each version's changelog entry; detailed scope remains in the record. Validation
-holds completed checks and evidence gaps, while Artifact Contracts describes declared behavior.
-Publication, Adoption, and Rollback links shared release operations and retains version-specific
-outcomes. These conventions do not change a record's historical or candidate status.
-
 Use the [release-notes template] for new records rather than copying obsolete runtime defaults or
-operational instructions from an older release.
+operational instructions from an older release. Editorial normalization does not change a record's
+historical or candidate status.
 
 ### Evidence Boundaries
 
