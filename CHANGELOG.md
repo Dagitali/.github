@@ -35,8 +35,9 @@ No additional changes are recorded outside the prepared `0.5.0` scope below.
 
 ## [0.5.0] - 2026-10-06
 
-Planned minor release; prepared 2026-10-06, not a tag or publication date. See the [v0.5.0 release
-candidate][0.5.0].
+Prepared minor-release candidate on `release/0.5.0`; 2026-10-06 records preparation, not tagging or
+publication. See the [v0.5.0 release candidate][0.5.0] for local validation and matching-commit
+hosted fixture evidence; final release authorization remains pending.
 
 - Add a declarative hosted-settings inventory for the library and representative consumer, plus an
   opt-in read-only audit target and evidence/exception guidance. Generic validation lives in Popo

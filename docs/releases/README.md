@@ -46,9 +46,10 @@ operational instructions from an older release.
 
 ## 0.5 Series
 
-- [v0.5.0] — planned, prepared 2026-10-06: Configuration-driven hosted drift auditing through pinned
-  Popo v0.5.2, with an opt-in Make target, offline inventory integration coverage, and
-  evidence/exception guidance. No shared workflow interfaces or hosted settings change.
+- [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
+  an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
+  Prepared on `release/0.5.0` with matching-commit hosted fixture evidence; final tag/publication
+  approval is pending. No shared interfaces or hosted settings change.
 
 ## 0.4 Series
 
