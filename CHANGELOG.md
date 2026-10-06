@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.5.1 - 2026-10-06](#051---2026-10-06)
 - [0.5.0 - 2026-10-06](#050---2026-10-06)
 - [0.4.1 - 2026-10-05](#041---2026-10-05)
 - [0.4.0 - 2026-10-05](#040---2026-10-05)
@@ -30,6 +31,14 @@ record preparation only; corrections to maintained history do not rewrite existi
 - [0.0.0 - 2026-09-28](#000---2026-09-28)
 
 ## Unreleased
+
+No additional changes are recorded outside the prepared `0.5.1` scope below.
+
+## [0.5.1] - 2026-10-06
+
+Prepared documentation-only patch candidate on `feature/align-release-notes-template`; this date
+records preparation, not tagging or publication. See the [release candidate][0.5.1] for complete
+scope, validation, and outstanding release evidence.
 
 - Align release follow-up sections with the template by linking recorded validation gaps and
   separating historical preparation requirements from release-specific maintainer actions.
@@ -44,12 +53,16 @@ record preparation only; corrections to maintained history do not rewrite existi
   guidance, explicitly label planned entries, and retain library-specific artifact/adoption sections
   and recorded historical timezones. Put release navigation before maintenance guidance and clarify
   changelog, index, and version-record responsibilities without changing existing anchors.
+- Correct maintained v0.5.0 tag-status wording from local annotated-tag evidence, preserving
+  preparation-time checks and keeping publication and final-tag validation unverified; prepare the
+  documentation-only v0.5.1 record and archive entry.
 
 ## [0.5.0] - 2026-10-06
 
-Prepared minor-release candidate on `release/0.5.0`; 2026-10-06 records preparation, not tagging or
-publication. See the [v0.5.0 release candidate][0.5.0] for local validation and matching-commit
-hosted fixture evidence; final release authorization remains pending.
+Minor release with an existing local `v0.5.0` tag recorded on 2026-10-06 (America/New_York). See the
+[v0.5.0 release record][0.5.0] for preserved preparation-time validation and matching-commit hosted
+fixture evidence. Local tag existence does not establish GitHub Release publication or final-tag
+validation.
 
 - Add a declarative hosted-settings inventory for the library and representative consumer, plus an
   opt-in read-only audit target and evidence/exception guidance. Generic validation lives in Popo
@@ -166,3 +179,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.4.0]: docs/releases/v0.4.0.md
 [0.4.1]: docs/releases/v0.4.1.md
 [0.5.0]: docs/releases/v0.5.0.md
+[0.5.1]: docs/releases/v0.5.1.md
