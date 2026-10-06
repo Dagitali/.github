@@ -34,10 +34,12 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.5 Series
 
+- [v0.5.1] — 2026-10-06: Release-template and archive normalization, centralized evidence guidance,
+  and historical status corrections; documentation-only patch.
 - [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
   an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
-  Prepared on `release/0.5.0` with matching-commit hosted fixture evidence; final tag/publication
-  approval is pending. No shared interfaces or hosted settings change.
+  The local tag exists; its record preserves preparation-time and matching-commit hosted fixture
+  evidence. GitHub Release publication and final-tag validation remain unverified here.
 
 ## 0.4 Series
 
@@ -162,3 +164,4 @@ prepared.
 [v0.4.0]: v0.4.0.md
 [v0.4.1]: v0.4.1.md
 [v0.5.0]: v0.5.0.md
+[v0.5.1]: v0.5.1.md
