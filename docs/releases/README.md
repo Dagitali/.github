@@ -21,18 +21,61 @@ that a GitHub Release or consumer rollout exists.
 Use the [changelog] for concise change history, the [release-notes template] when preparing a
 record, and the [release policy] for validation and publication safeguards.
 
-- [Reading the Archive](#reading-the-archive)
-  - [Evidence Boundaries](#evidence-boundaries)
-  - [Release Operations](#release-operations)
 - [0.5 Series](#05-series)
 - [0.4 Series](#04-series)
 - [0.3 Series](#03-series)
 - [0.2 Series](#02-series)
 - [0.1 Series](#01-series)
 - [Initial Scaffold](#initial-scaffold)
+- [Reading the Archive](#reading-the-archive)
+  - [Evidence Boundaries](#evidence-boundaries)
+  - [Release Operations](#release-operations)
 - [Maintaining the Archive](#maintaining-the-archive)
 
+## 0.5 Series
+
+- [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
+  an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
+  Prepared on `release/0.5.0` with matching-commit hosted fixture evidence; final tag/publication
+  approval is pending. No shared interfaces or hosted settings change.
+
+## 0.4 Series
+
+- [v0.4.1] — 2026-10-05: Hosted adoption audit evidence for the library and representative consumer;
+  documentation-only follow-up that does not resolve the observed gaps. The local tag exists; GitHub
+  Release publication and completed operational adoption remain unverified.
+- [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
+  release-history corrections. The local tag exists; its record preserves preparation-time wording.
+  Later fixture-run evidence is recorded in the [hosted adoption review]; publication and complete
+  consumer adoption are not established by tag existence.
+
+## 0.3 Series
+
+- [v0.3.1] — 2026-10-05: Additional annotated tag at the same commit as v0.3.0; no source changes.
+  Retrospective record prepared 2026-10-05; the synchronization annotation is not a source fix.
+- [v0.3.0] — 2026-10-05: Release-documentation backfills and historical corrections; corrected
+  retrospective record prepared 2026-10-05. Its annotated feature scope was not shipped.
+
+## 0.2 Series
+
+- [v0.2.0] — 2026-10-05: Shared-Actions hardening, inspection workflows, consumer-owned publishing,
+  and validation tooling; retrospective record prepared 2026-10-05.
+
+## 0.1 Series
+
+- [v0.1.0] — 2026-09-29: Initial defaults, shared automation, and CDK/Python/Swift starters;
+  retrospective record prepared 2026-10-04.
+
+## Initial Scaffold
+
+- [v0.0.0] — 2026-09-28: License and README scaffold; retrospective record prepared 2026-10-04.
+
 ## Reading the Archive
+
+The [changelog] owns concise, version-specific highlights. This index owns navigation and release
+status; versioned records own detailed scope, compatibility, support, validation, artifact
+contracts, limitations, adoption, and rollback considerations. Link to the owning document rather
+than copying its full guidance.
 
 Historical records describe the tagged revision; planned records describe intended candidates, not
 an existing release. Neither establishes today's automation contracts or support commitments. Use
@@ -74,44 +117,6 @@ caller files, shared references, hosted settings, and staged rollout.
 Archiving notes is optional, not a new release gate. A committed record does not authorize tagging,
 publication, deployment, hosted settings changes, or consumer reference updates. Keep any authorized
 GitHub Release notes consistent with the reviewed record; this archive is not a publication receipt.
-
-## 0.5 Series
-
-- [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
-  an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
-  Prepared on `release/0.5.0` with matching-commit hosted fixture evidence; final tag/publication
-  approval is pending. No shared interfaces or hosted settings change.
-
-## 0.4 Series
-
-- [v0.4.1] — 2026-10-05: Hosted adoption audit evidence for the library and representative consumer;
-  documentation-only follow-up that does not resolve the observed gaps. The local tag exists; GitHub
-  Release publication and completed operational adoption remain unverified.
-- [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
-  release-history corrections. The local tag exists; its record preserves preparation-time wording.
-  Later fixture-run evidence is recorded in the [hosted adoption review]; publication and complete
-  consumer adoption are not established by tag existence.
-
-## 0.3 Series
-
-- [v0.3.1] — 2026-10-05: Additional annotated tag at the same commit as v0.3.0; no source changes.
-  Retrospective record prepared 2026-10-05; the synchronization annotation is not a source fix.
-- [v0.3.0] — 2026-10-05: Release-documentation backfills and historical corrections; corrected
-  retrospective record prepared 2026-10-05. Its annotated feature scope was not shipped.
-
-## 0.2 Series
-
-- [v0.2.0] — 2026-10-05: Shared-Actions hardening, inspection workflows, consumer-owned publishing,
-  and validation tooling; retrospective record prepared 2026-10-05.
-
-## 0.1 Series
-
-- [v0.1.0] — 2026-09-29: Initial defaults, shared automation, and CDK/Python/Swift starters;
-  retrospective record prepared 2026-10-04.
-
-## Initial Scaffold
-
-- [v0.0.0] — 2026-09-28: License and README scaffold; retrospective record prepared 2026-10-04.
 
 ## Maintaining the Archive
 
