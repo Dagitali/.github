@@ -24,6 +24,25 @@ yaml-globs = [".github/ISSUE_TEMPLATE/*.yml", ".github/VULNERABILITY_REPORT.yml"
 local-repositories = ["Dagitali/.github"]
 template-placeholder-refs = ["REPLACE_WITH_RELEASE_SHA"]
 
+[tool.popo.hosted]
+# Desired baseline, not a claim of enforcement or approval of deviations.
+# No exceptions are approved by this configuration change.
+exceptions = []
+
+[[tool.popo.hosted.repositories]]
+name = "Dagitali/.github"
+codeowners = true
+labels = ["bug", "enhancement", "documentation"]
+settings = { private-vulnerability-reporting = true, secret-scanning = true, secret-scanning-push-protection = true }
+branches = { main = ["validate"], develop = ["validate"] }
+
+[[tool.popo.hosted.repositories]]
+name = "Dagitali/aws-cdk-static-site"
+codeowners = true
+labels = ["bug", "enhancement", "documentation"]
+settings = { private-vulnerability-reporting = true, secret-scanning = true, secret-scanning-push-protection = true }
+branches = { main = ["Validate pull request"], develop = ["Validate pull request"] }
+
 [tool.pytest]
 minversion = "9.1.1"
 testpaths = ["tests"]

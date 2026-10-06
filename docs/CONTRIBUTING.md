@@ -127,6 +127,10 @@ helpers.
 
 ## Validation Configuration
 
+Hosted drift auditing is a separate opt-in network operation. See [hosted drift audit] for the
+declarative inventory, released Popo command, findings, and approval boundaries. It is not part of
+`make check`.
+
 Root tests and standalone Python fixtures use pytest's native `[tool.pytest]` TOML table, matching
 Popo and aws-cdk-static-site. Keep `addopts` as an argument array and retain each project's existing
 test discovery, strictness, and minimum pytest version. Fixture settings must work independently
@@ -158,15 +162,16 @@ override `MYPY` to select another configuration. The test runner is `PYTEST` (de
 pytest`), replacing `UNITTEST`. `TEST_PATTERN` overrides pytest's `python_files`; `TEST_ARGS`
 accepts pytest options, for example `make test TEST_ARGS="-q -k parity"`.
 
-`requirements-dev.txt` pins Popo v0.4.1 to its published Git commit. Setup requires network access;
-checks run locally without it. Use Popo's public CLI for generic repository policies, not imports
-from its internal checker modules. Update the pin deliberately and run the integration tests.
-Automation policy belongs in `[tool.popo.automation]` in root `pyproject.toml`; the validator
-belongs in Popo. This configuration does not make the library a Python distribution.
+`requirements-dev.txt` pins Popo v0.5.2 to its published Git commit. Setup requires network access;
+ordinary checks run locally without it; the opt-in hosted audit requires GitHub access. Use Popo's
+public CLI for generic repository policies, not imports from its internal checker modules. Update
+the pin deliberately and run the integration tests. Automation policy belongs in
+`[tool.popo.automation]` in root `pyproject.toml`; the validator belongs in Popo. This configuration
+does not make the library a Python distribution.
 
-The pinned release includes `check-automation-contracts` and `check-actionlint`; no sibling checkout
-or editable installation is required. To replace a previous local Popo installation with the
-published pin:
+The pinned release includes `check-automation-contracts`, `check-actionlint`, and
+`audit-github-settings`; no sibling checkout or editable installation is required. To replace a
+previous local Popo installation with the published pin:
 
 ```sh
 .venv/bin/python -m pip install -r requirements-dev.txt
@@ -210,16 +215,16 @@ or hard-coded `main`/`develop` routing solely to match a sibling repository. Loc
 library CI intentionally refer to this checkout; remotely called Python/CDK workflows use `$/`
 self-repository references, not consumer-relative `./` action paths.
 
-Popo v0.4.1 validates `$/` self-repository references natively, including containment, target
-existence, revision-free syntax, and action inputs. Automation-contract and pin targets invoke its
-public CLI directly. Workflow lint uses Popo's `check-actionlint` command with the selected
-`ACTIONLINT` executable and `WORKFLOW_PATHS`. Because actionlint 1.7.12 does not recognize `$/`,
-Popo supplies a disposable normalized validation view, preserves source files, maps diagnostics back
-to source paths, and propagates validator exit statuses. No check installs tools. The local
-compatibility adapter and its generic tests have been retired; generic validation coverage belongs
-in Popo. Direct actionlint invocations may reject the new syntax; use the Make target or `python -m
-popo check-actionlint --root . --actionlint actionlint`. GitHub Enterprise Server does not support
-this syntax; the refactored workflows are GitHub.com-only.
+The pinned Popo release validates `$/` self-repository references natively, including containment,
+target existence, revision-free syntax, and action inputs. Automation-contract and pin targets
+invoke its public CLI directly. Workflow lint uses Popo's `check-actionlint` command with the
+selected `ACTIONLINT` executable and `WORKFLOW_PATHS`. Because actionlint 1.7.12 does not recognize
+`$/`, Popo supplies a disposable normalized validation view, preserves source files, maps
+diagnostics back to source paths, and propagates validator exit statuses. No check installs tools.
+The local compatibility adapter and its generic tests have been retired; generic validation coverage
+belongs in Popo. Direct actionlint invocations may reject the new syntax; use the Make target or
+`python -m popo check-actionlint --root . --actionlint actionlint`. GitHub Enterprise Server does
+not support this syntax; the refactored workflows are GitHub.com-only.
 
 Public composite actions stay under `actions/`, unlike the siblings' repository-local
 `.github/actions/` paths. Moving them would break remote consumer references. Keep setup
@@ -264,6 +269,7 @@ updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only
 [consumer maintenance guidance]: MAINTENANCE.md
 [documentation index]: README.md
 [testing]: TESTING.md
+[hosted drift audit]: adoption/hosted-drift-audit.md
 [Shared GitHub Actions]: github-actions.md
 [YAML language server's modeline parser]: https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts
 [generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows

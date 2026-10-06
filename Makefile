@@ -40,6 +40,7 @@ TESTS_DIR ?= tests
 REPOSITORY_ROOT ?= .
 AUTOMATION_ROOT ?= $(REPOSITORY_ROOT)
 RELEASE_VERSION ?=
+HOSTED_AUDIT_ARGS ?=
 WORKFLOW_PATHS ?= .github/workflows/*.yml workflow-templates/*.yml
 
 ### Python ###
@@ -164,6 +165,10 @@ workflow-lint: ## Check workflow and starter-template syntax with actionlint
 
 automation-contracts: ## Check local automation interfaces and template metadata
 	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)"
+
+.PHONY: hosted-audit
+hosted-audit: ## Audit configured GitHub settings (opt-in, read-only; requires gh)
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) audit-github-settings --root "$(REPOSITORY_ROOT)" $(HOSTED_AUDIT_ARGS)
 
 github-actions-pins: ## Verify remote GitHub Actions use immutable commits
 	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)" --pins-only
