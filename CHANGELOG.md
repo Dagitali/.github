@@ -30,7 +30,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes are recorded outside the prepared `0.4.1` scope below.
+- Add a declarative hosted-settings inventory for the library and representative consumer, plus an
+  opt-in read-only audit target and evidence/exception guidance. Generic validation lives in Popo
+  v0.5.2, pinned to its published release commit; no sibling checkout is required.
 
 ## [0.4.1] - 2026-10-05
 
