@@ -36,9 +36,9 @@ No additional changes are recorded outside the prepared `0.5.1` scope below.
 
 ## [0.5.1] - 2026-10-06
 
-Prepared documentation-only patch candidate on `feature/align-release-notes-template`; this date
-records preparation, not tagging or publication. See the [release candidate][0.5.1] for complete
-scope, validation, and outstanding release evidence.
+Prepared documentation-only patch candidate; this date records preparation, not tagging or
+publication. See the [release candidate][0.5.1] for complete scope, validation, and outstanding
+release evidence.
 
 - Align release follow-up sections with the template by linking recorded validation gaps and
   separating historical preparation requirements from release-specific maintainer actions.
@@ -60,6 +60,8 @@ scope, validation, and outstanding release evidence.
   verified timezone offsets without shifting their historical dates. Reconcile older references to
   planned v0.4.0 with its tagged scope and remove obsolete candidate instructions without claiming
   historical release-approval evidence.
+- Keep release summaries focused on changes and validation evidence rather than transient Git
+  feature and release branch names.
 
 ## [0.5.0] - 2026-10-06
 
