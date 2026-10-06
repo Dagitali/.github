@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.5.1 - 2026-10-06](#051---2026-10-06)
 - [0.5.0 - 2026-10-06](#050---2026-10-06)
 - [0.4.1 - 2026-10-05](#041---2026-10-05)
 - [0.4.0 - 2026-10-05](#040---2026-10-05)
@@ -31,13 +32,43 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes are recorded outside the prepared `0.5.0` scope below.
+No additional changes are recorded outside the prepared `0.5.1` scope below.
+
+## [0.5.1] - 2026-10-06
+
+Prepared documentation-only patch candidate; this date records preparation, not tagging or
+publication. See the [release candidate][0.5.1] for complete scope, validation, and outstanding
+release evidence.
+
+- Align release follow-up sections with the template by linking recorded validation gaps and
+  separating historical preparation requirements from release-specific maintainer actions.
+- Align the release-notes template with Popo's shared guidance, reference-link conventions, and
+  centralized change/evidence summaries while preserving automation compatibility, artifact,
+  consumer adoption, and rollback requirements. Generalize scope-dependent guidance and separate
+  artifact contracts from validation results.
+- Normalize archived release records against the shared template: link concise changelog highlights,
+  standardize evidence and release-operation navigation, and separate declared artifact contracts
+  from validation gaps while preserving historical scope, outcomes, and candidate status.
+- Align release-archive navigation with Popo's shared evidence-boundary and release-operation
+  guidance, explicitly label planned entries, and retain library-specific artifact/adoption sections
+  and recorded historical timezones. Put release navigation before maintenance guidance and clarify
+  changelog, index, and version-record responsibilities without changing existing anchors.
+  Consolidate overlapping archive guidance and keep the untagged v0.5.1 entry explicitly planned.
+- Correct maintained v0.4.0/v0.5.0 tag-status wording from local annotated-tag evidence, preserving
+  preparation-time checks and keeping publication and final-tag validation unverified; prepare the
+  documentation-only v0.5.1 record and archive entry. Qualify older tagged introductions with
+  verified timezone offsets without shifting their historical dates. Reconcile older references to
+  planned v0.4.0 with its tagged scope and remove obsolete candidate instructions without claiming
+  historical release-approval evidence.
+- Keep release summaries focused on changes and validation evidence rather than transient Git
+  feature and release branch names.
 
 ## [0.5.0] - 2026-10-06
 
-Prepared minor-release candidate on `release/0.5.0`; 2026-10-06 records preparation, not tagging or
-publication. See the [v0.5.0 release candidate][0.5.0] for local validation and matching-commit
-hosted fixture evidence; final release authorization remains pending.
+Minor release with an existing local `v0.5.0` tag recorded on 2026-10-06 (America/New_York). See the
+[v0.5.0 release record][0.5.0] for preserved preparation-time validation and matching-commit hosted
+fixture evidence. Local tag existence does not establish GitHub Release publication or final-tag
+validation.
 
 - Add a declarative hosted-settings inventory for the library and representative consumer, plus an
   opt-in read-only audit target and evidence/exception guidance. Generic validation lives in Popo
@@ -88,7 +119,7 @@ recorded date, not verified publication. See the [v0.3.1 release record][0.3.1].
 - Add the annotated v0.3.1 tag at the same commit as v0.3.0.
 - No repository source changes from v0.3.0; its documentation-only scope remains unchanged.
 - The annotation describes synchronization intent, but the identical commit does not include a new
-  source fix or the community/security feature planned for v0.4.0.
+  source fix or the community/security feature subsequently included in v0.4.0.
 - This dated entry and retrospective record were absent from the tagged tree. Historical validation,
   remote publication, and adoption remain unverified.
 
@@ -102,8 +133,8 @@ recorded date, not verified GitHub Release publication. See the [v0.3.0 release 
 - Align release-archive navigation, historical introductions, and bottom-of-document references.
 - Add the original v0.3.0 draft, which incorrectly described features absent from the tagged tree.
 - No workflows, actions, starters, community defaults, dependencies, or tests change from v0.2.0.
-- The tag annotation describes intended feature scope that was not included; that scope is now
-  tracked under planned v0.4.0. Existing tags and their contents remain unchanged.
+- The tag annotation describes intended feature scope that was not included; that scope was
+  subsequently included in v0.4.0. Existing tags and their contents remain unchanged.
 
 ## [0.2.0] - 2026-10-05
 
@@ -154,3 +185,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.4.0]: docs/releases/v0.4.0.md
 [0.4.1]: docs/releases/v0.4.1.md
 [0.5.0]: docs/releases/v0.5.0.md
+[0.5.1]: docs/releases/v0.5.1.md
