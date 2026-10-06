@@ -47,9 +47,9 @@ record, and the [release policy] for validation and publication safeguards.
   documentation-only follow-up that does not resolve the observed gaps. The local tag exists; GitHub
   Release publication and completed operational adoption remain unverified.
 - [v0.4.0] — 2026-10-05: Community defaults, security starters, adoption guidance, and
-  release-history corrections. The local tag exists; its record preserves preparation-time wording.
-  Later fixture-run evidence is recorded in the [hosted adoption review]; publication and complete
-  consumer adoption are not established by tag existence.
+  release-history corrections. The local tag exists; its record preserves preparation-time results
+  separately from current local tag status. Later fixture-run evidence is recorded in the [hosted
+  adoption review]; publication and complete consumer adoption are not established by tag existence.
 
 ## 0.3 Series
 
