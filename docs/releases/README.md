@@ -22,6 +22,8 @@ Use the [changelog] for concise change history, the [release-notes template] whe
 record, and the [release policy] for validation and publication safeguards.
 
 - [Reading the Archive](#reading-the-archive)
+  - [Evidence Boundaries](#evidence-boundaries)
+  - [Release Operations](#release-operations)
 - [0.5 Series](#05-series)
 - [0.4 Series](#04-series)
 - [0.3 Series](#03-series)
@@ -44,10 +46,34 @@ holds completed checks and evidence gaps, while Artifact Contracts describes dec
 Publication, Adoption, and Rollback links shared release operations and retains version-specific
 outcomes. These conventions do not change a record's historical or candidate status.
 
-Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
-not establish historical validation; local tag metadata does not establish remote publication. Use
-the [release-notes template] for new records rather than copying obsolete runtime defaults or
+Use the [release-notes template] for new records rather than copying obsolete runtime defaults or
 operational instructions from an older release.
+
+### Evidence Boundaries
+
+Tagged-entry dates preserve local annotated-tag metadata in the recorded timezone; they are not
+verified remote publication dates. Candidate dates identify preparation only. Distinguish the
+original tag date from the retrospective preparation date, and record the timezone when verifying
+dates rather than silently shifting historical entries to another timezone.
+
+Preparation results describe the checkout tested at that time. Pending historical checklists do not
+prove that the eventual tagged tree passed. Retrospective corrections maintain history without
+changing the immutable tagged tree; current-checkout tests do not establish historical validation.
+Neither a document nor a tag establishes hosted compatibility, artifact integrity, publication, or
+consumer adoption. Each record retains its completed checks, failures, skipped checks, and evidence
+gaps. The [hosted evidence guide] explains the separate consumer and enforcement evidence needed.
+
+### Release Operations
+
+The [release policy] owns validation and publication safeguards, including the [release checklist].
+Versioned records describe release-specific publication, adoption, and rollback effects rather than
+duplicating those rules. Preserve existing tags and carry fixes through reviewed follow-up changes.
+Library validation never publishes consumer packages or deploys infrastructure; consumers own their
+caller files, shared references, hosted settings, and staged rollout.
+
+Archiving notes is optional, not a new release gate. A committed record does not authorize tagging,
+publication, deployment, hosted settings changes, or consumer reference updates. Keep any authorized
+GitHub Release notes consistent with the reviewed record; this archive is not a publication receipt.
 
 ## 0.5 Series
 
@@ -87,10 +113,6 @@ operational instructions from an older release.
 
 - [v0.0.0] — 2026-09-28: License and README scaffold; retrospective record prepared 2026-10-04.
 
-Tagged-entry dates come from local annotated-tag metadata, not verified remote publication. Draft
-dates identify preparation only. Historical validation gaps are explicit; neither a draft nor a
-local tag establishes remote publication.
-
 ## Maintaining the Archive
 
 1. When choosing to archive a release record, create `docs/releases/vMAJOR.MINOR.PATCH.md` using the
@@ -118,12 +140,14 @@ local tag establishes remote publication.
    complete the separate gates in the [release policy]. Local link validation does not establish
    external availability, publication, or historical evidence.
 
-Archiving notes is optional, not a new release gate. Adding a record does not authorize tagging,
-publication, deployment, or consumer reference updates.
+Keep changes after the latest dated changelog entry in `Unreleased` until the next candidate is
+prepared.
 
 [release-notes template]: ../../.github/RELEASE-NOTES-TEMPLATE.md
 [changelog]: ../../CHANGELOG.md
 [release policy]: ../../RELEASE-POLICY.md
+[release checklist]: ../../RELEASE-POLICY.md#release-checklist
+[hosted evidence guide]: ../TESTING.md#hosted-consumer-evidence
 [hosted adoption review]: ../adoption/2026-10-05-hosted-review.md
 [v0.0.0]: v0.0.0.md
 [v0.1.0]: v0.1.0.md
