@@ -39,6 +39,11 @@ policy][release policy] for current procedures. Records use the common section n
 the [release-notes template]. Keep scaffold and documentation-only sections brief, stating what is
 not applicable without inventing historical evidence.
 
+Highlights link to each version's changelog entry; detailed scope remains in the record. Validation
+holds completed checks and evidence gaps, while Artifact Contracts describes declared behavior.
+Publication, Adoption, and Rollback links shared release operations and retains version-specific
+outcomes. These conventions do not change a record's historical or candidate status.
+
 Distinguish the original tag date from the retrospective preparation date. Current-checkout tests do
 not establish historical validation; local tag metadata does not establish remote publication. Use
 the [release-notes template] for new records rather than copying obsolete runtime defaults or
