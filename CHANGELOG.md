@@ -31,7 +31,19 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes are recorded outside the prepared `0.5.0` scope below.
+- Align release follow-up sections with the template by linking recorded validation gaps and
+  separating historical preparation requirements from release-specific maintainer actions.
+- Align the release-notes template with Popo's shared guidance, reference-link conventions, and
+  centralized change/evidence summaries while preserving automation compatibility, artifact,
+  consumer adoption, and rollback requirements. Generalize scope-dependent guidance and separate
+  artifact contracts from validation results.
+- Normalize archived release records against the shared template: link concise changelog highlights,
+  standardize evidence and release-operation navigation, and separate declared artifact contracts
+  from validation gaps while preserving historical scope, outcomes, and candidate status.
+- Align release-archive navigation with Popo's shared evidence-boundary and release-operation
+  guidance, explicitly label planned entries, and retain library-specific artifact/adoption sections
+  and recorded historical timezones. Put release navigation before maintenance guidance and clarify
+  changelog, index, and version-record responsibilities without changing existing anchors.
 
 ## [0.5.0] - 2026-10-06
 
