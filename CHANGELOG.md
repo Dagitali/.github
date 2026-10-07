@@ -32,6 +32,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Generalize issue prompts within existing fields: invite relevant device, permission, connectivity,
+  and sync context; illustrate observable feature outcomes; route usage questions through
+  affected-project support without assuming Discussions or Apple-specific tooling.
 - Align issue-form triage with the sibling CDK project: add an optional affected-surface selector,
   invite supported-version reproduction evidence, and clarify private security routing in
   documentation reports; preserve existing field IDs, required responses, labels, and chooser links.
