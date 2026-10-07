@@ -22,6 +22,8 @@ body:
         Tell us about the problem you want to solve and the outcome you need before
         prescribing an implementation. Do not include credentials, private data,
         confidential evidence, or suspected vulnerability details in public issues.
+        For general usage questions, follow the affected project's support
+        instructions and available channels instead.
   - type: textarea
     id: problem
     attributes:
@@ -35,7 +37,11 @@ body:
     attributes:
       label: Proposed solution
       description: Describe the desired behavior and observable outcomes that would make it complete.
-      placeholder: Describe the requested improvement.
+      placeholder: |
+        Requested improvement:
+        Users can ...
+        The system does not ...
+        Observable outcomes or tests demonstrate ...
     validations:
       required: true
   - type: textarea
@@ -73,6 +79,8 @@ body:
         Add public examples, sketches, links, or other relevant details. Note
         compatibility, migration, security, privacy, operational, or cost impacts
         where applicable.
+        If relevant, describe changes to permissions, data collection or exports,
+        offline behavior, or synchronization across devices or services.
   - type: checkboxes
     id: checks
     attributes:

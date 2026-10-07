@@ -66,6 +66,9 @@ body:
         Include the version or commit, installation or invocation method, operating
         system, and relevant tool, runtime, browser, or service versions. State
         whether the failure occurred locally or in CI.
+        Where relevant, include device or simulator details, permission settings,
+        connectivity, and synchronization context without exposing account details
+        or private location history.
       placeholder: |
         Project version or commit:
         Operating system:
