@@ -21,6 +21,8 @@ body:
       value: >-
         Identify a public documentation problem without including credentials,
         private data, confidential evidence, or suspected vulnerability details.
+        Report suspected vulnerabilities privately through the affected
+        repository's security policy, not in this public form.
   - type: input
     id: location
     attributes:

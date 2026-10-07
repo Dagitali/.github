@@ -37,6 +37,8 @@ body:
       description: >-
         Provide the smallest reliable reproduction, including exact commands,
         configuration, and sample inputs where relevant. Remove sensitive values.
+        State whether you reproduced this with a supported release or the current
+        default branch, or explain why that was not possible.
       placeholder: |
         1. Go to ...
         2. Run ...
