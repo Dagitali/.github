@@ -32,6 +32,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Request useful sanitized UI evidence, accessibility/localization checks, and
+  permission/data/privacy impacts only when relevant, without imposing application-specific tooling
+  or new mandatory checklist items.
 - Recognize release-note and SemVer aliases and distinguish deprecations and validation, retaining
   the catch-all, existing categories, and no-exclusions history policy.
 - Show the selected ref and exact commit in the run title, consistent with the existing evidence
