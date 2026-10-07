@@ -126,7 +126,7 @@ dependencies. Optional `make hooks` requires pre-commit to be installed separate
 Shared conventions include `check-pre-push`, `docs-markdown`, `self-check`, and annotated help.
 `docs-check` remains an alias. Both projects use pytest. Purposeful differences from Popo: this
 library adds actionlint and automation contracts to Python checks; `self-check` runs only applicable
-pin and documentation policies rather than Popo's package-oriented `check-all`. It has no
+pin, safety, and documentation policies rather than Popo's package-oriented `check-all`. It has no
 distribution, runtime-install, or publishing targets. `lint` includes Ruff lint/format checks
 alongside workflow and contract validation; `typecheck` runs strict mypy over root regression
 helpers.
@@ -168,16 +168,18 @@ override `MYPY` to select another configuration. The test runner is `PYTEST` (de
 pytest`), replacing `UNITTEST`. `TEST_PATTERN` overrides pytest's `python_files`; `TEST_ARGS`
 accepts pytest options, for example `make test TEST_ARGS="-q -k parity"`.
 
-`requirements-dev.txt` pins Popo v0.5.2 to its published Git commit. Setup requires network access;
-ordinary checks run locally without it; the opt-in hosted audit requires GitHub access. Use Popo's
-public CLI for generic repository policies, not imports from its internal checker modules. Update
-the pin deliberately and run the integration tests. Automation policy belongs in
+`requirements-dev.txt` pins Popo v0.6.3 to its verified published Git revision. Setup requires
+network access; ordinary checks run locally without it; the opt-in hosted audit requires GitHub
+access. Use Popo's public CLI for generic repository policies, not imports from its internal checker
+modules. Update the pin deliberately and run the integration tests. Automation policy belongs in
 `[tool.popo.automation]` in root `pyproject.toml`; the validator belongs in Popo. This configuration
 does not make the library a Python distribution.
 
-The pinned release includes `check-automation-contracts`, `check-actionlint`, and
-`audit-github-settings`; no sibling checkout or editable installation is required. To replace a
-previous local Popo installation with the published pin:
+The pinned release includes `check-automation-contracts`, `check-actionlint`,
+`check-repository-safety`, and `audit-github-settings`; no sibling checkout or editable installation
+is required. Consumer-owned safety policy lives in `[tool.popo.safety]`; `make repository-safety`
+runs it through both `lint` and `self-check`. See [automation safety] for scope and limitations. To
+replace a previous local Popo installation with the published pin:
 
 ```sh
 .venv/bin/python -m pip install -r requirements-dev.txt
@@ -287,6 +289,7 @@ updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only
 [documentation index]: README.md
 [testing]: TESTING.md
 [hosted drift audit]: adoption/hosted-drift-audit.md
+[automation safety]: automation-safety.md
 [Shared GitHub Actions]: github-actions.md
 [YAML language server's modeline parser]: https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts
 [generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
