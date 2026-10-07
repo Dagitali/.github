@@ -16,6 +16,7 @@
 # - Audit the target runtime, not tooling or dependencies excluded by callers.
 # - A failed inspection with zero findings must not report a clean audit.
 
+---
 name: Reusable Python Dependency Audit
 
 on:

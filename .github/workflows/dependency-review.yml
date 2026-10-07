@@ -10,6 +10,7 @@
 # - PR-only review is not a resolved-dependency audit or a merge-queue gate.
 # - Keep runtime-only defaults; broader library scopes belong in its caller.
 
+---
 name: Reusable Dependency Review
 
 on:

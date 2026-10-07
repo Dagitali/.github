@@ -13,6 +13,7 @@
 # - Use explicit Bash so failed pipeline stages cannot hide gate failures.
 # - Name setup and gate steps for useful logs without renaming required jobs.
 
+---
 name: Automation library CI
 
 run-name: >-
@@ -160,7 +161,7 @@ jobs:
         uses: ./actions/python-quality
         with:
           working-directory: tests/fixtures/python
-      - name: Set up Node
+      - name: Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'

@@ -12,6 +12,7 @@
 # - Build backends and smoke commands execute trusted caller code.
 # - Archive outputs describe the upload, not each distribution's checksum.
 
+---
 name: Reusable Python Package CI
 
 on:

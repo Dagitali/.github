@@ -14,6 +14,7 @@
 # - Use NumPy-style docstrings for typed evidence-rendering contracts.
 # - Keep gate step labels aligned with regular CI for comparable run logs.
 
+---
 name: Release candidate validation
 run-name: Release candidate validation on ${{ github.ref_name }}
 
