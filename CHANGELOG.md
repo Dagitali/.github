@@ -32,17 +32,18 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Show the selected ref and exact commit in the run title, consistent with the existing evidence
+  summary, without changing validation or delivery.
 - Generalize issue prompts within existing fields: invite relevant device, permission, connectivity,
   and sync context; illustrate observable feature outcomes; route usage questions through
   affected-project support without assuming Discussions or Apple-specific tooling.
-- Align issue-form triage with the sibling CDK project: add an optional affected-surface selector,
-  invite supported-version reproduction evidence, and clarify private security routing in
-  documentation reports; preserve existing field IDs, required responses, labels, and chooser links.
-- Align workflow environment evidence with the sibling CDK project: report actionlint/ShellCheck
-  versions in regular and candidate validation, plus Node.js/npm versions and installed dependencies
-  in the composite CDK fixture, preserving reusable interfaces and the non-deployment boundary.
-- Align branch-protection and release-template guidance with generic sibling conventions: qualify
-  optional review/history safeguards and explicitly record delivery triggers, protected
+- Add an optional affected-surface selector, invite supported-version reproduction evidence, and
+  clarify private security routing in documentation reports; preserve existing field IDs, required
+  responses, labels, and chooser links.
+- Report actionlint/ShellCheck versions in regular and candidate validation, plus Node.js/npm
+  versions and installed dependencies in the composite CDK fixture, preserving reusable interfaces
+  and the non-deployment boundary.
+- Qualify optional review/history safeguards and explicitly record delivery triggers, protected
   environments, and approvals without changing hosted settings or publication behavior.
 - Complete top-level YAML document-marker normalization in the private-report form without changing
   assessment fields, required responses, or affected-repository reporting routes.
