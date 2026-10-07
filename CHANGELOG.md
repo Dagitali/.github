@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.0 - 2026-10-07](#060---2026-10-07)
 - [0.5.1 - 2026-10-06](#051---2026-10-06)
 - [0.5.0 - 2026-10-06](#050---2026-10-06)
 - [0.4.1 - 2026-10-05](#041---2026-10-05)
@@ -31,6 +32,14 @@ record preparation only; corrections to maintained history do not rewrite existi
 - [0.0.0 - 2026-09-28](#000---2026-09-28)
 
 ## Unreleased
+
+No additional changes recorded after preparation of the v0.6.0 candidate.
+
+## [0.6.0] - 2026-10-07
+
+Prepared minor-release candidate for shared maintenance conventions and additive community triage
+and release-note features. This date records preparation, not tagging or publication. See the
+[release candidate][0.6.0] for complete scope, compatibility, and outstanding evidence.
 
 - Clarify non-code contribution options and conduct guidance, project-owned support expectations,
   and impact-based patch/minor/major release selection without adopting app-specific policies or
@@ -80,9 +89,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## [0.5.1] - 2026-10-06
 
-Prepared documentation-only patch candidate; this date records preparation, not tagging or
-publication. See the [release candidate][0.5.1] for complete scope, validation, and outstanding
-release evidence.
+Documentation-only patch. The [release record][0.5.1] distinguishes preparation-time validation from
+the subsequently verified local annotated tag; GitHub Release publication and validation of the
+tagged revision remain unverified.
 
 - Align release follow-up sections with the template by linking recorded validation gaps and
   separating historical preparation requirements from release-specific maintainer actions.
@@ -230,3 +239,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.4.1]: docs/releases/v0.4.1.md
 [0.5.0]: docs/releases/v0.5.0.md
 [0.5.1]: docs/releases/v0.5.1.md
+[0.6.0]: docs/releases/v0.6.0.md
