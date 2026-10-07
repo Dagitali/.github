@@ -32,6 +32,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Align issue-form triage with the sibling CDK project: add an optional affected-surface selector,
+  invite supported-version reproduction evidence, and clarify private security routing in
+  documentation reports; preserve existing field IDs, required responses, labels, and chooser links.
 - Align workflow environment evidence with the sibling CDK project: report actionlint/ShellCheck
   versions in regular and candidate validation, plus Node.js/npm versions and installed dependencies
   in the composite CDK fixture, preserving reusable interfaces and the non-deployment boundary.
