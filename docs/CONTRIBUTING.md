@@ -208,6 +208,11 @@ the maintenance review policy. Security-update PRs still target the repository d
 merging. Preserve the Python and Node fixture directories, separate validation-tool grouping,
 automatic labels, and staggered UTC schedules when changing dependency maintenance.
 
+Generated release notes recognize generic sibling `release-note:*` and SemVer labels, with separate
+deprecation and validation categories. Category order matters when labels overlap; the catch-all
+retains unmatched changes and no exclusion labels suppress history. Labels do not establish
+compatibility or release approval; review generated text against the maintained release record.
+
 CODEOWNERS keeps a default maintainer first, followed by explicit library-surface rules, matching
 the sibling CDK and website repositories. The fallback covers new paths and root policy files;
 explicit rules preserve reviewable boundaries for future specialization, including the organization
