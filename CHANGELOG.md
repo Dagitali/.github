@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.4 - 2026-10-07](#064---2026-10-07)
 - [0.6.3 - 2026-10-07](#063---2026-10-07)
 - [0.6.2 - 2026-10-07](#062---2026-10-07)
 - [0.6.1 - 2026-10-07](#061---2026-10-07)
@@ -36,7 +37,15 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.3.
+No additional changes recorded after v0.6.4.
+
+## [0.6.4] - 2026-10-07
+
+Maintenance patch for the Node CDK validation fixture. See the [release record][0.6.4] for scope,
+compatibility, validation, and unverified tag/publication status.
+
+- Update the Node CDK fixture's aws-cdk-lib pin from 2.271.0 to 2.272.0, matching the Python CDK
+  fixture's library version without changing public workflows, actions, or consumer dependencies.
 
 ## [0.6.3] - 2026-10-07
 
@@ -276,3 +285,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.1]: docs/releases/v0.6.1.md
 [0.6.2]: docs/releases/v0.6.2.md
 [0.6.3]: docs/releases/v0.6.3.md
+[0.6.4]: docs/releases/v0.6.4.md
