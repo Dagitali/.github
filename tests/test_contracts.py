@@ -169,6 +169,9 @@ def test_candidate_evidence_contract(
     repo_root: Path,
 ) -> None:
     """Retain deterministic outputs, locked fixtures, and honest result aggregation."""
+    assert candidate['run-name'] == (
+        'Release candidate validation: ${{ github.ref_name }} @ ${{ github.sha }}'
+    )
     jobs = candidate['jobs']
     for name, version in [('package', '3.13'), ('package-python314', '3.14')]:
         assert 'strategy' not in jobs[name]
