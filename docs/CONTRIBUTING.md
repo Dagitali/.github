@@ -67,10 +67,13 @@ the organization default's existing field IDs, requiredness, labels, and reporti
 copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. The
 optional feature surface selector supports generic routing; bug prompts invite supported-version
 reproduction evidence without requiring an upgrade or adding mandatory responses. Documentation
-forms direct suspected vulnerabilities to the affected repository's private reporting policy. Inline
-workflow Python should document reusable helper arguments, file effects, and failure behavior; the
-candidate renderer accepts its payload/path explicitly and appends before checking job outcomes.
-Typing heterogeneous GitHub payloads with Any is deliberate, not runtime schema validation.
+forms direct suspected vulnerabilities to the affected repository's private reporting policy. Keep
+device, permission, connectivity, and sync prompts conditional and product-neutral; request
+observable feature outcomes within existing fields rather than duplicating acceptance questions. Do
+not assume every consumer enables Discussions or uses Apple platforms. Inline workflow Python should
+document reusable helper arguments, file effects, and failure behavior; the candidate renderer
+accepts its payload/path explicitly and appends before checking job outcomes. Typing heterogeneous
+GitHub payloads with Any is deliberate, not runtime schema validation.
 
 Inspection summary helpers likewise use typed interpreter paths and captured subprocess results.
 Tool-version queries are best-effort: absent environments or failed pip-list commands retain an
