@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.8 - 2026-10-07](#068---2026-10-07)
 - [0.6.7 - 2026-10-07](#067---2026-10-07)
 - [0.6.5 - 2026-10-07](#065---2026-10-07)
 - [0.6.4 - 2026-10-07](#064---2026-10-07)
@@ -39,7 +40,22 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.7.
+No additional changes recorded after v0.6.8.
+
+## [0.6.8] - 2026-10-07
+
+Maintenance patch for hosted adoption evidence, contribution guidance, and automation safety
+validation. See the [release record][0.6.8] for scope, validation, compatibility, and unverified
+tag/publication status.
+
+- Refresh read-only hosted evidence and track consumer ownership, revision, caller-run, and
+  notification-verification gaps without changing repository settings.
+- Pin published Popo v0.6.3 and enforce consumer-owned workflow safety and npm fixture consistency
+  through `make repository-safety`, `lint`, and `self-check`, including the ordinary CI/pre-push
+  gate. Add consumer integration coverage for copied/committed manifest drift and privileged
+  triggers.
+- Clarify project-specific contribution terms without introducing a license grant or contributor
+  agreement through the organization-wide guide.
 
 ## [0.6.7] - 2026-10-07
 
@@ -307,3 +323,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.4]: docs/releases/v0.6.4.md
 [0.6.5]: docs/releases/v0.6.5.md
 [0.6.7]: docs/releases/v0.6.7.md
+[0.6.8]: docs/releases/v0.6.8.md
