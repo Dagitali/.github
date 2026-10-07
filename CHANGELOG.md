@@ -32,6 +32,8 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Complete top-level YAML document-marker normalization in the private-report form without changing
+  assessment fields, required responses, or affected-repository reporting routes.
 - Generalize PR compatibility, validation, and safe-delivery prompts; clarify branch roles and
   required-check selection without claiming hosted enforcement. Align release-template links with
   the archive's shared evidence and release-operation guidance while retaining library-specific
