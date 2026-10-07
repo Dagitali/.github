@@ -32,6 +32,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Align branch-protection and release-template guidance with generic sibling conventions: qualify
+  optional review/history safeguards and explicitly record delivery triggers, protected
+  environments, and approvals without changing hosted settings or publication behavior.
 - Complete top-level YAML document-marker normalization in the private-report form without changing
   assessment fields, required responses, or affected-repository reporting routes.
 - Generalize PR compatibility, validation, and safe-delivery prompts; clarify branch roles and
