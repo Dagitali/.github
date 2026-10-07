@@ -333,6 +333,66 @@ def test_cdk_dependency_check_failure(
     assert (tmp_path / 'next-step').exists() == (status == 0)
 
 
+def test_cdk_shared_python_setup(
+    repo_root: Path,
+) -> None:
+    """
+    Preserve CDK installation ownership when composing shared Python setup.
+
+    Parameters
+    ----------
+    repo_root : pathlib.Path
+        Checkout containing the CDK workflow and public setup action.
+
+    Notes
+    -----
+    Checks declarations without invoking GitHub or installing dependencies.
+    Early cache validation remains ahead of caller preparation; setup-only
+    composition must not install or check the caller's project prematurely.
+    """
+    workflow: dict[str, Any] = yaml.load(
+        (repo_root / '.github/workflows/aws-cdk-ci.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    action: dict[str, Any] = yaml.load(
+        (repo_root / 'actions/setup-python-project/action.yml').read_text(),
+        Loader=yaml.BaseLoader,
+    )
+    steps = workflow['jobs']['quality']['steps']
+    named = {step['name']: step for step in steps}
+    setup = named['Set up Python']
+    assert setup['uses'] == '$/actions/setup-python-project'
+    assert setup['if'] == "inputs.language == 'python'"
+    assert setup['with'] == {
+        'python-version': '${{ inputs.python-version }}',
+        'working-directory': '${{ inputs.working-directory }}',
+        'cache': '${{ inputs.python-cache }}',
+        'cache-dependency-path': '${{ inputs.cache-dependency-path }}',
+        'install-command': '',
+    }
+    assert set(setup['with']) == set(action['inputs'])
+    assert not setup.get('continue-on-error')
+    assert steps.index(setup) < steps.index(named['Install AWS CDK CLI'])
+    assert steps.index(named['Install AWS CDK CLI']) < steps.index(
+        named['Install dependencies with custom command']
+    )
+    assert named['Install dependencies with custom command']['if'] == (
+        "inputs.install-command != ''"
+    )
+    assert named['Install Python project']['if'] == (
+        "inputs.install-command == '' && inputs.language == 'python'"
+    )
+    assert named['Verify Python dependency compatibility']['if'] == (
+        "inputs.install-command == '' && inputs.language == 'python'"
+    )
+    assert steps.index(named['Verify Python dependency compatibility']) < steps.index(
+        named['Report Python environment']
+    )
+    assert steps.index(named['Report Python environment']) < steps.index(
+        named['Run CDK quality checks']
+    )
+
+
 @pytest.mark.parametrize(
     'status',
     [0, 17],
