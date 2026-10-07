@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.7 - 2026-10-07](#067---2026-10-07)
 - [0.6.5 - 2026-10-07](#065---2026-10-07)
 - [0.6.4 - 2026-10-07](#064---2026-10-07)
 - [0.6.3 - 2026-10-07](#063---2026-10-07)
@@ -38,7 +39,15 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.5.
+No additional changes recorded after v0.6.7.
+
+## [0.6.7] - 2026-10-07
+
+Documentation-only patch for README status badges. See the [release record][0.6.7] for scope,
+validation, and unverified tag/publication status.
+
+- Add README badges for Git tags, the repository license, and main-branch CI, following sibling
+  reference-link conventions while distinguishing badge status from publication and adoption.
 
 ## [0.6.5] - 2026-10-07
 
@@ -297,3 +306,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.3]: docs/releases/v0.6.3.md
 [0.6.4]: docs/releases/v0.6.4.md
 [0.6.5]: docs/releases/v0.6.5.md
+[0.6.7]: docs/releases/v0.6.7.md
