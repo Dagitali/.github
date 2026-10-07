@@ -35,9 +35,9 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.6 Series
 
-- [v0.6.0] — planned, prepared 2026-10-07: Shared maintenance conventions, additive issue-form and
-  release-note triage, CDK setup composition, and clearer environment and candidate evidence. Hosted
-  validation and publication remain pending.
+- [v0.6.0] — 2026-10-07: Shared maintenance conventions, additive issue-form and release-note
+  triage, CDK setup composition, and clearer environment and candidate evidence. The record retains
+  preparation-time validation; tagging, hosted release validation, and publication are unverified.
 
 ## 0.5 Series
 
