@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.3 - 2026-10-07](#063---2026-10-07)
 - [0.6.2 - 2026-10-07](#062---2026-10-07)
 - [0.6.1 - 2026-10-07](#061---2026-10-07)
 - [0.6.0 - 2026-10-07](#060---2026-10-07)
@@ -35,12 +36,24 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.2.
+No additional changes recorded after v0.6.3.
+
+## [0.6.3] - 2026-10-07
+
+Maintenance patch for the Python CDK validation fixture and release-history reconciliation. See the
+[release record][0.6.3] for scope, compatibility, validation, and unverified tag/publication status.
+
+- Update the Python CDK fixture's aws-cdk-lib pin from 2.269.0 to 2.272.0; this change is not part
+  of the v0.6.2 tagged tree.
+- Reconcile maintained v0.6.2 notes and archive status with its existing local annotated tag,
+  preserving preparation-time results and separating them from publication and tagged validation.
 
 ## [0.6.2] - 2026-10-07
 
-Maintenance patch for pinned GitHub Actions dependencies. See the [release record][0.6.2] for scope,
-upstream compatibility requirements, validation, and unverified tag/publication status.
+Maintenance patch for pinned GitHub Actions dependencies, with a local annotated tag recorded on
+2026-10-07 (America/New_York). See the [release record][0.6.2] for scope, upstream compatibility
+requirements, and preparation-time validation. GitHub Release publication and tagged-revision
+validation remain unverified.
 
 - Update setup-node to v7.0.0 in AWS CDK CI and library CI, setup-python to v7.0.0 in Python
   package, dependency-audit, and SBOM workflows, and dependency-review-action to v5.0.0 in
@@ -262,3 +275,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.0]: docs/releases/v0.6.0.md
 [0.6.1]: docs/releases/v0.6.1.md
 [0.6.2]: docs/releases/v0.6.2.md
+[0.6.3]: docs/releases/v0.6.3.md

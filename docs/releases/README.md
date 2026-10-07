@@ -35,9 +35,13 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.6 Series
 
+- [v0.6.3] — 2026-10-07: Python CDK fixture dependency refresh and v0.6.2 tag-status reconciliation;
+  maintenance patch with unchanged public automation contracts. Tagging, hosted release validation,
+  and publication remain unverified for v0.6.3.
 - [v0.6.2] — 2026-10-07: Pinned setup-node, setup-python, and dependency-review-action updates
   across six workflows; maintenance patch with unchanged library interfaces and documented upstream
-  compatibility requirements. Tagging, hosted release validation, and publication are unverified.
+  compatibility requirements. The local tag exists; preparation-time results remain separate from
+  unverified tagged-revision validation and GitHub Release publication.
 - [v0.6.1] — 2026-10-07: Commitizen and md-toc pre-commit hook updates; maintenance patch with
   unchanged shared automation contracts. Tagging, hosted release validation, and publication are
   unverified in this record.
@@ -180,3 +184,4 @@ prepared.
 [v0.6.0]: v0.6.0.md
 [v0.6.1]: v0.6.1.md
 [v0.6.2]: v0.6.2.md
+[v0.6.3]: v0.6.3.md
