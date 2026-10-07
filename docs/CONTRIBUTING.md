@@ -64,10 +64,16 @@ effects. Omit irrelevant sections rather than inventing return values or guarant
 
 Issue-form and chooser headers follow sibling responsibility/maintainer conventions, while keeping
 the organization default's existing field IDs, requiredness, labels, and reporting routes. Do not
-copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. Inline
-workflow Python should document reusable helper arguments, file effects, and failure behavior; the
-candidate renderer accepts its payload/path explicitly and appends before checking job outcomes.
-Typing heterogeneous GitHub payloads with Any is deliberate, not runtime schema validation.
+copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. The
+optional feature surface selector supports generic routing; bug prompts invite supported-version
+reproduction evidence without requiring an upgrade or adding mandatory responses. Documentation
+forms direct suspected vulnerabilities to the affected repository's private reporting policy. Keep
+device, permission, connectivity, and sync prompts conditional and product-neutral; request
+observable feature outcomes within existing fields rather than duplicating acceptance questions. Do
+not assume every consumer enables Discussions or uses Apple platforms. Inline workflow Python should
+document reusable helper arguments, file effects, and failure behavior; the candidate renderer
+accepts its payload/path explicitly and appends before checking job outcomes. Typing heterogeneous
+GitHub payloads with Any is deliberate, not runtime schema validation.
 
 Inspection summary helpers likewise use typed interpreter paths and captured subprocess results.
 Tool-version queries are best-effort: absent environments or failed pip-list commands retain an
@@ -195,6 +201,17 @@ every security advisory. Root validation tools receive a separate Dependabot gro
 production/development fixture groups. CODEOWNERS uses the sibling maintainer account with verified
 repository access, but hosted review rules and independent reviewers remain separate
 responsibilities.
+
+Dependabot version-update PRs explicitly target `develop` for every configured ecosystem, following
+the maintenance review policy. Security-update PRs still target the repository default branch; keep
+`.github/dependabot.yml` there for GitHub to read. The configuration does not enable automatic
+merging. Preserve the Python and Node fixture directories, separate validation-tool grouping,
+automatic labels, and staggered UTC schedules when changing dependency maintenance.
+
+Generated release notes recognize generic sibling `release-note:*` and SemVer labels, with separate
+deprecation and validation categories. Category order matters when labels overlap; the catch-all
+retains unmatched changes and no exclusion labels suppress history. Labels do not establish
+compatibility or release approval; review generated text against the maintained release record.
 
 CODEOWNERS keeps a default maintainer first, followed by explicit library-surface rules, matching
 the sibling CDK and website repositories. The fallback covers new paths and root policy files;

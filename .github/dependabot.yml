@@ -3,16 +3,24 @@
 #
 # Responsibilities
 # - Propose reviewable dependency and hook updates.
+# - Route routine version updates through review on develop.
+# - Retain separate validation-tool and consumer-fixture coverage.
 #
 # Maintainer Notes
-# - Follow the default branch; retain immutable Actions pins after updates.
+# - Target develop for version updates in every configured ecosystem.
+# - Keep this configuration on the default branch so GitHub can read it.
+# - Security-update pull requests still target the default branch.
+# - Omit labels to retain Dependabot's automatic dependency/ecosystem labels.
+# - Retain immutable Actions pins after accepting dependency updates.
+# - Use UTC for predictable schedules; keep ecosystem updates staggered.
 
-# Follow the repository default branch and Dependabot's automatic labels.
-# UTC avoids maintainer-specific schedules; keep ecosystem updates staggered.
+---
 version: 2
+
 updates:
   - package-ecosystem: github-actions
     directory: /
+    target-branch: develop
     schedule:
       interval: weekly
       day: monday
@@ -23,12 +31,15 @@ updates:
       include: scope
     groups:
       github-actions:
-        patterns: ['*']
+        patterns:
+          - '*'
+
   - package-ecosystem: pip
     directories:
       - /
       - /tests/fixtures/python
       - /tests/fixtures/python-cdk
+    target-branch: develop
     schedule:
       interval: weekly
       day: monday
@@ -39,15 +50,24 @@ updates:
       include: scope
     groups:
       python-validation-tools:
-        patterns: [popo, pytest, ruff, mypy, PyYAML, pyyaml, types-*]
+        patterns:
+          - popo
+          - pytest
+          - ruff
+          - mypy
+          - PyYAML
+          - pyyaml
+          - types-*
       python-runtime-dependencies:
         dependency-type: production
       python-development-dependencies:
         dependency-type: development
+
   - package-ecosystem: npm
     directories:
       - /tests/fixtures/node-cdk
       - /tests/fixtures/node-cdk-locked
+    target-branch: develop
     schedule:
       interval: weekly
       day: monday
@@ -58,9 +78,12 @@ updates:
       include: scope
     groups:
       fixture-dependencies:
-        patterns: ['*']
+        patterns:
+          - '*'
+
   - package-ecosystem: pre-commit
     directory: /
+    target-branch: develop
     schedule:
       interval: weekly
       day: monday
@@ -71,4 +94,5 @@ updates:
       include: scope
     groups:
       pre-commit-hooks:
-        patterns: ['*']
+        patterns:
+          - '*'

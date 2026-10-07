@@ -10,6 +10,7 @@
 # - Caller workflows own triggers and cancellation, not this shared workflow.
 # - Retain every runner result and diagnostics after build/test failures.
 
+---
 name: Reusable Swift CI
 
 on:

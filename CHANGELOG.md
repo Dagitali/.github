@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.0 - 2026-10-07](#060---2026-10-07)
 - [0.5.1 - 2026-10-06](#051---2026-10-06)
 - [0.5.0 - 2026-10-06](#050---2026-10-06)
 - [0.4.1 - 2026-10-05](#041---2026-10-05)
@@ -32,13 +33,65 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes are recorded outside the prepared `0.5.1` scope below.
+No additional changes recorded after preparation of the v0.6.0 candidate.
+
+## [0.6.0] - 2026-10-07
+
+Prepared minor-release candidate for shared maintenance conventions and additive community triage
+and release-note features. This date records preparation, not tagging or publication. See the
+[release candidate][0.6.0] for complete scope, compatibility, and outstanding evidence.
+
+- Clarify non-code contribution options and conduct guidance, project-owned support expectations,
+  and impact-based patch/minor/major release selection without adopting app-specific policies or
+  changing the existing 0.x breaking-change convention.
+- Request useful sanitized UI evidence, accessibility/localization checks, and
+  permission/data/privacy impacts only when relevant, without imposing application-specific tooling
+  or new mandatory checklist items.
+- Recognize release-note and SemVer aliases and distinguish deprecations and validation, retaining
+  the catch-all, existing categories, and no-exclusions history policy.
+- Show the selected ref and exact commit in the run title, consistent with the existing evidence
+  summary, without changing validation or delivery.
+- Generalize issue prompts within existing fields: invite relevant device, permission, connectivity,
+  and sync context; illustrate observable feature outcomes; route usage questions through
+  affected-project support without assuming Discussions or Apple-specific tooling.
+- Add an optional affected-surface selector, invite supported-version reproduction evidence, and
+  clarify private security routing in documentation reports; preserve existing field IDs, required
+  responses, labels, and chooser links.
+- Report actionlint/ShellCheck versions in regular and candidate validation, plus Node.js/npm
+  versions and installed dependencies in the composite CDK fixture, preserving reusable interfaces
+  and the non-deployment boundary.
+- Qualify optional review/history safeguards and explicitly record delivery triggers, protected
+  environments, and approvals without changing hosted settings or publication behavior.
+- Complete top-level YAML document-marker normalization in the private-report form without changing
+  assessment fields, required responses, or affected-repository reporting routes.
+- Generalize PR compatibility, validation, and safe-delivery prompts; clarify branch roles and
+  required-check selection without claiming hosted enforcement. Align release-template links with
+  the archive's shared evidence and release-operation guidance while retaining library-specific
+  artifact and adoption contracts.
+- Compose CDK's Python runtime setup through the same-revision shared setup action in setup-only
+  mode, preserving early validation, Node handling, installation order, compatibility-check policy,
+  and post-install reporting; add initial runtime diagnostics and composition regression coverage.
+- Align composite-action YAML document boundaries with Popo while retaining public `actions/` paths,
+  generic command-based setup, separate quality actions, and unchanged inputs and behavior.
+- Normalize workflow YAML document boundaries and Node.js setup naming with Popo's conventions;
+  preserve reusable interfaces, required job identities, permissions, triggers, matrices, action
+  pins, artifact contracts, and the library's non-publishing boundary.
+- Align organization issue forms with Popo's product-neutral triage prompts: add optional error
+  output, feature examples, and documentation-impact fields while preserving existing field IDs,
+  required responses, labels, blank-issue policy, and affected-repository reporting routes.
+- Add Popo-aligned generated release-note categories with a catch-all and no exclusions; retain
+  reviewed release scope and evidence as the source of truth. Generalize Popo YAML validation to
+  cover all top-level `.github/*.yml` files without changing private reporting or PR merge routing.
+- Align Dependabot version-update routing with the GitFlow maintenance policy: target `develop` for
+  Actions, Python, Node fixture, and pre-commit updates while retaining fixture coverage,
+  validation-tool grouping, automatic labels, and staggered UTC schedules. Security-update PRs
+  remain on the repository default branch; no automatic merging is enabled.
 
 ## [0.5.1] - 2026-10-06
 
-Prepared documentation-only patch candidate; this date records preparation, not tagging or
-publication. See the [release candidate][0.5.1] for complete scope, validation, and outstanding
-release evidence.
+Documentation-only patch. The [release record][0.5.1] distinguishes preparation-time validation from
+the subsequently verified local annotated tag; GitHub Release publication and validation of the
+tagged revision remain unverified.
 
 - Align release follow-up sections with the template by linking recorded validation gaps and
   separating historical preparation requirements from release-specific maintainer actions.
@@ -186,3 +239,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.4.1]: docs/releases/v0.4.1.md
 [0.5.0]: docs/releases/v0.5.0.md
 [0.5.1]: docs/releases/v0.5.1.md
+[0.6.0]: docs/releases/v0.6.0.md

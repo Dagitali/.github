@@ -13,6 +13,7 @@
 # - Commands execute caller code; environment indirection is not a sandbox.
 # - Keep report paths, artifact uploads, and failure conditions in the caller.
 
+---
 name: Python quality checks
 description: Run configurable formatting, linting, type-checking, and test commands.
 

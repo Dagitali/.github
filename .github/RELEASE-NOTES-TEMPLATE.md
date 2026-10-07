@@ -124,6 +124,9 @@ Link to the shared tagging and publication rules:
 > Shared tagging and publication rules are in [release operations].
 
 - Describe release-specific changes to deployment, publication, or adoption behavior, if any.
+- State whether merging or tagging triggers deployment, publication, or neither, and identify any
+  protected environment or approval required before delivery. Distinguish automated triggers from
+  separately authorized manual operations.
 - Describe expected component, infrastructure, dependency, artifact, or operational effects.
 - State whether resource replacements, data migrations, DNS or publication changes, or service
   interruption are expected when applicable.
@@ -150,9 +153,9 @@ authorization for external release operations under the [release policy].
 
 [changelog]: ../CHANGELOG.md
 [release policy]: ../RELEASE-POLICY.md
-[release operations]: ../RELEASE-POLICY.md#release-checklist
 [testing guide]: ../docs/TESTING.md
-[evidence boundaries]: ../docs/TESTING.md#hosted-consumer-evidence
 [workflow contracts]: ../docs/github-actions.md
 [release notes archive]: ../docs/releases/README.md
+[evidence boundaries]: ../docs/releases/README.md#evidence-boundaries
 [reading guide]: ../docs/releases/README.md#reading-the-archive
+[release operations]: ../docs/releases/README.md#release-operations

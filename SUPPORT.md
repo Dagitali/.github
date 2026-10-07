@@ -23,6 +23,7 @@ Do not use public support channels to disclose security vulnerabilities. Follow 
 instead.
 
 - [What to Include](#what-to-include)
+- [Support Expectations](#support-expectations)
 
 ## What to Include
 
@@ -36,6 +37,14 @@ configuration, and examples before sharing; omit credentials, personal informati
 repository content, and other confidential material. Follow the affected repository's instructions
 for any additional details or private support channels.
 
-Project-specific support instructions take precedence over this document.
+## Support Expectations
+
+Supported versions, maintenance priorities, response targets, and any service-level agreement are
+defined by the affected project, not by this organization default. Consult its support and release
+documentation before assuming an older release, development branch, or experimental interface is
+supported. If the support boundary is unclear, ask through its documented channel.
+
+Project-specific support instructions take precedence over this document. This default does not
+promise a response deadline or guarantee that a feature request will be implemented.
 
 [SECURITY.md]: SECURITY.md

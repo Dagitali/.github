@@ -16,6 +16,7 @@
 # - Inventory the installed target, not repository sources or tooling.
 # - Inventory validation is not a vulnerability audit or health verdict.
 
+---
 name: Reusable Python Dependency Inventory
 
 on:

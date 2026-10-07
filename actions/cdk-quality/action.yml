@@ -13,6 +13,7 @@
 # - Synthesis executes caller code; do not supply deployment credentials.
 # - Keep report paths, artifact uploads, and failure conditions in the caller.
 
+---
 name: AWS CDK quality checks
 description: Run configurable quality checks and synthesize an AWS CDK application.
 

@@ -12,6 +12,7 @@
 # - Caller workflows own triggers and cancellation, not this shared workflow.
 # - Command inputs execute caller code; they are not a sandbox boundary.
 
+---
 name: Reusable Python CI
 
 on:

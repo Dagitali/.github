@@ -12,7 +12,9 @@
 # - Keep make check authoritative for local and hosted library validation.
 # - Use explicit Bash so failed pipeline stages cannot hide gate failures.
 # - Name setup and gate steps for useful logs without renaming required jobs.
+# - Report validation tools and fixture dependencies for reproducible evidence.
 
+---
 name: Automation library CI
 
 run-name: >-
@@ -58,7 +60,8 @@ jobs:
         run: |
           go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-          command -v shellcheck
+          "$(go env GOPATH)/bin/actionlint" --version
+          shellcheck --version
       - name: Run the repository quality gate
         run: make check
 
@@ -160,7 +163,7 @@ jobs:
         uses: ./actions/python-quality
         with:
           working-directory: tests/fixtures/python
-      - name: Set up Node
+      - name: Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
@@ -170,7 +173,10 @@ jobs:
         run: |
           npm install
           npm install --global aws-cdk@2.1144.0
+          node --version
+          npm --version
           cdk --version
+          npm ls --depth=0
       - name: Run CDK fixture quality checks
         uses: ./actions/cdk-quality
         with:
