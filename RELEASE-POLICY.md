@@ -20,7 +20,21 @@ after maintainers deliberately establish and maintain that release line. Never r
 does not exist. Starter templates currently use REPLACE_WITH_RELEASE_SHA until a tested release
 containing these changes is published.
 
+- [Versioning Model](#versioning-model)
 - [Release Checklist](#release-checklist)
+
+## Versioning Model
+
+Choose the release increment by its public impact, not the number of commits or files changed:
+
+- Patch releases correct behavior, documentation, or automation while preserving supported
+  contracts.
+- Minor releases add backward-compatible capabilities, inputs, or supported runtime combinations.
+- Breaking public-interface changes require a minor release during 0.x development and a major
+  release after 1.0, with explicit migration guidance.
+
+Changing defaults, runner requirements, permissions, or artifact contracts can affect compatibility
+even when the implementation change is small. Assess those effects before choosing the version.
 
 ## Release Checklist
 
@@ -30,6 +44,13 @@ contracts, and rollback without adding a publication workflow or requiring a sep
 archive. Maintainers may retain version-specific records in the optional [release notes archive];
 its index describes naming and evidence conventions without adding a release gate. A draft is not
 proof that a release exists.
+
+The repository-local `.github/release.yml` groups [generated release notes] using shared PR label
+categories, with unmatched changes retained under Other Changes and no exclusions. This is a draft
+aid, not a replacement for the changelog or reviewed version record: reconcile complete scope,
+compatibility, and validation evidence before publication. It does not create labels, authorize
+publication, or control PR merge targets. Dependabot version updates retain their separate `develop`
+routing; generated release-note configuration is not a consumer-wide inherited default.
 
 Validate a prepared dated release section with `make release-changelog RELEASE_VERSION=x.y.z`. This
 invokes Popo's public checker using the selected interpreter and optional `REPOSITORY_ROOT`; it does
@@ -67,3 +88,4 @@ with an explicit consumer-owned release-template replacement.
 [release-notes template]: .github/RELEASE-NOTES-TEMPLATE.md
 [release notes archive]: docs/releases/README.md
 [retrospective record]: docs/releases/v0.2.0.md
+[generated release notes]: https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes

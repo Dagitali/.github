@@ -13,9 +13,13 @@
 # - Use explicit Bash for gates, archive verification, and evidence rendering.
 # - Use NumPy-style docstrings for typed evidence-rendering contracts.
 # - Keep gate step labels aligned with regular CI for comparable run logs.
+# - Report validation tool versions using the same commands as regular CI.
+# - Identify the exact candidate revision in both run titles and summaries.
 
+---
 name: Release candidate validation
-run-name: Release candidate validation on ${{ github.ref_name }}
+run-name: >-
+  Release candidate validation: ${{ github.ref_name }} @ ${{ github.sha }}
 
 # Select the candidate branch/ref in GitHub's manual-run UI. Never publishes.
 on:
@@ -56,7 +60,8 @@ jobs:
         run: |
           go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-          command -v shellcheck
+          "$(go env GOPATH)/bin/actionlint" --version
+          shellcheck --version
       - name: Run the repository quality gate
         run: make check
 

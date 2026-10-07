@@ -7,7 +7,9 @@
 #
 # Maintainer Notes
 # - Keep requests actionable without requiring project-specific tooling.
+# - Preserve existing field IDs, labels, and requiredness for consumers.
 
+---
 name: Documentation improvement
 description: Report missing, unclear, or incorrect documentation
 title: "[Docs]: "
@@ -19,6 +21,8 @@ body:
       value: >-
         Identify a public documentation problem without including credentials,
         private data, confidential evidence, or suspected vulnerability details.
+        Report suspected vulnerabilities privately through the affected
+        repository's security policy, not in this public form.
   - type: input
     id: location
     attributes:
@@ -37,10 +41,21 @@ body:
   - type: textarea
     id: suggestion
     attributes:
-      label: Suggested change
+      label: Suggested change and evidence
       description: >-
         Describe the wording, example, or structure that would help. Link public
         implementation, test, release, or primary-source evidence when available.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Primary impact
+      options:
+        - Accuracy or completeness
+        - Accessibility or clarity
+        - Compatibility or migration
+        - Security or privacy guidance
+        - Stale link or reference
+        - Other
   - type: checkboxes
     id: checks
     attributes:

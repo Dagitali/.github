@@ -4,10 +4,12 @@
 # Responsibilities
 # - Gather problems, proposed outcomes, and considered alternatives.
 # - Invite observable outcomes and compatibility considerations.
+# - Identify affected surfaces without requiring product-specific categories.
 #
 # Maintainer Notes
 # - Preserve existing field IDs, labels, and requiredness for consumers.
 
+---
 name: Feature request
 description: Propose an improvement or new capability
 title: "[Feature]: "
@@ -20,11 +22,14 @@ body:
         Tell us about the problem you want to solve and the outcome you need before
         prescribing an implementation. Do not include credentials, private data,
         confidential evidence, or suspected vulnerability details in public issues.
+        For general usage questions, follow the affected project's support
+        instructions and available channels instead.
   - type: textarea
     id: problem
     attributes:
       label: Problem or opportunity
       description: What need, limitation, or opportunity does this address?
+      placeholder: Describe the current need or pain point.
     validations:
       required: true
   - type: textarea
@@ -32,13 +37,40 @@ body:
     attributes:
       label: Proposed solution
       description: Describe the desired behavior and observable outcomes that would make it complete.
+      placeholder: |
+        Requested improvement:
+        Users can ...
+        The system does not ...
+        Observable outcomes or tests demonstrate ...
     validations:
       required: true
   - type: textarea
     id: alternatives
     attributes:
       label: Alternatives considered
-      description: What workarounds or alternative approaches have you considered, and why are they insufficient?
+      description: >-
+        Describe relevant workarounds or alternatives and why they are
+        insufficient.
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example
+      description: Include sanitized example configuration, commands, code, or output.
+      render: text
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface
+      description: Select the primary area affected, if known.
+      options:
+        - Documentation
+        - Public API
+        - Runtime or generated output
+        - Developer or contributor workflow
+        - Integration
+        - Automation, CI, or packaging
+        - Security or support policy
+        - Other
   - type: textarea
     id: context
     attributes:
@@ -47,6 +79,8 @@ body:
         Add public examples, sketches, links, or other relevant details. Note
         compatibility, migration, security, privacy, operational, or cost impacts
         where applicable.
+        If relevant, describe changes to permissions, data collection or exports,
+        offline behavior, or synchronization across devices or services.
   - type: checkboxes
     id: checks
     attributes:

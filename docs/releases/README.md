@@ -21,6 +21,7 @@ that a GitHub Release or consumer rollout exists.
 Use the [changelog] for concise change history, the [release-notes template] when preparing a
 record, and the [release policy] for validation and publication safeguards.
 
+- [0.6 Series](#06-series)
 - [0.5 Series](#05-series)
 - [0.4 Series](#04-series)
 - [0.3 Series](#03-series)
@@ -32,10 +33,17 @@ record, and the [release policy] for validation and publication safeguards.
   - [Release Operations](#release-operations)
 - [Maintaining the Archive](#maintaining-the-archive)
 
+## 0.6 Series
+
+- [v0.6.0] — 2026-10-07: Shared maintenance conventions, additive issue-form and release-note
+  triage, CDK setup composition, and clearer environment and candidate evidence. The record retains
+  preparation-time validation; tagging, hosted release validation, and publication are unverified.
+
 ## 0.5 Series
 
 - [v0.5.1] — 2026-10-06: Release-template and archive normalization, centralized evidence guidance,
-  and historical status corrections; documentation-only patch candidate.
+  and historical status corrections; documentation-only patch. The local tag exists; preparation
+  results are preserved separately from unverified publication and final-tag validation.
 - [v0.5.0] — 2026-10-06: Configuration-driven hosted drift auditing through pinned Popo v0.5.2, with
   an opt-in Make target, offline inventory integration coverage, and evidence/exception guidance.
   The local tag exists; its record preserves preparation-time and matching-commit hosted fixture
@@ -163,3 +171,4 @@ prepared.
 [v0.4.1]: v0.4.1.md
 [v0.5.0]: v0.5.0.md
 [v0.5.1]: v0.5.1.md
+[v0.6.0]: v0.6.0.md

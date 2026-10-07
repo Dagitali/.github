@@ -8,10 +8,12 @@
 #
 # Maintainer Notes
 # - Preserve lockfile-aware caching; never obtain credentials or deploy.
-# - Compose same-revision quality checks; self references require GitHub.com.
+# - Compose same-revision setup/quality; self references require GitHub.com.
+# - Keep installation in this workflow; Python setup uses setup-only mode.
 # - Caller workflows own triggers and cancellation, not this shared workflow.
 # - Offline synthesis executes caller code; it is not a sandbox boundary.
 
+---
 name: Reusable AWS CDK CI
 
 on:
@@ -142,11 +144,13 @@ jobs:
 
       - name: Set up Python
         if: inputs.language == 'python'
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
+        uses: $/actions/setup-python-project
         with:
           python-version: ${{ inputs.python-version }}
+          working-directory: ${{ inputs.working-directory }}
           cache: ${{ inputs.python-cache }}
-          cache-dependency-path: ${{ inputs.cache-dependency-path || format('{0}/pyproject.toml', inputs.working-directory) }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path }}
+          install-command: ''
 
       - name: Install AWS CDK CLI
         env:

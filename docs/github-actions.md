@@ -209,13 +209,14 @@ steps:
 
 `actions/cdk-quality` expects its caller to install the runtime, dependencies, and CDK CLI. Python
 CI uses `$/actions/setup-python-project` and `$/actions/python-quality`; CDK CI uses
-`$/actions/cdk-quality`. GitHub's [self-repository reference syntax] resolves these actions from the
-reusable workflow's repository at its running commit, preserving the consumer-selected revision
-without floating refs or an extra library checkout. `./actions/...` would instead resolve against
-the consumer checkout. These refactored workflows require GitHub.com; the `$/` syntax is not
-supported on GitHub Enterprise Server. Earlier revisions remain available for consumers requiring
-that platform. Contract tests verify input defaults and forwarding; matrices, installation policy,
-permissions, and failure-time uploads stay in the workflows.
+`$/actions/setup-python-project` in setup-only mode for Python callers and `$/actions/cdk-quality`.
+GitHub's [self-repository reference syntax] resolves these actions from the reusable workflow's
+repository at its running commit, preserving the consumer-selected revision without floating refs or
+an extra library checkout. `./actions/...` would instead resolve against the consumer checkout.
+These refactored workflows require GitHub.com; the `$/` syntax is not supported on GitHub Enterprise
+Server. Earlier revisions remain available for consumers requiring that platform. Contract tests
+verify input defaults and forwarding; matrices, installation policy, permissions, and failure-time
+uploads stay in the workflows.
 
 Python setup defaults are unchanged. Set `install-command: ''` for setup-only mode; installation and
 its `pip check` are both skipped, while Python/pip versions are still reported. Use an explicit
@@ -224,6 +225,12 @@ project-local setup actions with `extras`/`editable` switches, this shared actio
 trusted command that supports packages, requirements files, constraints, and alternative installers.
 Python CI supports the same empty-command convention, but quality commands still run unless
 individually disabled. Setup-only mode does not create a virtual environment or install test tools.
+
+CDK CI retains early language/cache validation before caller preparation, then uses shared Python
+setup without installing the project. CDK CLI installation, custom/default dependency installation,
+language-specific compatibility checks, and post-install environment reporting remain in the
+workflow. Custom install commands retain their existing compatibility-check policy. The setup action
+also reports the initial Python/pip versions; it does not replace post-install reporting.
 
 All workflows and starters deny permissions by default and grant `contents: read` at the jobs that
 need it. Reusable-workflow callers must grant that permission to the calling job; a callee cannot

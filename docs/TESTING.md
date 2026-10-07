@@ -22,6 +22,11 @@ hosted validation; neither authorizes publishing or deployment.
 
 ## Contract Coverage
 
+Regular and candidate library validation log actionlint and ShellCheck versions alongside the shared
+Python setup report. The composite CDK fixture logs Node.js, npm, CDK, and its installed top-level
+dependency tree, following sibling environment-evidence conventions. These diagnostics identify the
+tested environment; they do not establish hosted settings or deployment success.
+
 The existing parameterized inspection-summary cases also exercise successful, nonzero, and absent
 tool-version queries. Executable shims capture the actual pip-list arguments; failed queries retain
 the explicit unavailable message and the original report status. This coverage uses the same
@@ -86,9 +91,11 @@ runs, so regression checks do not reformat the checkout. The default-gate assert
 flags and requires only the non-mutating formatting invocation. Source editing remains opt-in.
 
 Manual candidate validation runs the library's `make check` on Python 3.13 and 3.14, separately from
-its consumer fixtures. A declaration-parity test keeps checkout, installation, tool pins,
-permissions, timeout, and gate commands aligned with regular CI, allowing only runtime selection to
-differ. This does not expand ordinary PR jobs or establish hosted success on either runtime.
+its consumer fixtures. The run title includes the selected ref and exact commit, matching the
+summary's candidate identity and distinguishing repeated runs on a moving branch. A
+declaration-parity test keeps checkout, installation, tool pins, permissions, timeout, and gate
+commands aligned with regular CI, allowing only runtime selection to differ. This does not expand
+ordinary PR jobs or establish hosted success on either runtime.
 
 The existing rendered-starter integration check also verifies workflow/ref-scoped CI concurrency,
 merge-group triggers, and the absence of auto-cancellation for publishing starters. This extends
