@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.5 - 2026-10-07](#065---2026-10-07)
 - [0.6.4 - 2026-10-07](#064---2026-10-07)
 - [0.6.3 - 2026-10-07](#063---2026-10-07)
 - [0.6.2 - 2026-10-07](#062---2026-10-07)
@@ -37,7 +38,16 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.4.
+No additional changes recorded after v0.6.5.
+
+## [0.6.5] - 2026-10-07
+
+Maintenance patch for Python fixture build and development tooling. See the [release record][0.6.5]
+for scope, compatibility, validation, and unverified tag/publication status.
+
+- Raise the setuptools build requirement from >=75 to >=84.0.0 in the Python and Python CDK
+  fixtures, and update the Python fixture's mypy pin from 1.15.0 to 2.4.0. Public automation
+  interfaces and consumer dependency requirements remain unchanged.
 
 ## [0.6.4] - 2026-10-07
 
@@ -286,3 +296,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.2]: docs/releases/v0.6.2.md
 [0.6.3]: docs/releases/v0.6.3.md
 [0.6.4]: docs/releases/v0.6.4.md
+[0.6.5]: docs/releases/v0.6.5.md
