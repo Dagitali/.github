@@ -47,6 +47,11 @@ Require reviewed pull requests, resolved conversations, and successful validatio
 branches. Restrict force pushes, deletion, and bypass access. Choose approval requirements that
 match available independent reviewers; authors cannot independently approve their own changes.
 
+Where independent review is available, consider dismissing stale approvals or requiring review of
+the latest push so approval covers the changes being merged. Require linear history or signed
+commits only when compatible with the project's merge strategy and contributor tooling; these
+optional controls should not prevent the documented integration and recovery paths.
+
 Local hooks provide early feedback, not server-side enforcement. Successful CI after a direct push
 cannot retroactively prevent that push. Configure active hosted rulesets or equivalent branch
 protection for the chosen integration/release branches; review overlapping rules and bypass actors,
