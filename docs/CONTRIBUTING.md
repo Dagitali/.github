@@ -196,6 +196,12 @@ production/development fixture groups. CODEOWNERS uses the sibling maintainer ac
 repository access, but hosted review rules and independent reviewers remain separate
 responsibilities.
 
+Dependabot version-update PRs explicitly target `develop` for every configured ecosystem, following
+the maintenance review policy. Security-update PRs still target the repository default branch; keep
+`.github/dependabot.yml` there for GitHub to read. The configuration does not enable automatic
+merging. Preserve the Python and Node fixture directories, separate validation-tool grouping,
+automatic labels, and staggered UTC schedules when changing dependency maintenance.
+
 CODEOWNERS keeps a default maintainer first, followed by explicit library-surface rules, matching
 the sibling CDK and website repositories. The fallback covers new paths and root policy files;
 explicit rules preserve reviewable boundaries for future specialization, including the organization
