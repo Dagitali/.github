@@ -22,9 +22,14 @@ Maintainer Notes
 
 ## Verification
 
-<!-- List commands, results, relevant scenarios, and manual checks. Distinguish local
-     results from hosted CI; record pending or not-run checks with reasons.
+<!-- List commands, results, relevant scenarios, and manual checks.
+     Distinguish local results from hosted CI; record pending or not-run
+     checks with reasons.
      Use N/A - reason for inapplicable evidence, not a passing result. -->
+
+<!-- For UI or user-facing copy changes, include sanitized screenshots or
+     recordings where useful, or explain why they are not. Describe relevant
+     accessibility and localization checks without assuming a platform. -->
 
 <!-- For automation changes: record the validated SHA, local commands,
      hosted run links, representative consumer evidence, and checks not yet
@@ -35,15 +40,21 @@ Maintainer Notes
 <!-- Describe public interfaces, user-visible behavior, supported platforms,
      toolchains, and effects on existing consumers or operations. For CLI
      changes, cover commands, flags, configuration, output, and exit codes.
-     For automation changes, describe paths, inputs/defaults, permissions, outputs,
-     artifacts, and required-check names. Link migration guidance and the
-     known-good rollback SHA where applicable. Identify breaking changes,
+     For automation changes, describe paths, inputs/defaults, permissions,
+     outputs, artifacts, and required-check names. Link migration guidance
+     and the known-good rollback SHA where applicable.
+     Identify breaking changes,
      deprecations, security risks, and publication/deployment effects;
      write None when there is no material impact. -->
 
 <!-- Describe configuration changes, resource replacements, data migrations,
      or service interruption where applicable, and how to restore the prior
-     safe state. No deployment or publication is authorized by this template. -->
+     safe state. No deployment or publication is authorized by this
+     template. -->
+
+<!-- Where relevant, describe permission, collection, storage, export, or sync
+     changes; explain effects on existing data and privacy expectations.
+     Keep private account details and sensitive evidence out of this PR. -->
 
 ## Review Focus and Documentation
 
