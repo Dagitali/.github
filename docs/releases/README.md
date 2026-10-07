@@ -35,7 +35,10 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.6 Series
 
-- [v0.6.0] — 2026-10-07: Shared maintenance conventions, additive issue-form and release-note
+- [v0.6.1] — 2026-10-07: Commitizen and md-toc pre-commit hook updates; maintenance patch with
+  unchanged shared automation contracts. Tagging, hosted release validation, and publication are
+  unverified in this record.
+- [v0.6.0] — 2026-10-07:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Shared maintenance conventions, additive issue-form and release-note
   triage, CDK setup composition, and clearer environment and candidate evidence. The record retains
   preparation-time validation; tagging, hosted release validation, and publication are unverified.
 
@@ -172,3 +175,4 @@ prepared.
 [v0.5.0]: v0.5.0.md
 [v0.5.1]: v0.5.1.md
 [v0.6.0]: v0.6.0.md
+[v0.6.1]: v0.6.1.md
