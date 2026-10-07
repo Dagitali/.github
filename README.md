@@ -12,6 +12,10 @@ Maintainer Notes
 -->
 # Dagitali GitHub Defaults
 
+[![Release][release badge]][version tags]
+[![License][license badge]][MIT License]
+[![CI][CI badge]][CI workflow]
+
 This repository contains shared GitHub configuration for Dagitali repositories, including
 community-health defaults, issue and pull-request templates, reusable GitHub Actions workflows,
 composite actions, and organization workflow templates.
@@ -93,6 +97,8 @@ before use.
 
 The optional [release notes archive] records version-specific scope and evidence boundaries.
 Historical records do not establish current support or hosted validation.
+The Release badge reports Git tags, not verified GitHub Release publication; the CI badge reports
+this library's `main` branch, not consumer adoption or hosted repository enforcement.
 
 ## Design Boundaries
 
@@ -106,6 +112,7 @@ are not supported on GitHub Enterprise Server. Review the [workflow contracts an
 limitations][Shared GitHub Actions] before adopting a revision.
 
 [changelog]: CHANGELOG.md
+[MIT License]: LICENSE
 [release policy]: RELEASE-POLICY.md
 [security policy]: SECURITY.md
 [consumer adoption checklist]: docs/ADOPTION.md
@@ -116,3 +123,8 @@ limitations][Shared GitHub Actions] before adopting a revision.
 [Shared GitHub Actions]: docs/github-actions.md
 [release notes archive]: docs/releases/README.md
 [default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
+[CI workflow]: https://github.com/Dagitali/.github/actions/workflows/ci.yml
+[CI badge]: https://github.com/Dagitali/.github/actions/workflows/ci.yml/badge.svg?branch=main
+[version tags]: https://github.com/Dagitali/.github/tags
+[license badge]: https://img.shields.io/github/license/Dagitali/.github.svg
+[release badge]: https://img.shields.io/github/v/tag/Dagitali/.github?label=release
