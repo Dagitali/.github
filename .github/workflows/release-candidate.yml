@@ -14,10 +14,12 @@
 # - Use NumPy-style docstrings for typed evidence-rendering contracts.
 # - Keep gate step labels aligned with regular CI for comparable run logs.
 # - Report validation tool versions using the same commands as regular CI.
+# - Identify the exact candidate revision in both run titles and summaries.
 
 ---
 name: Release candidate validation
-run-name: Release candidate validation on ${{ github.ref_name }}
+run-name: >-
+  Release candidate validation: ${{ github.ref_name }} @ ${{ github.sha }}
 
 # Select the candidate branch/ref in GitHub's manual-run UI. Never publishes.
 on:
