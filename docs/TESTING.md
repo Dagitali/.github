@@ -22,6 +22,11 @@ hosted validation; neither authorizes publishing or deployment.
 
 ## Contract Coverage
 
+Regular and candidate library validation log actionlint and ShellCheck versions alongside the shared
+Python setup report. The composite CDK fixture logs Node.js, npm, CDK, and its installed top-level
+dependency tree, following sibling environment-evidence conventions. These diagnostics identify the
+tested environment; they do not establish hosted settings or deployment success.
+
 The existing parameterized inspection-summary cases also exercise successful, nonzero, and absent
 tool-version queries. Executable shims capture the actual pip-list arguments; failed queries retain
 the explicit unavailable message and the original report status. This coverage uses the same
