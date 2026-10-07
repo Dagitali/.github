@@ -32,6 +32,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Align workflow environment evidence with the sibling CDK project: report actionlint/ShellCheck
+  versions in regular and candidate validation, plus Node.js/npm versions and installed dependencies
+  in the composite CDK fixture, preserving reusable interfaces and the non-deployment boundary.
 - Align branch-protection and release-template guidance with generic sibling conventions: qualify
   optional review/history safeguards and explicitly record delivery triggers, protected
   environments, and approvals without changing hosted settings or publication behavior.
