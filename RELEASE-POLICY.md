@@ -31,6 +31,13 @@ archive. Maintainers may retain version-specific records in the optional [releas
 its index describes naming and evidence conventions without adding a release gate. A draft is not
 proof that a release exists.
 
+The repository-local `.github/release.yml` groups [generated release notes] using shared PR label
+categories, with unmatched changes retained under Other Changes and no exclusions. This is a draft
+aid, not a replacement for the changelog or reviewed version record: reconcile complete scope,
+compatibility, and validation evidence before publication. It does not create labels, authorize
+publication, or control PR merge targets. Dependabot version updates retain their separate `develop`
+routing; generated release-note configuration is not a consumer-wide inherited default.
+
 Validate a prepared dated release section with `make release-changelog RELEASE_VERSION=x.y.z`. This
 invokes Popo's public checker using the selected interpreter and optional `REPOSITORY_ROOT`; it does
 not create release records, tags, or publications, or substitute for hosted evidence.
@@ -67,3 +74,4 @@ with an explicit consumer-owned release-template replacement.
 [release-notes template]: .github/RELEASE-NOTES-TEMPLATE.md
 [release notes archive]: docs/releases/README.md
 [retrospective record]: docs/releases/v0.2.0.md
+[generated release notes]: https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
