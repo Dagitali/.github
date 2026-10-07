@@ -8,6 +8,7 @@
 # Maintainer Notes
 # - Preserve existing field IDs, labels, and requiredness for consumers.
 
+---
 name: Feature request
 description: Propose an improvement or new capability
 title: "[Feature]: "
@@ -25,6 +26,7 @@ body:
     attributes:
       label: Problem or opportunity
       description: What need, limitation, or opportunity does this address?
+      placeholder: Describe the current need or pain point.
     validations:
       required: true
   - type: textarea
@@ -32,13 +34,22 @@ body:
     attributes:
       label: Proposed solution
       description: Describe the desired behavior and observable outcomes that would make it complete.
+      placeholder: Describe the requested improvement.
     validations:
       required: true
   - type: textarea
     id: alternatives
     attributes:
       label: Alternatives considered
-      description: What workarounds or alternative approaches have you considered, and why are they insufficient?
+      description: >-
+        Describe relevant workarounds or alternatives and why they are
+        insufficient.
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example
+      description: Include sanitized example configuration, commands, code, or output.
+      render: text
   - type: textarea
     id: context
     attributes:

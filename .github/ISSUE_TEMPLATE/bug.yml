@@ -7,7 +7,9 @@
 #
 # Maintainer Notes
 # - Keep organization defaults product-neutral and reports free of secrets.
+# - Preserve existing field IDs, labels, and requiredness for consumers.
 
+---
 name: Bug report
 description: Report reproducible incorrect or unexpected behavior
 title: "[Bug]: "
@@ -25,6 +27,7 @@ body:
     attributes:
       label: Description
       description: Describe what went wrong, its impact, and relevant output or exit codes.
+      placeholder: What is broken, and how does it affect you?
     validations:
       required: true
   - type: textarea
@@ -47,6 +50,12 @@ body:
       description: What did you expect to happen?
     validations:
       required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error output
+      description: Include sanitized errors, tracebacks, logs, or failing assertions.
+      render: text
   - type: textarea
     id: environment
     attributes:
