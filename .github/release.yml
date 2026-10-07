@@ -4,6 +4,7 @@
 # Responsibilities
 # - Group generated release notes using shared pull-request label conventions.
 # - Retain unmatched changes without silently excluding release history.
+# - Recognize generic release-note and SemVer labels used by sibling projects.
 #
 # Maintainer Notes
 # - Categories are evaluated in order; keep the catch-all category last.
@@ -16,26 +17,50 @@ changelog:
   categories:
     - title: Breaking Changes
       labels:
+        - release-note:breaking-change
+        - semver-major
         - breaking
         - breaking-change
+    - title: Deprecations
+      labels:
+        - release-note:deprecation
+        - deprecated
+        - deprecation
     - title: Features
       labels:
+        - release-note:feature
+        - semver-minor
         - enhancement
         - feature
+        - user-facing
     - title: Fixes
       labels:
+        - release-note:fix
+        - semver-patch
         - bug
         - bugfix
         - fix
     - title: Documentation
       labels:
+        - release-note:documentation
         - docs
         - documentation
+    - title: Validation and Testing
+      labels:
+        - release-note:validation
+        - release-note:testing
+        - test
+        - testing
+        - tests
+        - validation
     - title: Maintenance
       labels:
+        - release-note:maintenance
+        - automation
         - chore
         - ci
         - dependencies
+        - pre-commit
     - title: Other Changes
       labels:
         - '*'
