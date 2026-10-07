@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.1 - 2026-10-07](#061---2026-10-07)
 - [0.6.0 - 2026-10-07](#060---2026-10-07)
 - [0.5.1 - 2026-10-06](#051---2026-10-06)
 - [0.5.0 - 2026-10-06](#050---2026-10-06)
@@ -33,7 +34,15 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.0.
+No additional changes recorded after v0.6.1.
+
+## [0.6.1] - 2026-10-07
+
+Maintenance patch for pre-commit tooling. See the [release record][0.6.1] for scope, compatibility,
+validation, and unverified tag/publication status.
+
+- Update Commitizen from v4.18.1 to v4.19.1 and md-toc from 9.0.0 to 9.1.0 without changing hook
+  configuration, shared workflow/action interfaces, or consumer defaults.
 
 ## [0.6.0] - 2026-10-07
 
@@ -240,3 +249,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.5.0]: docs/releases/v0.5.0.md
 [0.5.1]: docs/releases/v0.5.1.md
 [0.6.0]: docs/releases/v0.6.0.md
+[0.6.1]: docs/releases/v0.6.1.md
