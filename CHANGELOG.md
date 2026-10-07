@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.2 - 2026-10-07](#062---2026-10-07)
 - [0.6.1 - 2026-10-07](#061---2026-10-07)
 - [0.6.0 - 2026-10-07](#060---2026-10-07)
 - [0.5.1 - 2026-10-06](#051---2026-10-06)
@@ -34,7 +35,17 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.1.
+No additional changes recorded after v0.6.2.
+
+## [0.6.2] - 2026-10-07
+
+Maintenance patch for pinned GitHub Actions dependencies. See the [release record][0.6.2] for scope,
+upstream compatibility requirements, validation, and unverified tag/publication status.
+
+- Update setup-node to v7.0.0 in AWS CDK CI and library CI, setup-python to v7.0.0 in Python
+  package, dependency-audit, and SBOM workflows, and dependency-review-action to v5.0.0 in
+  dependency review. Preserve full commit pins and existing workflow interfaces, configuration, and
+  artifact contracts.
 
 ## [0.6.1] - 2026-10-07
 
@@ -250,3 +261,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.5.1]: docs/releases/v0.5.1.md
 [0.6.0]: docs/releases/v0.6.0.md
 [0.6.1]: docs/releases/v0.6.1.md
+[0.6.2]: docs/releases/v0.6.2.md
