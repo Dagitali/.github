@@ -1,0 +1,41 @@
+# .github/release.yml
+# Dagitali shared automation library
+#
+# Responsibilities
+# - Group generated release notes using shared pull-request label conventions.
+# - Retain unmatched changes without silently excluding release history.
+#
+# Maintainer Notes
+# - Categories are evaluated in order; keep the catch-all category last.
+# - Labels categorize changes but do not create labels or prove compatibility.
+# - Review generated notes against the changelog and versioned release record.
+# - This configuration does not publish releases or control PR merge targets.
+
+---
+changelog:
+  categories:
+    - title: Breaking Changes
+      labels:
+        - breaking
+        - breaking-change
+    - title: Features
+      labels:
+        - enhancement
+        - feature
+    - title: Fixes
+      labels:
+        - bug
+        - bugfix
+        - fix
+    - title: Documentation
+      labels:
+        - docs
+        - documentation
+    - title: Maintenance
+      labels:
+        - chore
+        - ci
+        - dependencies
+    - title: Other Changes
+      labels:
+        - '*'
