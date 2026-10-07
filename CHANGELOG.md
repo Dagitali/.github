@@ -32,6 +32,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Clarify non-code contribution options and conduct guidance, project-owned support expectations,
+  and impact-based patch/minor/major release selection without adopting app-specific policies or
+  changing the existing 0.x breaking-change convention.
 - Request useful sanitized UI evidence, accessibility/localization checks, and
   permission/data/privacy impacts only when relevant, without imposing application-specific tooling
   or new mandatory checklist items.

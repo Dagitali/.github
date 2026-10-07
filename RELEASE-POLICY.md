@@ -20,7 +20,21 @@ after maintainers deliberately establish and maintain that release line. Never r
 does not exist. Starter templates currently use REPLACE_WITH_RELEASE_SHA until a tested release
 containing these changes is published.
 
+- [Versioning Model](#versioning-model)
 - [Release Checklist](#release-checklist)
+
+## Versioning Model
+
+Choose the release increment by its public impact, not the number of commits or files changed:
+
+- Patch releases correct behavior, documentation, or automation while preserving supported
+  contracts.
+- Minor releases add backward-compatible capabilities, inputs, or supported runtime combinations.
+- Breaking public-interface changes require a minor release during 0.x development and a major
+  release after 1.0, with explicit migration guidance.
+
+Changing defaults, runner requirements, permissions, or artifact contracts can affect compatibility
+even when the implementation change is small. Assess those effects before choosing the version.
 
 ## Release Checklist
 

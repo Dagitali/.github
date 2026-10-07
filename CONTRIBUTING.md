@@ -24,12 +24,17 @@ Thank you for contributing to a Dagitali project.
 - Use the repository's issue forms when reporting bugs or proposing changes.
 - Discuss substantial proposals with maintainers before implementing them.
 - Review the affected project's contribution terms and documented setup requirements.
+- Read and follow the applicable [code of conduct].
 - For security vulnerabilities, follow [SECURITY.md] instead of opening a public issue.
 
 ## First Contribution
 
 Documentation corrections, reproducible bug reports, tests, and focused code improvements are
 welcome. You do not need to start with a large feature.
+
+Non-code contributions can include supported-release verification, examples, issue triage, and
+answers in the project's available community channels. Record the environment and results when
+contributing verification evidence; do not treat an untested suggestion as a completed check.
 
 1. Read the project's README and repository-specific contributor guide. For usage questions, follow
    its [support instructions].
@@ -55,5 +60,6 @@ Commands, supported runtimes, repository access, and merge requirements remain p
 
 Project-specific contribution instructions take precedence over this document.
 
+[code of conduct]: CODE_OF_CONDUCT.md
 [SECURITY.md]: SECURITY.md
 [support instructions]: SUPPORT.md
