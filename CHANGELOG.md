@@ -33,13 +33,13 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after preparation of the v0.6.0 candidate.
+No additional changes recorded after v0.6.0.
 
 ## [0.6.0] - 2026-10-07
 
-Prepared minor-release candidate for shared maintenance conventions and additive community triage
-and release-note features. This date records preparation, not tagging or publication. See the
-[release candidate][0.6.0] for complete scope, compatibility, and outstanding evidence.
+Minor release for shared maintenance conventions and additive community triage and release-note
+features. See the [release record][0.6.0] for complete scope, compatibility, validation history, and
+remaining evidence gaps.
 
 - Clarify non-code contribution options and conduct guidance, project-owned support expectations,
   and impact-based patch/minor/major release selection without adopting app-specific policies or
