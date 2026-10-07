@@ -64,7 +64,10 @@ effects. Omit irrelevant sections rather than inventing return values or guarant
 
 Issue-form and chooser headers follow sibling responsibility/maintainer conventions, while keeping
 the organization default's existing field IDs, requiredness, labels, and reporting routes. Do not
-copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. Inline
+copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. The
+optional feature surface selector supports generic routing; bug prompts invite supported-version
+reproduction evidence without requiring an upgrade or adding mandatory responses. Documentation
+forms direct suspected vulnerabilities to the affected repository's private reporting policy. Inline
 workflow Python should document reusable helper arguments, file effects, and failure behavior; the
 candidate renderer accepts its payload/path explicitly and appends before checking job outcomes.
 Typing heterogeneous GitHub payloads with Any is deliberate, not runtime schema validation.
