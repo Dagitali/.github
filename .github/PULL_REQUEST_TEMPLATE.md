@@ -13,7 +13,8 @@ Maintainer Notes
 
 ## Summary
 
-<!-- What changed, and why? -->
+<!-- Describe the user-visible or operational change and why it is needed.
+     Identify the intended target branch when that context is not obvious. -->
 
 ## Related Issue
 
@@ -21,7 +22,7 @@ Maintainer Notes
 
 ## Verification
 
-<!-- List commands, results, and relevant manual checks. Distinguish local
+<!-- List commands, results, relevant scenarios, and manual checks. Distinguish local
      results from hosted CI; record pending or not-run checks with reasons.
      Use N/A - reason for inapplicable evidence, not a passing result. -->
 
@@ -31,11 +32,18 @@ Maintainer Notes
 
 ## Compatibility and Rollback
 
-<!-- Describe affected paths, inputs/defaults, permissions, outputs,
+<!-- Describe public interfaces, user-visible behavior, supported platforms,
+     toolchains, and effects on existing consumers or operations. For CLI
+     changes, cover commands, flags, configuration, output, and exit codes.
+     For automation changes, describe paths, inputs/defaults, permissions, outputs,
      artifacts, and required-check names. Link migration guidance and the
      known-good rollback SHA where applicable. Identify breaking changes,
      deprecations, security risks, and publication/deployment effects;
      write None when there is no material impact. -->
+
+<!-- Describe configuration changes, resource replacements, data migrations,
+     or service interruption where applicable, and how to restore the prior
+     safe state. No deployment or publication is authorized by this template. -->
 
 ## Review Focus and Documentation
 
@@ -51,6 +59,7 @@ Maintainer Notes
 
 - [ ] I kept this change focused and reviewed my own diff.
 - [ ] I added or updated tests where appropriate.
+- [ ] I followed the affected repository's contribution and safety instructions.
 - [ ] I updated documentation where appropriate.
 - [ ] I confirmed that relevant checks pass.
 - [ ] I recorded compatibility risks, intentional limitations, and follow-up work.

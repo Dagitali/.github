@@ -150,9 +150,9 @@ authorization for external release operations under the [release policy].
 
 [changelog]: ../CHANGELOG.md
 [release policy]: ../RELEASE-POLICY.md
-[release operations]: ../RELEASE-POLICY.md#release-checklist
 [testing guide]: ../docs/TESTING.md
-[evidence boundaries]: ../docs/TESTING.md#hosted-consumer-evidence
 [workflow contracts]: ../docs/github-actions.md
 [release notes archive]: ../docs/releases/README.md
+[evidence boundaries]: ../docs/releases/README.md#evidence-boundaries
 [reading guide]: ../docs/releases/README.md#reading-the-archive
+[release operations]: ../docs/releases/README.md#release-operations

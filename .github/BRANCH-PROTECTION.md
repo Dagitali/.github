@@ -10,13 +10,27 @@ Maintainer Notes
 - This guidance does not configure hosted rules or prove enforcement.
 - Keep integration policy independent of a fixed branching model.
 -->
+
 # Branch Protection Guidance
 
 This is a proposed maintainer baseline, not evidence of active hosted settings.
 
+- [Branch Roles](#branch-roles)
 - [Shared Protection Baseline](#shared-protection-baseline)
 - [Required Checks and Merge Queue](#required-checks-and-merge-queue)
 - [Updating Required Checks](#updating-required-checks)
+
+## Branch Roles
+
+Choose integration and release branches appropriate to the project; no fixed branch names or source
+prefixes are required by this guidance. Apply the protection baseline to each maintained branch and
+review workflow triggers alongside hosted rules when branch roles change. Library CI validates all
+pull requests, pushes, merge groups, and manual dispatches; successful runs do not establish hosted
+enforcement.
+
+Release pull requests should summarize compatibility, validation evidence, artifact effects, and
+rollback. For multiple maintained release lines, plan how fixes reach each through reviewed changes.
+Local branch-finishing commands and post-merge tag checks do not replace hosted review.
 
 ## Shared Protection Baseline
 
@@ -26,6 +40,9 @@ the file; maintainers must recheck access when ownership changes. Require code-o
 hosted rules if appropriate for available independent reviewers. Ownership is not inherited by
 consuming repositories, and the file does not activate enforcement by itself.
 
+If the repository's visibility or plan does not support the selected controls, keep this as target
+guidance, retain reviewed pull requests voluntarily, and record the enforcement gap separately.
+
 Require reviewed pull requests, resolved conversations, and successful validation for integration
 branches. Restrict force pushes, deletion, and bypass access. Choose approval requirements that
 match available independent reviewers; authors cannot independently approve their own changes.
@@ -34,7 +51,7 @@ Local hooks provide early feedback, not server-side enforcement. Successful CI a
 cannot retroactively prevent that push. Configure active hosted rulesets or equivalent branch
 protection for the chosen integration/release branches; review overlapping rules and bypass actors,
 including administrator and automation access. Document narrow recovery exceptions and periodically
-recheck them. No fixed branch names or source prefixes are required by this guidance.
+recheck them.
 
 ## Required Checks and Merge Queue
 
@@ -46,6 +63,11 @@ add path filters that prevent required results from being reported.
 Keep job names unique across workflows; step labels are not required-check names. Select required
 results only after verifying that they report for every applicable PR and queued merge group.
 Advisory/manual evidence must not become a merge prerequisite unless its trigger coverage changes.
+
+Choose strict checks when branches must be current with their target before merging; use loose
+checks only when the integration risk is acceptable. Do not require path-filtered workflows unless
+an alternative reports the required result for excluded changes. Verify merge-group coverage for
+every selected check before enabling a merge queue.
 
 ## Updating Required Checks
 
