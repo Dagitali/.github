@@ -32,6 +32,8 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
+- Recognize release-note and SemVer aliases and distinguish deprecations and validation, retaining
+  the catch-all, existing categories, and no-exclusions history policy.
 - Show the selected ref and exact commit in the run title, consistent with the existing evidence
   summary, without changing validation or delivery.
 - Generalize issue prompts within existing fields: invite relevant device, permission, connectivity,
