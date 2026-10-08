@@ -35,6 +35,10 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.6 Series
 
+- [v0.6.9] — 2026-10-07: Actionable consumer lifecycle inventory with immutable caller evidence,
+  explicit owner/schedule gaps, and stale, missing, and inaccessible review flags;
+  documentation-only patch without automatic archival. The record date identifies preparation;
+  tagging, tagged-revision validation, and publication remain unverified.
 - [v0.6.8] — 2026-10-07: Read-only workflow/npm safety checks through pinned Popo v0.6.3 and shared
   Make gates, refreshed hosted adoption evidence, consumer inventory, and project-specific
   contribution terms; maintenance patch with unchanged public automation contracts. The record date
@@ -202,3 +206,4 @@ prepared.
 [v0.6.5]: v0.6.5.md
 [v0.6.7]: v0.6.7.md
 [v0.6.8]: v0.6.8.md
+[v0.6.9]: v0.6.9.md
