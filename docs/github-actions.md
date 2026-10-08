@@ -49,9 +49,9 @@ adoption, including the GitHub.com-only same-revision action references in Pytho
 ## Adoption
 
 Before using a template, replace `REPLACE_WITH_RELEASE_SHA` with the full commit SHA of a tested,
-published release containing the required workflow and inputs. The remote tags verified during this
-change were `v0.0.0` and `v0.1.0`; `v1` did not exist. These new changes are unreleased. Do not
-assume an older release contains this interface.
+published release containing the required workflow and inputs. Verify the chosen release and its
+interfaces at adoption time; do not assume an older release contains them or that a moving `v1` tag
+exists. Use the [starter catalogue] for prerequisites, substitutions, and permission boundaries.
 
 Copy a file from `workflow-templates/` into the consumer's `.github/workflows/` directory.
 Replace GitHub's `$default-branch` placeholder manually when copying locally; the GitHub
@@ -471,7 +471,6 @@ configured hosted review requirements.
 [Python inspection starter]: ../workflow-templates/python-dependency-inspection.yml
 [Python release starter]: ../workflow-templates/python-release.yml
 [Swift CI starter]: ../workflow-templates/swift-ci.yml
-[consumer adoption checklist]: ADOPTION.md
 [contributor instructions]: CONTRIBUTING.md
 [maintenance guidance]: MAINTENANCE.md
 [testing]: TESTING.md
@@ -485,3 +484,5 @@ configured hosted review requirements.
 [upload]: https://github.com/actions/upload-artifact
 [PyPA publishing action documentation]: https://github.com/pypa/gh-action-pypi-publish#trusted-publishing
 [pip-audit's security model]: https://github.com/pypa/pip-audit
+[consumer adoption checklist]: playbooks/adopt-shared-automation.md
+[starter catalogue]: starter-catalogue.md

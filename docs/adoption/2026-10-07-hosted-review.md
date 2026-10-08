@@ -68,7 +68,7 @@ into a passing checklist item.
 
 [October 5 review]: 2026-10-05-hosted-review.md
 [consumer inventory]: consumer-inventory.md
-[drift audit]: hosted-drift-audit.md
+[drift audit]: ../runbooks/hosted-drift-audit.md
 [notification feed]: https://api.github.com/notifications
 [library metadata]: https://api.github.com/repos/Dagitali/.github
 [library owners]: https://api.github.com/repos/Dagitali/.github/codeowners/errors?ref=main
