@@ -43,16 +43,14 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-- Organize the adoption playbook and operational runbooks under dedicated `docs/playbooks/` and
-  `docs/runbooks/` directories, with navigation indexes and updated links; retain canonical policies
-  and dated evidence in their existing locations.
+No additional changes recorded after v0.6.11.
 
 ## [0.6.11] - 2026-10-07
 
-Documentation-only patch improving shared-automation adoption and incident recovery guidance, with
-refreshed read-only operational evidence. Public automation contracts remain unchanged. See the
-[release record][0.6.11] for scope, validation, and unverified tag/publication status. The date
-records preparation, not publication.
+Documentation-only patch improving shared-automation adoption and incident recovery guidance,
+organizing playbooks and runbooks, and refreshing read-only operational evidence. Public automation
+contracts remain unchanged. See the [release record][0.6.11] for scope, validation, and unverified
+tag/publication status. The date records preparation, not publication.
 
 - Align hosted-audit instructions with pinned Popo v0.6.3 and remove obsolete adoption-version
   claims. Add a starter catalogue linking each purpose, prerequisites, substitutions, permissions,
@@ -61,6 +59,9 @@ records preparation, not publication.
   recovery.
 - Refresh read-only hosted drift, caller, and consumer-default evidence, distinguishing API/file
   observations from unverified displayed behavior, reporting ownership, delivery, and escalation.
+- Organize the adoption playbook and operational runbooks under dedicated `docs/playbooks/` and
+  `docs/runbooks/` directories, with navigation indexes and updated links; retain canonical policies
+  and dated evidence in their existing locations.
 
 ## [0.6.10] - 2026-10-07
 

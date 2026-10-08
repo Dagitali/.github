@@ -36,9 +36,10 @@ record, and the [release policy] for validation and publication safeguards.
 ## 0.6 Series
 
 - [v0.6.11] — 2026-10-07: Starter-selection catalogue, shared-automation incident runbook, corrected
-  adoption/audit instructions, and refreshed read-only operational evidence; documentation-only
-  patch with unchanged public automation contracts. The record date identifies preparation; tagging,
-  tagged-revision validation, and publication remain unverified.
+  adoption/audit instructions, dedicated playbook/runbook folders and indexes, and refreshed
+  read-only operational evidence; documentation-only patch with unchanged public automation
+  contracts. The record date identifies preparation; tagging, tagged-revision validation, and
+  publication remain unverified.
 - [v0.6.10] — 2026-10-07: Confirmed MIT contribution terms for this library, no separate CLA,
   contributor authority and third-party notice requirements, and explicit consumer licensing
   boundaries; documentation-only patch. The record date identifies preparation; tagging,
