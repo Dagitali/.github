@@ -8,10 +8,11 @@
 #
 # Maintainer Notes
 # - Preserve existing field IDs, labels, and requiredness for consumers.
+# - Keep prompts product-neutral and focused on concrete user-facing needs.
 
 ---
-name: Feature request
-description: Propose an improvement or new capability
+name: Feature Request
+description: Propose a user-facing capability or workflow improvement.
 title: "[Feature]: "
 labels:
   - enhancement
@@ -19,7 +20,7 @@ body:
   - type: markdown
     attributes:
       value: >-
-        Tell us about the problem you want to solve and the outcome you need before
+        Describe a concrete, user-facing need and the outcome you want before
         prescribing an implementation. Do not include credentials, private data,
         confidential evidence, or suspected vulnerability details in public issues.
         For general usage questions, follow the affected project's support
@@ -27,15 +28,15 @@ body:
   - type: textarea
     id: problem
     attributes:
-      label: Problem or opportunity
-      description: What need, limitation, or opportunity does this address?
+      label: Problem to solve
+      description: What workflow is blocked, confusing, or unnecessarily difficult?
       placeholder: Describe the current need or pain point.
     validations:
       required: true
   - type: textarea
     id: proposal
     attributes:
-      label: Proposed solution
+      label: Proposed outcome
       description: Describe the desired behavior and observable outcomes that would make it complete.
       placeholder: |
         Requested improvement:
@@ -74,7 +75,7 @@ body:
   - type: textarea
     id: context
     attributes:
-      label: Additional context
+      label: Compatibility, security, cost, and additional context
       description: >-
         Add public examples, sketches, links, or other relevant details. Note
         compatibility, migration, security, privacy, operational, or cost impacts

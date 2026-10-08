@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.12 - 2026-10-07](#0612---2026-10-07)
 - [0.6.11 - 2026-10-07](#0611---2026-10-07)
 - [0.6.10 - 2026-10-07](#0610---2026-10-07)
 - [0.6.9 - 2026-10-07](#069---2026-10-07)
@@ -43,7 +44,22 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.11.
+No additional changes recorded after v0.6.12.
+
+## [0.6.12] - 2026-10-07
+
+Community-default maintenance patch aligning generic issue forms and improving submission context.
+Public automation contracts remain unchanged. See the [release record][0.6.12] for scope,
+compatibility, and validation. The date records preparation, not verified publication.
+
+- Enable blank issues for reports outside the structured forms and require bug-report version and
+  environment context with explicit unknown/not-applicable responses; retain bracketed titles,
+  optional selectors, and affected-project support/security navigation.
+- Align issue-form names and outcome/evidence prompts with Popo; add an optional, generic
+  installation/invocation field and a tool-neutral reproduction outline without changing existing
+  field IDs, GitHub labels, reporting routes, or selector requiredness.
+- Refine product-neutral maintainer guidance and concrete feature-request prompts; explicitly
+  identify documentation impact classification as optional without adding submission requirements.
 
 ## [0.6.11] - 2026-10-07
 
@@ -363,6 +379,7 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.1]: docs/releases/v0.6.1.md
 [0.6.10]: docs/releases/v0.6.10.md
 [0.6.11]: docs/releases/v0.6.11.md
+[0.6.12]: docs/releases/v0.6.12.md
 [0.6.2]: docs/releases/v0.6.2.md
 [0.6.3]: docs/releases/v0.6.3.md
 [0.6.4]: docs/releases/v0.6.4.md
