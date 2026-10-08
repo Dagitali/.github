@@ -66,10 +66,11 @@ or remove exceptions through review; do not blanket-except missing evidence.
 Use findings to request separately authorized remediation. This audit only makes GET requests; it
 cannot enable reporting, repair owners, change labels/rules, trigger callers, or send test reports.
 Preserve the [October 5 audit] as a historical snapshot and attach subsequent observations with
-their own dates. Complete notification and caller evidence separately through the [adoption
-checklist].
+their own dates; the [October 7 audit] records the latest review and remaining gaps. Complete
+notification and caller evidence separately through the [adoption checklist].
 
+[validation configuration]: ../../pyproject.toml
 [adoption checklist]: ../ADOPTION.md
 [October 5 audit]: 2026-10-05-hosted-review.md
-[validation configuration]: ../../pyproject.toml
+[October 7 audit]: 2026-10-07-hosted-review.md
 [Popo audit guide]: https://github.com/Dagitali/popo/blob/v0.5.2/docs/hosted-audit.md

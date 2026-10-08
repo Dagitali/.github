@@ -35,6 +35,10 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.6 Series
 
+- [v0.6.8] — 2026-10-07: Read-only workflow/npm safety checks through pinned Popo v0.6.3 and shared
+  Make gates, refreshed hosted adoption evidence, consumer inventory, and project-specific
+  contribution terms; maintenance patch with unchanged public automation contracts. The record date
+  identifies preparation. Tagging, tagged-revision validation, and publication remain unverified.
 - [v0.6.7] — 2026-10-07: README release-tag, license, and main-branch CI badges with explicit
   evidence boundaries; documentation-only patch. Tagging, hosted release validation, and publication
   remain unverified for v0.6.7.
@@ -197,3 +201,4 @@ prepared.
 [v0.6.4]: v0.6.4.md
 [v0.6.5]: v0.6.5.md
 [v0.6.7]: v0.6.7.md
+[v0.6.8]: v0.6.8.md

@@ -83,10 +83,12 @@ def test_gate_does_not_install_or_repeat_pins(
         'actionlint',
         'pytest',
         'check-automation-contracts',
+        'check-repository-safety',
         'check-docs',
     ):
         assert command in result.stdout
     assert result.stdout.count('check-automation-contracts') == 1
+    assert result.stdout.count('check-repository-safety') == 1
     assert '--pins-only' not in result.stdout
     assert 'pip install' not in result.stdout
     assert '-m venv' not in result.stdout
@@ -153,6 +155,11 @@ def test_python_quality_overrides(
             'check-automation-contracts',
         ),
         ('docs-markdown', ['REPOSITORY_ROOT=custom-root'], 'check-docs'),
+        (
+            'repository-safety',
+            ['REPOSITORY_ROOT=custom-root'],
+            'check-repository-safety',
+        ),
         (
             'release-changelog',
             ['REPOSITORY_ROOT=custom-root', 'RELEASE_VERSION=1.2.3'],
@@ -314,6 +321,7 @@ def test_standalone_pin_targets(
     assert '-m venv' not in result.stdout
     if target == 'self-check':
         assert 'check-docs' in result.stdout
+        assert result.stdout.count('check-repository-safety') == 1
 
 
 # !SECTION

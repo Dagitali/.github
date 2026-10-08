@@ -185,8 +185,8 @@ existence. The test honors Make's exported `ACTIONLINT` override.
 
 Popo owns the generic pin policy, including its exemptions for local and container references. It
 does not verify commit existence or container immutability. `tests/test_popo_integration.py` keeps
-one consumer integration test: it copies the actual configuration and automation files to a
-temporary directory, then checks that a Dagitali template placeholder passes and an injected
+consumer integration cases: template cases copy the actual configuration and automation files to a
+temporary directory, then check that a Dagitali template placeholder passes and an injected
 third-party mutable reference fails. Generic pin, broken-link, and placeholder edge-case tests
 belong to Popo; the Make gate still validates this repository's real automation and documentation.
 
@@ -195,7 +195,12 @@ Follow the [setup instructions] to install the published Popo commit pinned in
 
 `tests/test_makefile.py` exercises interpreter precedence, generic overrides, the default gate,
 compatibility aliases, and preservation of existing environments. `make check-pre-push` runs the
-same gate as `make check`; `make self-check` runs the pin and documentation policies only.
+same gate as `make check`; `make self-check` runs pin, safety, and documentation policies. `make
+repository-safety` delegates to published Popo v0.6.3. Both `lint` and `self-check` include it, so
+ordinary CI and pre-push enforce the consumer-owned workflow trust and npm fixture policy.
+Additional consumer integration cases use the installed CLI with isolated fixture metadata to verify
+valid configuration, copied/committed manifest drift, and an unapproved privileged trigger. No npm
+installation, workflow execution, sibling source override, or network access is involved.
 
 ## Hosted Consumer Evidence
 

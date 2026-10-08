@@ -15,6 +15,7 @@ Maintainer Notes
 Thank you for contributing to a Dagitali project.
 
 - [Before You Begin](#before-you-begin)
+- [Contribution Terms](#contribution-terms)
 - [First Contribution](#first-contribution)
 - [Pull Requests](#pull-requests)
 
@@ -26,6 +27,15 @@ Thank you for contributing to a Dagitali project.
 - Review the affected project's contribution terms and documented setup requirements.
 - Read and follow the applicable [code of conduct].
 - For security vulnerabilities, follow [SECURITY.md] instead of opening a public issue.
+
+## Contribution Terms
+
+The affected repository's license and contribution instructions determine its contribution terms.
+This organization-wide guide does not grant a license, introduce a contributor agreement, or
+override project-specific requirements. Review those documents before submitting work; if the
+license or terms are absent or unclear, ask the project's maintainers for clarification first. Only
+contribute material you are authorized to submit, identifying any applicable third-party licenses
+and notices.
 
 ## First Contribution
 
