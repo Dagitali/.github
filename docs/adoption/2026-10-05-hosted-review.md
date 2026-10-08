@@ -129,7 +129,7 @@ Nothing was enabled, disabled, dispatched, disclosed, committed, or pushed. This
 result with gaps, not an adoption sign-off. It is held in the library checkout for this
 cross-repository review; no consumer files were changed or published.
 
-[adoption checklist]: ../ADOPTION.md
+[adoption checklist]: ../playbooks/adopt-shared-automation.md
 [library queue runs]: https://api.github.com/repos/Dagitali/.github/actions/runs?event=merge_group
 [library community]: https://api.github.com/repos/Dagitali/.github/community/profile
 [library labels]: https://api.github.com/repos/Dagitali/.github/labels
