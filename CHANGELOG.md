@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.10 - 2026-10-07](#0610---2026-10-07)
 - [0.6.9 - 2026-10-07](#069---2026-10-07)
 - [0.6.8 - 2026-10-07](#068---2026-10-07)
 - [0.6.7 - 2026-10-07](#067---2026-10-07)
@@ -41,7 +42,18 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.9.
+No additional changes recorded after v0.6.10.
+
+## [0.6.10] - 2026-10-07
+
+Documentation-only patch clarifying the confirmed contribution terms for this library. Public
+automation contracts and the existing MIT License remain unchanged. See the [release record][0.6.10]
+for scope, validation, and unverified tag/publication status. The date records preparation, not
+publication.
+
+- Document confirmed MIT licensing for contributions to this library, with no separate CLA,
+  contributor authority and third-party notice requirements, and explicit separation from consumer
+  repositories' licenses and contribution terms.
 
 ## [0.6.9] - 2026-10-07
 
@@ -330,6 +342,7 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.5.1]: docs/releases/v0.5.1.md
 [0.6.0]: docs/releases/v0.6.0.md
 [0.6.1]: docs/releases/v0.6.1.md
+[0.6.10]: docs/releases/v0.6.10.md
 [0.6.2]: docs/releases/v0.6.2.md
 [0.6.3]: docs/releases/v0.6.3.md
 [0.6.4]: docs/releases/v0.6.4.md
