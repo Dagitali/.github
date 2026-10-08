@@ -44,7 +44,9 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.12.
+- Refine product-neutral issue-form guidance and concrete feature-request prompts; clarify that
+  documentation impact classification is optional without changing submission requirements or
+  support/security navigation.
 
 ## [0.6.12] - 2026-10-07
 
