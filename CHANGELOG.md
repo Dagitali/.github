@@ -44,16 +44,17 @@ No additional changes recorded after v0.6.8.
 
 ## [0.6.8] - 2026-10-07
 
-Maintenance patch for hosted adoption evidence, contribution guidance, and automation safety
-validation. See the [release record][0.6.8] for scope, validation, compatibility, and unverified
-tag/publication status.
+Maintenance patch adding read-only automation safety checks through Popo v0.6.3, refreshed hosted
+adoption evidence, and project-specific contribution guidance. Public workflow/action contracts
+remain unchanged. See the [release record][0.6.8] for scope, validation, compatibility, and
+unverified tag/publication status.
 
-- Refresh read-only hosted evidence and track consumer ownership, revision, caller-run, and
-  notification-verification gaps without changing repository settings.
 - Pin published Popo v0.6.3 and enforce consumer-owned workflow safety and npm fixture consistency
   through `make repository-safety`, `lint`, and `self-check`, including the ordinary CI/pre-push
   gate. Add consumer integration coverage for copied/committed manifest drift and privileged
   triggers.
+- Refresh read-only hosted evidence and add a consumer inventory tracking ownership, revision,
+  caller-run, review-date, and notification-verification gaps without changing repository settings.
 - Clarify project-specific contribution terms without introducing a license grant or contributor
   agreement through the organization-wide guide.
 
