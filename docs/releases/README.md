@@ -36,9 +36,10 @@ record, and the [release policy] for validation and publication safeguards.
 ## 0.6 Series
 
 - [v0.6.12] — 2026-10-07: Blank-issue escape hatch, required bug-report version/environment context,
-  optional installation/invocation field, and generic issue-form wording aligned with Popo;
-  bracketed prefixes, optional selectors, and support/security routes retained. The record date
-  identifies preparation; tagging, hosted chooser validation, and publication remain unverified.
+  optional installation/invocation field, and product-neutral issue guidance aligned with Popo,
+  including concrete feature requests and explicitly optional impact classification; bracketed
+  prefixes, optional selectors, and support/security routes retained. The record date identifies
+  preparation; tagging, hosted chooser validation, and publication remain unverified.
 - [v0.6.11] — 2026-10-07: Starter-selection catalogue, shared-automation incident runbook, corrected
   adoption/audit instructions, dedicated playbook/runbook folders and indexes, and refreshed
   read-only operational evidence; documentation-only patch with unchanged public automation
