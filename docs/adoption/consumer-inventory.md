@@ -13,7 +13,8 @@ This inventory complements the machine-readable repository expectations in [audi
 tracks adoption evidence, not merely repository existence. Initial observations come from the
 [October 7 review]; add consumers only from observed use or an explicit adoption decision. The
 records below were refreshed through read-only GitHub API requests on 2026-10-08 UTC (October 7
-locally). They do not reverify the earlier hosted-settings findings.
+locally). The [operational review] refreshes hosted findings and caller evidence separately, while
+retaining earlier observations and unresolved ownership/monitoring decisions.
 
 | Field | Library Self-Validation | Representative Consumer |
 | --- | --- | --- |
@@ -23,10 +24,10 @@ locally). They do not reverify the earlier hosted-settings findings.
 | Owner confirmation / authorized contact | Not confirmed; do not infer from CODEOWNERS | Not confirmed; do not infer from CODEOWNERS |
 | Adopted immutable library reference | Same-revision local calls at [validated library revision]; no external adoption claimed | Missing: inspected caller uses local actions, not this library |
 | Caller source at successful run | [Library caller source] | [Consumer caller source] |
-| Last successful shared caller | [Library run], completed 2026-10-08T00:11:26Z; internal fixtures only | Missing: [consumer CI], completed 2026-10-05T14:16:08Z, is successful local CI, not a library caller |
+| Last successful shared caller | [Library run], completed 2026-10-08T00:47:36Z; internal fixtures only | Missing: [consumer CI], completed 2026-10-05T14:16:08Z, is successful local CI, not a library caller |
 | Evidence scope | Python 3.13/3.14, Python/Node CDK, Swift, packaging, composites, and validation passed; dependency review skipped on push | Observed CI uses `./.github/actions/setup-python-project`; no shared-library execution demonstrated by this run |
 | Last caller evidence review | 2026-10-08 UTC | 2026-10-08 UTC |
-| Last hosted-settings review | 2026-10-07; see [October 7 review] | 2026-10-07; see [October 7 review] |
+| Last hosted-settings review | 2026-10-08 UTC; see [operational review] | 2026-10-08 UTC; see [operational review] |
 | Review requested | 2026-10-08 UTC | 2026-10-08 UTC |
 | Next agreed review / evidence age limit | Missing: owner approval pending | Missing: owner approval pending |
 | Review status | Needs review: owner and schedule missing; latest fixture evidence verified | Needs review: owner, schedule, immutable adoption reference, and successful library caller missing |
@@ -47,6 +48,7 @@ assignment to a commit author or code reviewer. No owner-approved due dates are 
 | Library lifecycle | Assignment pending | Confirm owner/contact, next review date, and maximum caller-evidence age; review outstanding hosted findings separately | Needs owner review |
 | Consumer lifecycle | Assignment pending | Confirm owner/contact and review schedule; decide whether to adopt this library or retain local automation | Needs owner review |
 | Consumer adoption | Assignment pending | If adopting, record the actual full-SHA caller reference and a successful run using it, with source and job results | Missing adoption evidence; not stale successful evidence |
+| Reporting and conduct escalation | Assignment pending | Confirm monitored recipients, delivery evidence, and an approved alternative for reports involving the moderator; keep private identities out of this inventory | Not verified; no alternate contact invented |
 
 ## Review Flags
 
@@ -87,13 +89,14 @@ confidential recipient identities and vulnerability details out of public eviden
 [adoption checklist] and [maintenance guidance] for verification boundaries and lifecycle decisions.
 
 [audit configuration]: ../../pyproject.toml
-[adoption checklist]: ../ADOPTION.md
 [maintenance guidance]: ../MAINTENANCE.md
+[adoption checklist]: ../playbooks/adopt-shared-automation.md
 [October 7 review]: 2026-10-07-hosted-review.md
+[operational review]: 2026-10-08-operational-review.md
 [earlier library run]: https://github.com/Dagitali/.github/actions/runs/37686074831
-[Library run]: https://github.com/Dagitali/.github/actions/runs/37706339670
-[Library caller source]: https://github.com/Dagitali/.github/blob/ccc4477c1053ea6e745d22f06ee3eec3b37771cf/.github/workflows/ci.yml
-[validated library revision]: https://github.com/Dagitali/.github/commit/ccc4477c1053ea6e745d22f06ee3eec3b37771cf
+[Library run]: https://github.com/Dagitali/.github/actions/runs/37709509842
+[Library caller source]: https://github.com/Dagitali/.github/blob/76e872f2685e63352b4e90135ebe8ede8f362acb/.github/workflows/ci.yml
+[validated library revision]: https://github.com/Dagitali/.github/commit/76e872f2685e63352b4e90135ebe8ede8f362acb
 [Earlier library revision]: https://github.com/Dagitali/.github/commit/fc80f508d32496949c01e7e392e4831c18079fb6
 [consumer CI]: https://github.com/Dagitali/aws-cdk-static-site/actions/runs/37322881435
 [Consumer caller source]: https://github.com/Dagitali/aws-cdk-static-site/blob/4c0ddb6b5f7f97d6a74a413eef83f4b90078cafa/.github/workflows/ci.yml
