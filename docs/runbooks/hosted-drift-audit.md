@@ -1,5 +1,5 @@
 <!--
-docs/adoption/hosted-drift-audit.md
+docs/runbooks/hosted-drift-audit.md
 Dagitali hosted drift audit
 
 Responsibilities
@@ -27,7 +27,7 @@ these expectations.
 
 ## Run the Audit
 
-`requirements-dev.txt` pins Popo v0.5.2, which provides `audit-github-settings`. After installing
+`requirements-dev.txt` pins Popo v0.6.3, which provides `audit-github-settings`. After installing
 the pinned tools, run the audit without a sibling checkout or source-path override:
 
 ```sh
@@ -65,12 +65,13 @@ or remove exceptions through review; do not blanket-except missing evidence.
 
 Use findings to request separately authorized remediation. This audit only makes GET requests; it
 cannot enable reporting, repair owners, change labels/rules, trigger callers, or send test reports.
-Preserve the [October 5 audit] as a historical snapshot and attach subsequent observations with
-their own dates; the [October 7 audit] records the latest review and remaining gaps. Complete
-notification and caller evidence separately through the [adoption checklist].
+Preserve the [October 5 audit] and [October 7 audit] as historical snapshots and attach observations
+with their own dates; the [October 8 UTC review] records the latest review and remaining gaps.
+Complete notification and caller evidence separately through the [adoption checklist].
 
 [validation configuration]: ../../pyproject.toml
-[adoption checklist]: ../ADOPTION.md
-[October 5 audit]: 2026-10-05-hosted-review.md
-[October 7 audit]: 2026-10-07-hosted-review.md
-[Popo audit guide]: https://github.com/Dagitali/popo/blob/v0.5.2/docs/hosted-audit.md
+[October 5 audit]: ../adoption/2026-10-05-hosted-review.md
+[October 7 audit]: ../adoption/2026-10-07-hosted-review.md
+[October 8 UTC review]: ../adoption/2026-10-08-operational-review.md
+[adoption checklist]: ../playbooks/adopt-shared-automation.md
+[Popo audit guide]: https://github.com/Dagitali/popo/blob/v0.6.3/docs/hosted-audit.md
