@@ -12,11 +12,23 @@ Maintainer Notes
 
 # Contributing to the Automation Library
 
+- [Contribution Terms](#contribution-terms)
 - [Documentation Conventions](#documentation-conventions)
 - [Local Setup and Hooks](#local-setup-and-hooks)
 - [Validation Configuration](#validation-configuration)
 - [Shared Automation Maintenance](#shared-automation-maintenance)
 - [Validation and Release Evidence](#validation-and-release-evidence)
+
+## Contribution Terms
+
+Contributions submitted for inclusion in `Dagitali/.github` are licensed under this repository's
+[MIT License]. No separate Contributor License Agreement (CLA) is required. Contributors must have
+authority to submit their work and preserve applicable third-party licenses and notices.
+
+These terms apply to contributions to this automation library, including its documentation, not to
+every Dagitali project. Other repositories retain their own licenses and contribution requirements;
+using these shared defaults, workflows, or actions does not place a consumer project under MIT. The
+organization-wide contribution guide does not override those repository-specific terms.
 
 ## Documentation Conventions
 
@@ -280,6 +292,7 @@ updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only
 
 [release-notes template]: ../.github/RELEASE-NOTES-TEMPLATE.md
 [Copilot instructions]: ../.github/copilot-instructions.md
+[MIT License]: ../LICENSE
 [Makefile]: ../Makefile
 [Project overview]: ../README.md
 [release policy]: ../RELEASE-POLICY.md

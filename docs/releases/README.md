@@ -35,6 +35,10 @@ record, and the [release policy] for validation and publication safeguards.
 
 ## 0.6 Series
 
+- [v0.6.10] — 2026-10-07: Confirmed MIT contribution terms for this library, no separate CLA,
+  contributor authority and third-party notice requirements, and explicit consumer licensing
+  boundaries; documentation-only patch. The record date identifies preparation; tagging,
+  tagged-revision validation, and publication remain unverified.
 - [v0.6.9] — 2026-10-07: Actionable consumer lifecycle inventory with immutable caller evidence,
   explicit owner/schedule gaps, and stale, missing, and inaccessible review flags;
   documentation-only patch without automatic archival. The record date identifies preparation;
@@ -200,6 +204,7 @@ prepared.
 [v0.5.1]: v0.5.1.md
 [v0.6.0]: v0.6.0.md
 [v0.6.1]: v0.6.1.md
+[v0.6.10]: v0.6.10.md
 [v0.6.2]: v0.6.2.md
 [v0.6.3]: v0.6.3.md
 [v0.6.4]: v0.6.4.md
