@@ -115,12 +115,12 @@ limitations][Shared GitHub Actions] before adopting a revision.
 [MIT License]: LICENSE
 [release policy]: RELEASE-POLICY.md
 [security policy]: SECURITY.md
-[consumer adoption checklist]: docs/ADOPTION.md
 [contributor instructions]: docs/CONTRIBUTING.md
 [maintenance guidance]: docs/MAINTENANCE.md
 [documentation index]: docs/README.md
 [testing guide]: docs/TESTING.md
 [Shared GitHub Actions]: docs/github-actions.md
+[consumer adoption checklist]: docs/playbooks/adopt-shared-automation.md
 [release notes archive]: docs/releases/README.md
 [default-files]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
 [CI workflow]: https://github.com/Dagitali/.github/actions/workflows/ci.yml

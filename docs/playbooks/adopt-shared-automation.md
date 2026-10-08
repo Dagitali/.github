@@ -1,5 +1,5 @@
 <!--
-docs/ADOPTION.md
+docs/playbooks/adopt-shared-automation.md
 Dagitali shared automation library
 
 Responsibilities
@@ -43,6 +43,9 @@ applicable**, with a reason. An inaccessible setting is not verified, not eviden
 
 ## Completed Reviews
 
+- [2026-10-08 UTC operational review]: Refreshed drift/caller evidence and API-observed inherited
+  versus local community files; displayed-default verification, monitoring, and owner decisions
+  remain incomplete.
 - [2026-10-07 hosted review]: Refreshed security/rules and successful library fixture evidence;
   external caller adoption and notification configuration/delivery remain unverified. Track
   accountable follow-up in the [consumer inventory].
@@ -67,10 +70,11 @@ Revisit the record when defaults, overrides, maintainers, repository visibility,
 or hosted rules change. Follow [maintenance guidance] for exceptions, inactive consumers, and
 deprecated interfaces. An unchecked checklist does not block adoption automatically.
 
-[branch protection guidance]: ../.github/BRANCH-PROTECTION.md
-[adoption boundaries]: ../README.md#adoption-and-overrides
-[maintenance guidance]: MAINTENANCE.md
-[2026-10-05 hosted review]: adoption/2026-10-05-hosted-review.md
-[2026-10-07 hosted review]: adoption/2026-10-07-hosted-review.md
-[consumer inventory]: adoption/consumer-inventory.md
-[Actions guide]: github-actions.md
+[branch protection guidance]: ../../.github/BRANCH-PROTECTION.md
+[adoption boundaries]: ../../README.md#adoption-and-overrides
+[maintenance guidance]: ../MAINTENANCE.md
+[2026-10-05 hosted review]: ../adoption/2026-10-05-hosted-review.md
+[2026-10-07 hosted review]: ../adoption/2026-10-07-hosted-review.md
+[2026-10-08 UTC operational review]: ../adoption/2026-10-08-operational-review.md
+[consumer inventory]: ../adoption/consumer-inventory.md
+[Actions guide]: ../github-actions.md
