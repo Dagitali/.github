@@ -28,6 +28,7 @@ defaults; consuming projects retain their own engineering instructions and hoste
 | Maintain ownership, exceptions, and migrations | [Maintenance guide] |
 | Set up and change this checkout | [Library contributor guide] and [agent instructions] |
 | Choose local checks and hosted fixtures | [Testing guide] |
+| Review enforced local workflow and fixture safety policy | [Automation safety] |
 | Coordinate required-check transitions | [Branch protection] |
 | Prepare a release and record compatibility | [Release policy] and [release-notes template] |
 | Read version-specific history | [Changelog] and [release archive] |
@@ -58,5 +59,6 @@ solely to match another repository. Fixtures remain self-contained when copied i
 [Library contributor guide]: CONTRIBUTING.md
 [Maintenance guide]: MAINTENANCE.md
 [Testing guide]: TESTING.md
+[Automation safety]: automation-safety.md
 [Shared GitHub Actions]: github-actions.md
 [release archive]: releases/README.md

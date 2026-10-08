@@ -43,6 +43,16 @@ labels = ["bug", "enhancement", "documentation"]
 settings = { private-vulnerability-reporting = true, secret-scanning = true, secret-scanning-push-protection = true }
 branches = { main = ["Validate pull request"], develop = ["Validate pull request"] }
 
+[tool.popo.safety]
+# Enforced by published Popo hrough lint and self-check.
+# Keep CI on the published pin, never a sibling source-path override.
+workflow-globs = [".github/workflows/*.yml", "workflow-templates/*.yml"]
+exceptions = []
+npm-pairs = [
+  { manifest = "tests/fixtures/node-cdk/package.json", lockfile = "tests/fixtures/node-cdk-locked/package-lock.json" },
+  { manifest = "tests/fixtures/node-cdk-locked/package.json", lockfile = "tests/fixtures/node-cdk-locked/package-lock.json" },
+]
+
 [tool.pytest]
 minversion = "9.1.1"
 testpaths = ["tests"]

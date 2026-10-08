@@ -133,15 +133,15 @@ show-venv: ## Print managed-environment and interpreter locations
 ##@ Quality
 
 .PHONY: check check-pre-push self-check lint workflow-lint automation-contracts github-actions-pins
-.PHONY: release-changelog python-lint format-check typecheck fix fmt format
+.PHONY: release-changelog repository-safety python-lint format-check typecheck fix fmt format
 # Full contract validation in lint already includes the pin policy.
 check: lint typecheck test docs-markdown ## Run the default local quality gate
 
 check-pre-push: check ## Run the local pre-push checks
 
-self-check: github-actions-pins docs-markdown ## Run applicable repository-policy checks
+self-check: github-actions-pins repository-safety docs-markdown ## Run applicable repository-policy checks
 
-lint: python-lint format-check workflow-lint automation-contracts ## Validate Python and automation
+lint: python-lint format-check workflow-lint automation-contracts repository-safety ## Validate Python and automation
 
 python-lint: ## Check Python helpers and fixture code with Ruff
 	$(RUFF) check $(PYTHON_LINT_PATHS)
@@ -165,6 +165,9 @@ workflow-lint: ## Check workflow and starter-template syntax with actionlint
 
 automation-contracts: ## Check local automation interfaces and template metadata
 	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-automation-contracts --root "$(AUTOMATION_ROOT)"
+
+repository-safety: ## Check configured workflow trust boundaries and npm consistency
+	$(PYTHON) -m $(PROJECT_TOOLS_MODULE) check-repository-safety --root "$(REPOSITORY_ROOT)"
 
 .PHONY: hosted-audit
 hosted-audit: ## Audit configured GitHub settings (opt-in, read-only; requires gh)

@@ -8,7 +8,7 @@
 # - Update immutable Popo references deliberately; checks never install tools.
 
 mypy==2.4.0
-popo @ git+https://github.com/Dagitali/popo.git@db16df3481726a0e68cf522f5563b04dd5a73f9c  # Pinned v0.5.2
+popo @ git+https://github.com/Dagitali/popo.git@4c069dd79e1061f435155890abf9e512967ef80e  # Pinned v0.6.3
 pytest==9.1.1
 # Repository validation only; this repository is not a Python distribution.
 PyYAML==6.0.3

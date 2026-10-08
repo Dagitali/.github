@@ -43,6 +43,9 @@ applicable**, with a reason. An inaccessible setting is not verified, not eviden
 
 ## Completed Reviews
 
+- [2026-10-07 hosted review]: Refreshed security/rules and successful library fixture evidence;
+  external caller adoption and notification configuration/delivery remain unverified. Track
+  accountable follow-up in the [consumer inventory].
 - [2026-10-05 hosted review]: Library and representative consumer `aws-cdk-static-site`; observed
   reporting, workflow, ownership, and branch-rule results, with missing and inaccessible evidence
   explicitly recorded. This is not an adoption sign-off.
@@ -68,4 +71,6 @@ deprecated interfaces. An unchecked checklist does not block adoption automatica
 [adoption boundaries]: ../README.md#adoption-and-overrides
 [maintenance guidance]: MAINTENANCE.md
 [2026-10-05 hosted review]: adoption/2026-10-05-hosted-review.md
+[2026-10-07 hosted review]: adoption/2026-10-07-hosted-review.md
+[consumer inventory]: adoption/consumer-inventory.md
 [Actions guide]: github-actions.md
