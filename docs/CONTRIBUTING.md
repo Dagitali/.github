@@ -75,17 +75,19 @@ NumPy-format docstrings when creating or expanding Python documentation: underli
 effects. Omit irrelevant sections rather than inventing return values or guarantees.
 
 Issue-form and chooser headers follow sibling responsibility/maintainer conventions, while keeping
-the organization default's existing field IDs, requiredness, labels, and reporting routes. Do not
-copy a sibling's blank-issue setting or project-specific support channel solely for symmetry. The
-optional feature surface selector supports generic routing; bug prompts invite supported-version
-reproduction evidence without requiring an upgrade or adding mandatory responses. Documentation
-forms direct suspected vulnerabilities to the affected repository's private reporting policy. Keep
-device, permission, connectivity, and sync prompts conditional and product-neutral; request
-observable feature outcomes within existing fields rather than duplicating acceptance questions. Do
-not assume every consumer enables Discussions or uses Apple platforms. Inline workflow Python should
-document reusable helper arguments, file effects, and failure behavior; the candidate renderer
-accepts its payload/path explicitly and appends before checking job outcomes. Typing heterogeneous
-GitHub payloads with Any is deliberate, not runtime schema validation.
+the organization default's existing field IDs, labels, and reporting routes. Blank issues are an
+escape hatch for reports outside the forms. Bug reports require version and environment context,
+with explicit unknown/not-applicable responses accepted. Do not make categorization selectors
+mandatory or copy project-specific support channels solely for symmetry. The optional feature
+surface selector supports generic routing; bug prompts invite supported-version reproduction
+evidence without requiring an upgrade. Documentation forms direct suspected vulnerabilities to the
+affected repository's private reporting policy. Keep device, permission, connectivity, and sync
+prompts conditional and product-neutral; request observable feature outcomes within existing fields
+rather than duplicating acceptance questions. Do not assume every consumer enables Discussions or
+uses Apple platforms. Inline workflow Python should document reusable helper arguments, file
+effects, and failure behavior; the candidate renderer accepts its payload/path explicitly and
+appends before checking job outcomes. Typing heterogeneous GitHub payloads with Any is deliberate,
+not runtime schema validation.
 
 Inspection summary helpers likewise use typed interpreter paths and captured subprocess results.
 Tool-version queries are best-effort: absent environments or failed pip-list commands retain an

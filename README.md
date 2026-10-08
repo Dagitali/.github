@@ -54,6 +54,11 @@ referenced explicitly, while workflow templates must be selected when creating a
 - Support guidance
 - Private vulnerability report form (requires hosted enablement)
 
+Issue defaults use bracketed title prefixes and optional classification selectors. Bug forms require
+version and environment context, accepting "unknown" or "not applicable" where appropriate. Blank
+issues remain available when forms do not fit; support and security-policy links remain in the
+chooser. Neither blank issues nor public forms are a private vulnerability-reporting channel.
+
 ## Adoption and Overrides
 
 | Surface | Adoption | Consumer responsibility |

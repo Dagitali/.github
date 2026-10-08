@@ -3,12 +3,14 @@
 #
 # Responsibilities
 # - Route issue reports, usage questions, and private security disclosures.
+# - Allow blank issues when the structured forms do not fit a report.
 #
 # Maintainer Notes
 # - Preserve blank-issue policy and verify channels before changing links.
+# - Keep navigation aligned with the affected project's reporting surfaces.
 
 ---
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
   - name: Usage questions and support
     url: https://github.com/Dagitali/.github/blob/main/SUPPORT.md
