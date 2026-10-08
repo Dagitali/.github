@@ -9,6 +9,7 @@
 # - Keep organization defaults product-neutral and reports free of secrets.
 # - Preserve field IDs and labels; require actionable reproduction context.
 # - Allow unknown or inapplicable version and environment information.
+# - Keep prompts product-neutral unless specific context improves triage.
 
 ---
 name: Bug Report
@@ -82,8 +83,7 @@ body:
       label: Environment
       description: >-
         Include the operating system and relevant language, runtime, tool,
-        browser, or service versions. State
-        whether the failure occurred locally or in CI.
+        browser, or service versions. State whether execution was local or in CI.
         Where relevant, include device or simulator details, permission settings,
         connectivity, and synchronization context without exposing account details
         or private location history.

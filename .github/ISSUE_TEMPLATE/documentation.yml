@@ -8,6 +8,7 @@
 # Maintainer Notes
 # - Keep requests actionable without requiring project-specific tooling.
 # - Preserve existing field IDs, labels, and requiredness for consumers.
+# - Focus on actionable accuracy, evidence, and accessibility corrections.
 
 ---
 name: Documentation Improvement
@@ -49,6 +50,7 @@ body:
     id: impact
     attributes:
       label: Primary impact
+      description: Select the primary impact, if known; leave blank if unsure.
       options:
         - Accuracy or completeness
         - Accessibility or clarity

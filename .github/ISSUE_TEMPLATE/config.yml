@@ -7,6 +7,7 @@
 #
 # Maintainer Notes
 # - Preserve blank-issue policy and verify channels before changing links.
+# - Keep navigation aligned with the affected project's reporting surfaces.
 
 ---
 blank_issues_enabled: true
