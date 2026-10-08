@@ -44,9 +44,7 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-- Refine product-neutral issue-form guidance and concrete feature-request prompts; clarify that
-  documentation impact classification is optional without changing submission requirements or
-  support/security navigation.
+No additional changes recorded after v0.6.12.
 
 ## [0.6.12] - 2026-10-07
 
@@ -60,6 +58,8 @@ compatibility, and validation. The date records preparation, not verified public
 - Align issue-form names and outcome/evidence prompts with Popo; add an optional, generic
   installation/invocation field and a tool-neutral reproduction outline without changing existing
   field IDs, GitHub labels, reporting routes, or selector requiredness.
+- Refine product-neutral maintainer guidance and concrete feature-request prompts; explicitly
+  identify documentation impact classification as optional without adding submission requirements.
 
 ## [0.6.11] - 2026-10-07
 
