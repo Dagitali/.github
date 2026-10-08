@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.9 - 2026-10-07](#069---2026-10-07)
 - [0.6.8 - 2026-10-07](#068---2026-10-07)
 - [0.6.7 - 2026-10-07](#067---2026-10-07)
 - [0.6.5 - 2026-10-07](#065---2026-10-07)
@@ -40,7 +41,17 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.8.
+No additional changes recorded after v0.6.9.
+
+## [0.6.9] - 2026-10-07
+
+Documentation-only patch making consumer lifecycle evidence and follow-up review actionable. Public
+automation contracts remain unchanged. See the [release record][0.6.9] for scope, validation, and
+unverified tag/publication status. The date records preparation, not publication.
+
+- Extend the consumer inventory with immutable source/run evidence, explicit owner and schedule
+  gaps, and an actionable lifecycle review queue. Refresh library fixture evidence and distinguish
+  stale, missing, and inaccessible records without automatically archiving consumers.
 
 ## [0.6.8] - 2026-10-07
 
@@ -325,3 +336,4 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.5]: docs/releases/v0.6.5.md
 [0.6.7]: docs/releases/v0.6.7.md
 [0.6.8]: docs/releases/v0.6.8.md
+[0.6.9]: docs/releases/v0.6.9.md
