@@ -41,6 +41,11 @@ also follow [branch protection guidance].
 
 ## Inactive Consumers
 
+Maintain responsible owners, adopted immutable references, successful caller evidence, and review
+dates in the [consumer inventory]. Its open review queue distinguishes stale, missing, and
+inaccessible evidence. A verified local CI run is not proof of shared-library adoption; a changed
+reference requires matching caller evidence. Preserve earlier observations when opening a review.
+
 If a consumer becomes inactive, record its maintenance status, responsible contact, current shared
 SHA, unresolved findings, and update/disclosure expectations. If no maintainer is available, state
 that explicitly instead of suggesting active support. Review scheduled automation and external
@@ -64,3 +69,4 @@ dated decision record.
 [branch protection guidance]: ../.github/BRANCH-PROTECTION.md
 [release policy]: ../RELEASE-POLICY.md
 [adoption checklist]: ADOPTION.md
+[consumer inventory]: adoption/consumer-inventory.md
