@@ -8,6 +8,16 @@
 # Maintainer Notes
 # - Preserve blank-issue policy and verify channels before changing links.
 # - Keep navigation aligned with the affected project's reporting surfaces.
+#
+# References
+# - GitHub issue forms syntax:
+#   https://docs.github.com/en/repositories/
+#   managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/syntax-for-issue-forms
+# - GitHub issue template chooser configuration:
+#   https://docs.github.com/en/repositories/
+#   managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/configuring-issue-templates-for-your-repository
 
 ---
 blank_issues_enabled: true

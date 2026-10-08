@@ -9,6 +9,12 @@
 # - Keep requests actionable without requiring project-specific tooling.
 # - Preserve existing field IDs, labels, and requiredness for consumers.
 # - Focus on actionable accuracy, evidence, and accessibility corrections.
+#
+# References
+# - GitHub issue forms syntax:
+#   https://docs.github.com/en/repositories/
+#   managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/syntax-for-issue-forms
 
 ---
 name: Documentation Improvement

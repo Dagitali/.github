@@ -10,6 +10,16 @@
 # - Preserve field IDs and labels; require actionable reproduction context.
 # - Allow unknown or inapplicable version and environment information.
 # - Keep prompts product-neutral unless specific context improves triage.
+#
+# References
+# - GitHub issue templates:
+#   https://docs.github.com/en/repositories/
+#   managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/configuring-issue-templates-for-your-repository
+# - GitHub issue forms syntax:
+#   https://docs.github.com/en/repositories/
+#   managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/syntax-for-issue-forms
 
 ---
 name: Bug Report
