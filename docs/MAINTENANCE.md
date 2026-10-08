@@ -68,5 +68,5 @@ dated decision record.
 
 [branch protection guidance]: ../.github/BRANCH-PROTECTION.md
 [release policy]: ../RELEASE-POLICY.md
-[adoption checklist]: ADOPTION.md
 [consumer inventory]: adoption/consumer-inventory.md
+[adoption checklist]: playbooks/adopt-shared-automation.md

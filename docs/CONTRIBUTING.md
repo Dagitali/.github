@@ -297,13 +297,13 @@ updates with `pre-commit autoupdate`; do not run autofixing hooks as a read-only
 [Project overview]: ../README.md
 [release policy]: ../RELEASE-POLICY.md
 [validation configuration]: ../pyproject.toml
-[adoption checklist]: ADOPTION.md
 [consumer maintenance guidance]: MAINTENANCE.md
 [documentation index]: README.md
 [testing]: TESTING.md
-[hosted drift audit]: adoption/hosted-drift-audit.md
 [automation safety]: automation-safety.md
 [Shared GitHub Actions]: github-actions.md
 [YAML language server's modeline parser]: https://github.com/redhat-developer/yaml-language-server/blob/main/src/languageservice/services/modelineUtil.ts
 [generator URL]: https://www.toptal.com/developers/gitignore/api/dropbox,emacs,linux,macos,vim,visualstudiocode,windows
 [editable profile selection]: https://www.toptal.com/developers/gitignore?templates=dropbox,emacs,linux,macos,vim,visualstudiocode,windows
+[adoption checklist]: playbooks/adopt-shared-automation.md
+[hosted drift audit]: runbooks/hosted-drift-audit.md

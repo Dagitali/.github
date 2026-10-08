@@ -23,8 +23,13 @@ defaults; consuming projects retain their own engineering instructions and hoste
 | Need | Canonical guidance |
 | --- | --- |
 | Understand defaults and overrides | [Project overview] |
+| Plan goal-oriented adoption work | [Playbooks] |
+| Find bounded operational procedures | [Runbooks] |
 | Select workflows, actions, and starters | [Shared GitHub Actions] |
+| Choose a starter and review its substitutions/permissions | [Starter catalogue] |
 | Record consumer adoption and hosted evidence | [Adoption checklist] |
+| Review the latest operational evidence and unresolved approvals | [Operational review] |
+| Coordinate a shared-automation security incident | [Incident runbook] |
 | Maintain ownership, exceptions, and migrations | [Maintenance guide] |
 | Set up and change this checkout | [Library contributor guide] and [agent instructions] |
 | Choose local checks and hosted fixtures | [Testing guide] |
@@ -55,10 +60,15 @@ solely to match another repository. Fixtures remain self-contained when copied i
 [Release policy]: ../RELEASE-POLICY.md
 [security policy]: ../SECURITY.md
 [support defaults]: ../SUPPORT.md
-[Adoption checklist]: ADOPTION.md
 [Library contributor guide]: CONTRIBUTING.md
 [Maintenance guide]: MAINTENANCE.md
 [Testing guide]: TESTING.md
+[Operational review]: adoption/2026-10-08-operational-review.md
 [Automation safety]: automation-safety.md
 [Shared GitHub Actions]: github-actions.md
+[Playbooks]: playbooks/README.md
+[Adoption checklist]: playbooks/adopt-shared-automation.md
 [release archive]: releases/README.md
+[Runbooks]: runbooks/README.md
+[Incident runbook]: runbooks/shared-automation-incident.md
+[Starter catalogue]: starter-catalogue.md
