@@ -10,8 +10,8 @@
 # - Preserve existing field IDs, labels, and requiredness for consumers.
 
 ---
-name: Documentation improvement
-description: Report missing, unclear, or incorrect documentation
+name: Documentation Improvement
+description: Report missing, unclear, outdated, unsupported, or inaccessible documentation.
 title: "[Docs]: "
 labels:
   - documentation
@@ -27,21 +27,21 @@ body:
     id: location
     attributes:
       label: Documentation location
-      description: Provide the public URL or repository path, heading, or line reference.
-      placeholder: https://github.com/Dagitali/...
+      description: Provide the public URL, repository path, heading, or line reference.
+      placeholder: README.md#configuration
     validations:
       required: true
   - type: textarea
     id: issue
     attributes:
-      label: What needs improvement?
+      label: Documentation concern
       description: Explain what is missing, unclear, outdated, incorrect, unsupported, or inaccessible.
     validations:
       required: true
   - type: textarea
     id: suggestion
     attributes:
-      label: Suggested change and evidence
+      label: Suggested correction and evidence
       description: >-
         Describe the wording, example, or structure that would help. Link public
         implementation, test, release, or primary-source evidence when available.

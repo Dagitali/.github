@@ -7,11 +7,12 @@
 #
 # Maintainer Notes
 # - Keep organization defaults product-neutral and reports free of secrets.
-# - Preserve existing field IDs, labels, and requiredness for consumers.
+# - Preserve field IDs and labels; require actionable reproduction context.
+# - Allow unknown or inapplicable version and environment information.
 
 ---
-name: Bug report
-description: Report reproducible incorrect or unexpected behavior
+name: Bug Report
+description: Report a reproducible problem or defect.
 title: "[Bug]: "
 labels:
   - bug
@@ -25,7 +26,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Description
+      label: Summary and observed behavior
       description: Describe what went wrong, its impact, and relevant output or exit codes.
       placeholder: What is broken, and how does it affect you?
     validations:
@@ -40,16 +41,17 @@ body:
         State whether you reproduced this with a supported release or the current
         default branch, or explain why that was not possible.
       placeholder: |
-        1. Go to ...
-        2. Run ...
-        3. Observe ...
+        1. Install or check out ...
+        2. Configure ...
+        3. Run ...
+        4. Observe ...
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
       label: Expected behavior
-      description: What did you expect to happen?
+      description: Explain what you expected to happen instead.
     validations:
       required: true
   - type: textarea
@@ -58,23 +60,41 @@ body:
       label: Error output
       description: Include sanitized errors, tracebacks, logs, or failing assertions.
       render: text
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: >-
+        Identify the project release, package version, tag, or commit tested.
+        Enter "unknown" or "not applicable" when appropriate.
+      placeholder: Version, tag, commit, unknown, or not applicable
+    validations:
+      required: true
+  - type: input
+    id: installation
+    attributes:
+      label: Installation or invocation method
+      description: Explain how the software was installed or invoked, if applicable.
+      placeholder: Package manager, editable install, source checkout, or other
   - type: textarea
     id: environment
     attributes:
       label: Environment
       description: >-
-        Include the version or commit, installation or invocation method, operating
-        system, and relevant tool, runtime, browser, or service versions. State
+        Include the operating system and relevant language, runtime, tool,
+        browser, or service versions. State
         whether the failure occurred locally or in CI.
         Where relevant, include device or simulator details, permission settings,
         connectivity, and synchronization context without exposing account details
         or private location history.
+        Enter "unknown" or "not applicable" for information you cannot provide
+        or that does not apply to this report.
       placeholder: |
-        Project version or commit:
         Operating system:
         Runtime or browser:
-        Installation or invocation method:
         Local or CI execution:
+    validations:
+      required: true
   - type: textarea
     id: additional
     attributes:
