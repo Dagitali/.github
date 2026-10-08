@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.13 - 2026-10-07](#0613---2026-10-07)
 - [0.6.12 - 2026-10-07](#0612---2026-10-07)
 - [0.6.11 - 2026-10-07](#0611---2026-10-07)
 - [0.6.10 - 2026-10-07](#0610---2026-10-07)
@@ -44,7 +45,22 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.12.
+No additional changes recorded after v0.6.13.
+
+## [0.6.13] - 2026-10-07
+
+Community-default documentation patch clarifying PR guidance and issue-template maintainer
+references. Public automation contracts and issue submission behavior remain unchanged. See the
+[release record][0.6.13] for scope, compatibility, and validation. The date records preparation, not
+verified publication.
+
+- Align the organization PR template with generic compatibility, validation, delivery/rollback, and
+  documentation/decision sections; add conditional artifact and validator-contract prompts while
+  retaining hosted-evidence, accessibility/privacy, and explicit authorization safeguards. Clarify
+  changed-behavior tests, repository safety invariants, and explicit migration disclosure while
+  keeping project-specific commands in consumer contribution guidance.
+- Add GitHub issue-template, form-syntax, and chooser documentation references to issue-form
+  maintainer comments without changing fields, labels, requiredness, or reporting routes.
 
 ## [0.6.12] - 2026-10-07
 
@@ -380,6 +396,7 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.10]: docs/releases/v0.6.10.md
 [0.6.11]: docs/releases/v0.6.11.md
 [0.6.12]: docs/releases/v0.6.12.md
+[0.6.13]: docs/releases/v0.6.13.md
 [0.6.2]: docs/releases/v0.6.2.md
 [0.6.3]: docs/releases/v0.6.3.md
 [0.6.4]: docs/releases/v0.6.4.md
