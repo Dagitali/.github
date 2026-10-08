@@ -20,6 +20,7 @@ Dated historical entries preserve local tag dates, not verified publication date
 record preparation only; corrections to maintained history do not rewrite existing tags.
 
 - [Unreleased](#unreleased)
+- [0.6.11 - 2026-10-07](#0611---2026-10-07)
 - [0.6.10 - 2026-10-07](#0610---2026-10-07)
 - [0.6.9 - 2026-10-07](#069---2026-10-07)
 - [0.6.8 - 2026-10-07](#068---2026-10-07)
@@ -42,7 +43,24 @@ record preparation only; corrections to maintained history do not rewrite existi
 
 ## Unreleased
 
-No additional changes recorded after v0.6.10.
+- Organize the adoption playbook and operational runbooks under dedicated `docs/playbooks/` and
+  `docs/runbooks/` directories, with navigation indexes and updated links; retain canonical policies
+  and dated evidence in their existing locations.
+
+## [0.6.11] - 2026-10-07
+
+Documentation-only patch improving shared-automation adoption and incident recovery guidance, with
+refreshed read-only operational evidence. Public automation contracts remain unchanged. See the
+[release record][0.6.11] for scope, validation, and unverified tag/publication status. The date
+records preparation, not publication.
+
+- Align hosted-audit instructions with pinned Popo v0.6.3 and remove obsolete adoption-version
+  claims. Add a starter catalogue linking each purpose, prerequisites, substitutions, permissions,
+  and canonical contract, and a shared-automation incident runbook covering affected revision
+  assessment, private coordination, corrected immutable publication, and validated consumer
+  recovery.
+- Refresh read-only hosted drift, caller, and consumer-default evidence, distinguishing API/file
+  observations from unverified displayed behavior, reporting ownership, delivery, and escalation.
 
 ## [0.6.10] - 2026-10-07
 
@@ -343,6 +361,7 @@ recorded date, not verified publication. See the [release record][0.0.0].
 [0.6.0]: docs/releases/v0.6.0.md
 [0.6.1]: docs/releases/v0.6.1.md
 [0.6.10]: docs/releases/v0.6.10.md
+[0.6.11]: docs/releases/v0.6.11.md
 [0.6.2]: docs/releases/v0.6.2.md
 [0.6.3]: docs/releases/v0.6.3.md
 [0.6.4]: docs/releases/v0.6.4.md
