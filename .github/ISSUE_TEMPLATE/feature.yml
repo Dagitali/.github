@@ -9,6 +9,16 @@
 # Maintainer Notes
 # - Preserve existing field IDs, labels, and requiredness for consumers.
 # - Keep prompts product-neutral and focused on concrete user-facing needs.
+#
+# References
+# - GitHub issue templates:
+#   https://docs.github.com/en/repositories/
+#   managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/configuring-issue-templates-for-your-repository
+# - GitHub issue forms syntax:
+#   https://docs.github.com/en/
+#   repositories/managing-your-repositorys-settings-and-features/
+#   customizing-your-repository/syntax-for-issue-forms
 
 ---
 name: Feature Request
