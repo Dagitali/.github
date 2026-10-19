@@ -12,5 +12,5 @@ popo @ git+https://github.com/Dagitali/popo.git@4c069dd79e1061f435155890abf9e512
 pytest==9.1.1
 # Repository validation only; this repository is not a Python distribution.
 PyYAML==6.0.3
-ruff==0.16.10
+ruff==0.17.1
 types-PyYAML==6.0.12.20260906
